@@ -127,6 +127,46 @@
   }
   .prize-card:hover { transform: translateY(-6px); border-color: var(--gold); }
   .prize-icon { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+  .prize-visual {
+    width: 100%;
+    height: 142px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 0.75rem;
+  }
+  .prize-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 12px 22px rgba(0,0,0,0.32));
+  }
+  .prize-image.cutout {
+    mix-blend-mode: multiply;
+  }
+  .prize-moto-stack {
+    position: relative;
+    width: 100%;
+    height: 142px;
+  }
+  .prize-moto-stack .prize-image {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+  }
+  .prize-moto-stack .prize-image:nth-child(1) {
+    width: 82%;
+    transform: translateX(-18%) translateY(-6%) rotate(-6deg);
+  }
+  .prize-moto-stack .prize-image:nth-child(2) {
+    width: 72%;
+    transform: translateX(20%) translateY(6%) rotate(5deg);
+  }
+  .prize-moto-stack .prize-image:nth-child(3) {
+    width: 76%;
+    transform: translateY(12%) scale(0.96);
+  }
   .prize-name {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.4rem; color: var(--gold);
@@ -612,6 +652,7 @@
     th, td { padding: 0.6rem 0.75rem; }
     .modal { padding: 1.5rem; }
     .hero-title { font-size: 4.5rem; }
+    .prize-visual, .prize-moto-stack { height: 116px; }
   }
 </style>
 </head>
@@ -629,12 +670,18 @@
 
   <div class="prizes-row">
     <div class="prize-card reveal">
-      <span class="prize-icon">🏍️</span>
+      <div class="prize-visual prize-moto-stack">
+        <img class="prize-image cutout" src="assets/premios/moto-1.jpg" alt="Moto premio 1">
+        <img class="prize-image cutout" src="assets/premios/moto-2.jpg" alt="Moto premio 2">
+        <img class="prize-image cutout" src="assets/premios/moto-3.webp" alt="Moto premio 3">
+      </div>
       <span class="prize-name">MOTO</span>
-      <span class="prize-detail">0km · Entrega inmediata</span>
+      <span class="prize-detail">Modelos destacados · Entrega inmediata</span>
     </div>
     <div class="prize-card reveal" style="transition-delay:0.1s">
-      <span class="prize-icon">📺</span>
+      <div class="prize-visual">
+        <img class="prize-image cutout" src="assets/premios/tv.webp" alt="Smart TV premio">
+      </div>
       <span class="prize-name">Smart TV</span>
       <span class="prize-detail">LED 60" · 4K Ultra HD</span>
     </div>
@@ -941,6 +988,10 @@ function colorFor(i){ return COLORS[i % COLORS.length]; }
 function initials(name){ return name.split(' ').map(w => w[0]).join('').substring(0,2).toUpperCase(); }
 function totalChances(){ return participants.reduce((s, p) => s + (p.chances || 0), 0); }
 function currentMaxChances(){ return activeCampaign?.max_entries || MAX_FALLBACK_CHANCES; }
+function getBaseChancePrice(){
+  const singlePack = packages.find((pkg) => Number(pkg.entries_qty || 0) + Number(pkg.bonus_entries || 0) === 1);
+  return Number(singlePack?.price_ars || 0);
+}
 
 function getReferralCode(){
   const params = new URLSearchParams(window.location.search);
@@ -969,12 +1020,17 @@ function updateStats(){
 function renderPackages(){
   const grid = document.getElementById('packagesGrid');
   const tc = totalChances();
+  const baseChancePrice = getBaseChancePrice();
   grid.innerHTML = '';
 
   packages.forEach(pkg => {
     const chances = Number(pkg.entries_qty || 0) + Number(pkg.bonus_entries || 0);
+    const totalPrice = Number(pkg.price_ars || 0);
     const fillPct = Math.min(100, Math.round((tc / Math.max(currentMaxChances(), 1)) * 100));
-    const perChance = chances > 0 ? (Number(pkg.price_ars || 0) / chances).toLocaleString('es-AR', { maximumFractionDigits: 0 }) : '0';
+    const perChance = chances > 0 ? (totalPrice / chances).toLocaleString('es-AR', { maximumFractionDigits: 0 }) : '0';
+    const theoreticalPrice = baseChancePrice > 0 ? baseChancePrice * chances : 0;
+    const savings = theoreticalPrice > totalPrice ? theoreticalPrice - totalPrice : 0;
+    const savingsLabel = savings > 0 ? `Ahorras $${savings.toLocaleString('es-AR')}` : '&nbsp;';
     const div = document.createElement('div');
     div.className = 'pkg reveal' + (pkg.featured ? ' featured' : '');
     div.innerHTML = `
@@ -982,9 +1038,10 @@ function renderPackages(){
       <span class="pkg-chances">${chances >= 1000 ? (chances/1000)+'K' : chances}</span>
       <span class="pkg-unit">CHANCE${chances > 1 ? 'S' : ''}</span>
       <div class="pkg-progress"><div class="pkg-progress-fill" style="width:${fillPct}%"></div></div>
-      <span class="pkg-price">$${Number(pkg.price_ars || 0).toLocaleString('es-AR')}</span>
+      <span class="pkg-price">$${totalPrice.toLocaleString('es-AR')}</span>
       <span class="pkg-price-unit">$${perChance} por chance</span>
-      <span class="pkg-saving">${chances >= 3 ? 'Al pagar habilita link unico y regala 2 chances por referido' : '&nbsp;'}</span>
+      <span class="pkg-saving">${savingsLabel}</span>
+      <span class="pkg-price-unit">${chances >= 3 ? 'Al pagar habilita link unico y regala 2 chances por referido' : '&nbsp;'}</span>
       <button class="pkg-btn" onclick="openModal('${pkg.id}')">Quiero ${chances >= 1000 ? (chances/1000)+'K' : chances} chance${chances > 1 ? 's' : ''}</button>
     `;
     grid.appendChild(div);
