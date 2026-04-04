@@ -717,12 +717,112 @@ begin
 end;
 $$;
 
+create or replace function public.admin_get_provider_config(
+  p_provider payment_provider,
+  p_environment payment_environment
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_row public.payment_provider_configs%rowtype;
+begin
+  if not public.current_user_is_admin() then
+    raise exception 'No autorizado';
+  end if;
+
+  select *
+    into v_row
+  from public.payment_provider_configs
+  where provider = p_provider
+    and environment = p_environment
+  limit 1;
+
+  return jsonb_build_object(
+    'id', v_row.id,
+    'provider', v_row.provider,
+    'environment', v_row.environment,
+    'is_active', coalesce(v_row.is_active, false),
+    'public_key', v_row.public_key,
+    'access_token', v_row.access_token,
+    'webhook_secret', v_row.webhook_secret,
+    'extra_config', coalesce(v_row.extra_config, '{}'::jsonb)
+  );
+end;
+$$;
+
+create or replace function public.admin_upsert_provider_config(
+  p_provider payment_provider,
+  p_environment payment_environment,
+  p_is_active boolean,
+  p_public_key text,
+  p_access_token text,
+  p_webhook_secret text,
+  p_extra_config jsonb default '{}'::jsonb
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_row public.payment_provider_configs%rowtype;
+begin
+  if not public.current_user_is_admin() then
+    raise exception 'No autorizado';
+  end if;
+
+  insert into public.payment_provider_configs (
+    provider,
+    environment,
+    is_active,
+    public_key,
+    access_token,
+    webhook_secret,
+    extra_config,
+    updated_by
+  )
+  values (
+    p_provider,
+    p_environment,
+    coalesce(p_is_active, false),
+    nullif(trim(coalesce(p_public_key, '')), ''),
+    nullif(trim(coalesce(p_access_token, '')), ''),
+    nullif(trim(coalesce(p_webhook_secret, '')), ''),
+    coalesce(p_extra_config, '{}'::jsonb),
+    auth.uid()
+  )
+  on conflict (provider, environment)
+  do update
+  set is_active = excluded.is_active,
+      public_key = excluded.public_key,
+      access_token = excluded.access_token,
+      webhook_secret = excluded.webhook_secret,
+      extra_config = excluded.extra_config,
+      updated_by = auth.uid(),
+      updated_at = now()
+  returning * into v_row;
+
+  return jsonb_build_object(
+    'id', v_row.id,
+    'provider', v_row.provider,
+    'environment', v_row.environment,
+    'is_active', v_row.is_active,
+    'updated_at', v_row.updated_at
+  );
+end;
+$$;
+
 grant usage on schema app_private to anon, authenticated;
 grant execute on function app_private.is_admin(uuid) to anon, authenticated;
 grant execute on function public.current_user_is_admin() to anon, authenticated;
 grant execute on function public.list_public_participants(text) to anon, authenticated;
 grant execute on function public.create_order_from_landing(text, uuid, text, text, text, payment_provider, text) to anon, authenticated;
 grant execute on function public.admin_mark_order_paid(uuid) to authenticated;
+grant execute on function public.admin_get_provider_config(payment_provider, payment_environment) to authenticated;
+grant execute on function public.admin_upsert_provider_config(payment_provider, payment_environment, boolean, text, text, text, jsonb) to authenticated;
 
 create or replace view public.participant_dashboard as
 select
