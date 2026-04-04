@@ -300,30 +300,33 @@
                 </div>
               </div>
               <div>
-                <label for="providerPublicKey">Public key</label>
-                <input id="providerPublicKey" placeholder="APP_USR-... o clave pública">
+                <label id="providerPublicKeyLabel" for="providerPublicKey">Client ID / Public key</label>
+                <input id="providerPublicKey" placeholder="Client ID de GalioPay o public key del proveedor">
               </div>
               <div>
-                <label for="providerAccessToken">Access token</label>
-                <input id="providerAccessToken" placeholder="token privado">
+                <label id="providerAccessTokenLabel" for="providerAccessToken">API Key / Access token</label>
+                <input id="providerAccessToken" placeholder="API Key privada o access token">
               </div>
               <div>
-                <label for="providerWebhookSecret">Webhook secret</label>
-                <input id="providerWebhookSecret" placeholder="secret del webhook">
+                <label id="providerWebhookSecretLabel" for="providerWebhookSecret">Webhook secret</label>
+                <input id="providerWebhookSecret" placeholder="Solo si tu proveedor usa firma o secreto">
               </div>
               <div class="row">
                 <div>
-                  <label for="galiopayCommerceId">Galiopay commerce id</label>
-                  <input id="galiopayCommerceId" placeholder="commerce_id">
+                  <label for="galiopayCommerceId">Texto del checkout</label>
+                  <input id="galiopayCommerceId" placeholder="Sorteo con todas las funciones para hacer el pago">
                 </div>
                 <div>
-                  <label for="galiopayApiUrl">Galiopay API URL</label>
-                  <input id="galiopayApiUrl" placeholder="https://api.galiopay.com/...">
+                  <label for="galiopayApiUrl">URL de Webhook</label>
+                  <input id="galiopayApiUrl" placeholder="https://tu-dominio.com/webhook">
                 </div>
               </div>
               <div>
                 <label for="providerExtraJson">Extra config JSON</label>
                 <textarea id="providerExtraJson" placeholder='{"success_url":"https://tu-dominio.com/gracias"}'></textarea>
+              </div>
+              <div class="notice">
+                En Galiopay, el panel guarda automáticamente `Client ID`, `API Key`, `modo`, `texto del checkout` y `URL de webhook`. Solo tenés que completar los campos y elegir `sandbox` o `production`.
               </div>
               <button id="saveProviderBtn">Guardar credenciales</button>
             </div>
@@ -371,6 +374,18 @@
     function showLogin() {
       $('appView').classList.add('hidden');
       $('loginView').classList.remove('hidden');
+    }
+
+    function syncProviderUI() {
+      const isGalio = $('providerName').value === 'galiopay';
+      $('providerPublicKeyLabel').textContent = isGalio ? 'Client ID' : 'Public key';
+      $('providerAccessTokenLabel').textContent = isGalio ? 'API Key' : 'Access token';
+      $('providerWebhookSecretLabel').textContent = isGalio ? 'Firma / secret opcional' : 'Webhook secret';
+      $('providerPublicKey').placeholder = isGalio ? 'Tu Client ID de GalioPay' : 'APP_USR-... o clave pública';
+      $('providerAccessToken').placeholder = isGalio ? 'Tu API Key privada de GalioPay' : 'token privado';
+      $('providerWebhookSecret').placeholder = isGalio ? 'Opcional si GalioPay firma webhooks' : 'secret del webhook';
+      $('galiopayCommerceId').placeholder = isGalio ? 'Sorteo con todas las funciones para hacer el pago' : 'Texto visible en el checkout';
+      $('galiopayApiUrl').placeholder = isGalio ? 'https://tu-dominio.com/webhook' : 'https://api.proveedor.com/...';
     }
 
     async function ensureAdmin() {
@@ -472,8 +487,9 @@
       $('providerAccessToken').value = data?.access_token || '';
       $('providerWebhookSecret').value = data?.webhook_secret || '';
       $('providerExtraJson').value = data ? JSON.stringify(data.extra_config || {}, null, 2) : '';
-      $('galiopayCommerceId').value = data?.extra_config?.commerce_id || '';
-      $('galiopayApiUrl').value = data?.extra_config?.api_url || '';
+      $('galiopayCommerceId').value = data?.extra_config?.checkout_text || data?.extra_config?.commerce_id || '';
+      $('galiopayApiUrl').value = data?.extra_config?.webhook_url || data?.extra_config?.api_url || '';
+      syncProviderUI();
     }
 
     async function saveCampaign() {
@@ -526,8 +542,11 @@
       if ($('providerName').value === 'galiopay') {
         extraConfig = {
           ...extraConfig,
-          commerce_id: $('galiopayCommerceId').value.trim() || null,
-          api_url: $('galiopayApiUrl').value.trim() || null
+          client_id: $('providerPublicKey').value.trim() || null,
+          api_key: $('providerAccessToken').value.trim() || null,
+          checkout_text: $('galiopayCommerceId').value.trim() || null,
+          webhook_url: $('galiopayApiUrl').value.trim() || null,
+          mode: $('providerEnv').value
         };
       }
 
@@ -626,6 +645,7 @@
 
       $('providerName').addEventListener('change', async () => {
         try {
+          syncProviderUI();
           await loadProviderConfig();
         } catch (error) {
           setAppStatus(error.message, 'error');
@@ -641,6 +661,7 @@
       });
 
       const { data } = await supabaseClient.auth.getSession();
+      syncProviderUI();
       if (data.session) {
         try {
           session = data.session;
