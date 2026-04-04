@@ -4,6 +4,7 @@
 
 - [supabase-full-system.sql](C:\Users\manza\Downloads\sort\supabase-full-system.sql): crea toda la base en Supabase.
 - [admin-panel.html](C:\Users\manza\Downloads\sort\admin-panel.html): panel administrativo base conectado a Supabase.
+- [sorteo-moto-tv-dinero.html](C:\Users\manza\Downloads\sort\sorteo-moto-tv-dinero.html): landing conectada al proyecto Supabase `asokopamdmuvuupywjzt`.
 
 ## Qué resuelve el SQL
 
@@ -11,7 +12,8 @@
 - Paquetes de compra con una o más chances.
 - Participantes y órdenes.
 - Enlace único de referido para cada comprador.
-- Recompensa automática de 2 o 3 chances cuando compra alguien desde ese enlace.
+- Recompensa automática de 2 chances cuando compra alguien desde ese enlace.
+- El enlace único se habilita al aprobar una compra de 3 o más chances.
 - Configuración de Mercado Pago y Galiopay desde el panel.
 - Storage público para fotos y piezas visuales.
 - RLS para separar acceso público, usuario y administrador.
@@ -41,14 +43,16 @@ set role = excluded.role,
 5. Cargá paquetes.
 6. Subí fotos al bucket `campaign-media`.
 7. Guardá las credenciales de `mercado_pago` y `galiopay`.
+8. Cuando entre una orden nueva desde la landing, marcala como pagada desde el panel.
+9. Si esa compra aprobada tiene 3 o más chances, el sistema genera automáticamente el enlace único del participante.
 
 ## Flujo de compra y referido
 
 1. Un comprador paga una orden.
 2. Cuando la orden pasa a `paid`, el trigger:
    suma sus chances,
-   genera su link único,
-   y si vino por referido premia al dueño del link con 2 o 3 chances.
+   genera su link único si ya tiene 3 o más chances,
+   y si vino por referido premia al dueño del link con 2 chances.
 3. El código único queda en `referral_links.code`.
 4. Podés armar el enlace compartible así:
 
