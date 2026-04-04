@@ -135,15 +135,23 @@
     justify-content: center;
     position: relative;
     margin-bottom: 0.75rem;
+    isolation: isolate;
+  }
+  .prize-visual::before {
+    content: '';
+    position: absolute;
+    inset: 8% 10%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.82) 42%, rgba(255,255,255,0) 78%);
+    filter: blur(8px);
+    z-index: 0;
   }
   .prize-image {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     filter: drop-shadow(0 12px 22px rgba(0,0,0,0.32));
-  }
-  .prize-image.cutout {
-    mix-blend-mode: multiply;
+    position: relative;
+    z-index: 1;
   }
   .prize-moto-stack {
     position: relative;
@@ -671,16 +679,16 @@
   <div class="prizes-row">
     <div class="prize-card reveal">
       <div class="prize-visual prize-moto-stack">
-        <img class="prize-image cutout" src="assets/premios/moto-1.jpg" alt="Moto premio 1">
-        <img class="prize-image cutout" src="assets/premios/moto-2.jpg" alt="Moto premio 2">
-        <img class="prize-image cutout" src="assets/premios/moto-3.webp" alt="Moto premio 3">
+        <img class="prize-image" src="./assets/premios/moto-1.jpg" alt="Moto premio 1">
+        <img class="prize-image" src="./assets/premios/moto-2.jpg" alt="Moto premio 2">
+        <img class="prize-image" src="./assets/premios/moto-3.webp" alt="Moto premio 3">
       </div>
       <span class="prize-name">MOTO</span>
       <span class="prize-detail">Modelos destacados · Entrega inmediata</span>
     </div>
     <div class="prize-card reveal" style="transition-delay:0.1s">
       <div class="prize-visual">
-        <img class="prize-image cutout" src="assets/premios/tv.webp" alt="Smart TV premio">
+        <img class="prize-image" src="./assets/premios/tv.webp" alt="Smart TV premio">
       </div>
       <span class="prize-name">Smart TV</span>
       <span class="prize-detail">LED 60" · 4K Ultra HD</span>
