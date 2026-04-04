@@ -169,8 +169,16 @@
     filter: drop-shadow(0 18px 26px rgba(0,0,0,0.34));
     position: relative;
     z-index: 1;
-    animation: prizeFloat 5.8s ease-in-out infinite;
     transform-origin: center center;
+  }
+  .prize-layer {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: prizeFloat 5.8s ease-in-out infinite;
   }
   @keyframes prizeFloat {
     0%, 100% { transform: translateY(0); }
@@ -180,11 +188,6 @@
     position: relative;
     width: 100%;
     height: 180px;
-  }
-  .prize-moto-stack .prize-image {
-    position: absolute;
-    inset: 0;
-    margin: auto;
   }
   .prize-card.primary {
     text-align: left;
@@ -197,24 +200,70 @@
   .prize-card.primary .prize-detail {
     max-width: 24ch;
   }
-  .prize-moto-stack .prize-image:nth-child(1) {
+  .prize-layer.adventure {
     width: 64%;
+    left: -23%;
+    top: -3%;
     animation-delay: -1.2s;
-    transform: translateX(-26%) translateY(-2%) rotate(-8deg);
+    transform: rotate(-8deg);
   }
-  .prize-moto-stack .prize-image:nth-child(2) {
+  .prize-layer.urbana {
     width: 56%;
+    left: 25%;
+    top: 10%;
     animation-delay: -2.2s;
-    transform: translateX(24%) translateY(10%) rotate(6deg);
+    transform: rotate(6deg);
   }
-  .prize-moto-stack .prize-image:nth-child(3) {
+  .prize-layer.azul {
     width: 60%;
+    left: 2%;
+    top: 22%;
     animation-delay: -0.3s;
-    transform: translateY(20%) scale(0.98);
+    transform: scale(0.98);
   }
   .prize-card.tv .prize-image {
     width: 100%;
     max-width: 220px;
+  }
+  .live-feed {
+    position: fixed;
+    right: 18px;
+    bottom: 20px;
+    z-index: 2200;
+    min-width: 280px;
+    max-width: 360px;
+    transform: translateY(120%);
+    opacity: 0;
+    transition: transform 0.45s ease, opacity 0.45s ease;
+    pointer-events: none;
+  }
+  .live-feed.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .live-feed-card {
+    background: linear-gradient(145deg, rgba(17,17,24,0.96), rgba(28,28,42,0.98));
+    border: 1px solid rgba(245,200,66,0.28);
+    border-radius: 1rem;
+    padding: 0.9rem 1rem;
+    box-shadow: 0 18px 44px rgba(0,0,0,0.35);
+    display: grid;
+    gap: 0.22rem;
+  }
+  .live-feed-kicker {
+    color: var(--gold);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+  .live-feed-text {
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+  .live-feed-sub {
+    color: var(--text2);
+    font-size: 0.76rem;
   }
   .prize-card.cash {
     background: linear-gradient(145deg, #2c0b14, #1a141f);
@@ -718,6 +767,7 @@
     .modal { padding: 1.5rem; }
     .hero-title { font-size: 4.5rem; }
     .prize-visual, .prize-moto-stack { height: 140px; }
+    .live-feed { left: 12px; right: 12px; min-width: 0; max-width: none; }
   }
 </style>
 </head>
@@ -736,9 +786,15 @@
   <div class="prizes-row">
     <div class="prize-card primary reveal">
       <div class="prize-visual prize-moto-stack">
-        <img class="prize-image" src="./assets/premios/moto-adventure.png" alt="Moto premio adventure">
-        <img class="prize-image" src="./assets/premios/moto-urbana.png" alt="Moto premio urbana">
-        <img class="prize-image" src="./assets/premios/moto-azul.png" alt="Moto premio azul">
+        <div class="prize-layer adventure">
+          <img class="prize-image" src="./assets/premios/moto-adventure.png" alt="Moto premio adventure">
+        </div>
+        <div class="prize-layer urbana">
+          <img class="prize-image" src="./assets/premios/moto-urbana.png" alt="Moto premio urbana">
+        </div>
+        <div class="prize-layer azul">
+          <img class="prize-image" src="./assets/premios/moto-azul.png" alt="Moto premio azul">
+        </div>
       </div>
       <span class="prize-name">3 MOTOS<br>EN JUEGO</span>
       <span class="prize-detail">Visual potente, entrega inmediata y premio aspiracional desde el primer scroll.</span>
@@ -1037,6 +1093,13 @@
 
 <!-- TOAST -->
 <div class="toast" id="toast">✅ ¡Ya sos parte del sorteo! Te contactaremos por WhatsApp.</div>
+<div class="live-feed" id="liveFeed">
+  <div class="live-feed-card">
+    <div class="live-feed-kicker">Actividad en vivo</div>
+    <div class="live-feed-text" id="liveFeedText">Se actualiza con ingresos reales y demo.</div>
+    <div class="live-feed-sub" id="liveFeedSub">Ahora mismo</div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1052,6 +1115,18 @@ let participants = [];
 let selectedPkg = null;
 let selectedPaymentProvider = 'mercado_pago';
 let countdownInterval = null;
+let liveFeedTimeout = null;
+
+const DEMO_ACTIVITY = [
+  { name: 'Lucia M.', city: 'Cordoba' },
+  { name: 'Franco R.', city: 'Rosario' },
+  { name: 'Milagros A.', city: 'Salta' },
+  { name: 'Tobias P.', city: 'Buenos Aires' },
+  { name: 'Camila V.', city: 'Mendoza' },
+  { name: 'Santino G.', city: 'La Plata' },
+  { name: 'Valentina C.', city: 'Santa Fe' },
+  { name: 'Mateo F.', city: 'Tucuman' }
+];
 
 const COLORS = ['#F5C842','#3B8BFF','#00D46A','#FF6B3B','#BF5FFF','#FF3B7A'];
 function colorFor(i){ return COLORS[i % COLORS.length]; }
@@ -1078,6 +1153,49 @@ function showToast(msg){
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 4500);
+}
+
+function randomFrom(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function buildActivityPool() {
+  const real = participants.map((p) => ({ name: p.name, city: p.city, chances: p.chances }));
+  return [...real, ...DEMO_ACTIVITY];
+}
+
+function getRandomActivityMessage() {
+  const pool = buildActivityPool();
+  const person = randomFrom(pool);
+  const template = randomFrom([
+    'acaba de reservar chances para el sorteo',
+    'se sumo hace instantes',
+    'esta participando ahora mismo',
+    'confirmo su interes en el sorteo'
+  ]);
+  const chances = person.chances || randomFrom([1, 3, 6, 10, 25, 50]);
+  return {
+    text: `${person.name} de ${person.city} ${template}.`,
+    sub: `${chances} chance${chances > 1 ? 's' : ''} · hace ${randomFrom([1, 2, 3, 4, 5, 7, 9])} min`
+  };
+}
+
+function showLiveFeedNotification() {
+  const feed = document.getElementById('liveFeed');
+  const message = getRandomActivityMessage();
+  document.getElementById('liveFeedText').textContent = message.text;
+  document.getElementById('liveFeedSub').textContent = message.sub;
+  feed.classList.add('show');
+  setTimeout(() => feed.classList.remove('show'), 4600);
+}
+
+function scheduleLiveFeed() {
+  if (liveFeedTimeout) clearTimeout(liveFeedTimeout);
+  const delay = 9000 + Math.random() * 11000;
+  liveFeedTimeout = setTimeout(() => {
+    showLiveFeedNotification();
+    scheduleLiveFeed();
+  }, delay);
 }
 
 function updateStats(){
@@ -1347,6 +1465,7 @@ async function bootLanding(){
     renderPackages();
     renderParticipants();
     observeReveal();
+    scheduleLiveFeed();
 
     if (getReferralCode()) {
       showToast('Entraste con un enlace referido. Si compras, ese enlace suma 2 chances extra a su titular.');
