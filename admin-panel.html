@@ -85,11 +85,11 @@
           <div class="stack">
             <div>
               <label for="supabaseUrl">Supabase URL</label>
-              <input id="supabaseUrl" placeholder="https://xxxx.supabase.co">
+              <input id="supabaseUrl" placeholder="https://xxxx.supabase.co" value="https://asokopamdmuvuupywjzt.supabase.co">
             </div>
             <div>
               <label for="supabaseAnonKey">Anon key</label>
-              <textarea id="supabaseAnonKey" placeholder="Pegá la anon key del proyecto"></textarea>
+              <textarea id="supabaseAnonKey" placeholder="Pegá la anon key del proyecto">sb_publishable_zBhxdMJHw_uy_m3uRDj-ng_0yXz42EN</textarea>
             </div>
             <div class="inline-actions">
               <button id="saveConfigBtn" class="secondary">Guardar conexión</button>
@@ -207,7 +207,7 @@
             </div>
             <div>
               <label for="campaignBonusMax">Bono referido máximo</label>
-              <input id="campaignBonusMax" type="number" min="0" value="3">
+              <input id="campaignBonusMax" type="number" min="0" value="2">
             </div>
             <div>
               <label for="campaignWhatsapp">WhatsApp</label>
@@ -400,10 +400,34 @@
                   <th>Estado</th>
                   <th>Monto</th>
                   <th>Referido</th>
+                  <th>Acción</th>
                 </tr>
               </thead>
               <tbody id="ordersTableBody">
-                <tr><td colspan="6" class="muted">Sin datos.</td></tr>
+                <tr><td colspan="7" class="muted">Sin datos.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2 class="title">Enlaces de referido</h2>
+          <div class="notice" style="margin-bottom: 16px;">
+            Se genera un enlace único cuando el comprador tiene una compra aprobada con 3 o más chances. Cada compra aprobada por ese enlace suma 2 chances extras al titular.
+          </div>
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Participante</th>
+                  <th>Código</th>
+                  <th>Clicks</th>
+                  <th>Bonus ganados</th>
+                  <th>Enlace</th>
+                </tr>
+              </thead>
+              <tbody id="referralsTableBody">
+                <tr><td colspan="5" class="muted">Sin datos.</td></tr>
               </tbody>
             </table>
           </div>
@@ -412,6 +436,8 @@
     </div>
   </div>
   <script>
+    const DEFAULT_SUPABASE_URL = 'https://asokopamdmuvuupywjzt.supabase.co';
+    const DEFAULT_SUPABASE_KEY = 'sb_publishable_zBhxdMJHw_uy_m3uRDj-ng_0yXz42EN';
     let supabaseClient = null;
     let currentCampaignId = '';
     let currentCampaignRecord = null;
@@ -419,6 +445,16 @@
     const $ = (id) => document.getElementById(id);
     const formatMoney = (value) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(value || 0);
     const formatDate = (value) => value ? new Date(value).toLocaleString('es-AR') : '-';
+    const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+
+    function buildReferralUrl(code) {
+      const base = window.location.href.replace(/admin-panel\.html.*$/i, 'sorteo-moto-tv-dinero.html');
+      return `${base.split('?')[0]}?ref=${encodeURIComponent(code)}`;
+    }
+
+    async function copyText(text) {
+      await navigator.clipboard.writeText(text);
+    }
 
     function setStatus(message, type = '') {
       const el = $('authStatus');
@@ -432,8 +468,8 @@
     }
 
     function loadConfig() {
-      $('supabaseUrl').value = localStorage.getItem('sorteo.supabase.url') || '';
-      $('supabaseAnonKey').value = localStorage.getItem('sorteo.supabase.anon') || '';
+      $('supabaseUrl').value = localStorage.getItem('sorteo.supabase.url') || DEFAULT_SUPABASE_URL;
+      $('supabaseAnonKey').value = localStorage.getItem('sorteo.supabase.anon') || DEFAULT_SUPABASE_KEY;
     }
 
     function buildClient() {
@@ -480,7 +516,7 @@
       $('campaignEndsAt').value = '';
       $('campaignMaxEntries').value = 100000;
       $('campaignBonusMin').value = 2;
-      $('campaignBonusMax').value = 3;
+      $('campaignBonusMax').value = 2;
       $('campaignWhatsapp').value = '';
       $('campaignDescription').value = '';
     }
@@ -495,7 +531,7 @@
       $('campaignEndsAt').value = campaign.ends_at ? campaign.ends_at.slice(0, 16) : '';
       $('campaignMaxEntries').value = campaign.max_entries || 0;
       $('campaignBonusMin').value = campaign.referral_bonus_min ?? 2;
-      $('campaignBonusMax').value = campaign.referral_bonus_max ?? 3;
+      $('campaignBonusMax').value = campaign.referral_bonus_max ?? 2;
       $('campaignWhatsapp').value = campaign.whatsapp_number || '';
       $('campaignDescription').value = campaign.description || '';
     }
@@ -714,35 +750,96 @@
     async function loadOrders() {
       if (!currentCampaignId) return;
       const sb = await requireClient();
-      const { data, error } = await sb
-        .from('orders')
-        .select(`
-          id,
-          status,
-          total_entries,
-          amount_ars,
-          referral_link_id,
-          participants!inner(full_name, city)
-        `)
-        .eq('campaign_id', currentCampaignId)
-        .order('created_at', { ascending: false })
-        .limit(20);
-      if (error) throw error;
+      const [{ data: orders, error: ordersError }, { data: participantsData, error: participantsError }] = await Promise.all([
+        sb.from('orders').select('id, participant_id, status, total_entries, amount_ars, referral_link_id, provider, external_reference').eq('campaign_id', currentCampaignId).order('created_at', { ascending: false }).limit(30),
+        sb.from('participants').select('id, full_name, city, referral_link_code').eq('campaign_id', currentCampaignId)
+      ]);
+      if (ordersError) throw ordersError;
+      if (participantsError) throw participantsError;
 
-      $('ordersTableBody').innerHTML = data.length ? '' : '<tr><td colspan="6" class="muted">Sin datos.</td></tr>';
-      data.forEach((order) => {
+      const participantsMap = new Map((participantsData || []).map((item) => [item.id, item]));
+      $('ordersTableBody').innerHTML = orders.length ? '' : '<tr><td colspan="7" class="muted">Sin datos.</td></tr>';
+      orders.forEach((order) => {
+        const participant = participantsMap.get(order.participant_id) || {};
+        const actionHtml = order.status === 'paid'
+          ? '<span class="pill">Pagada</span>'
+          : `<button class="ghost" style="min-width:auto" onclick="markOrderPaid('${order.id}')">Marcar pagada</button>`;
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${order.participants.full_name}</td>
-          <td>${order.participants.city || '-'}</td>
+          <td>${escapeHtml(participant.full_name || '-')}<br><span class="muted">${escapeHtml(order.external_reference || '')}</span></td>
+          <td>${escapeHtml(participant.city || '-')}</td>
           <td>${order.total_entries}</td>
           <td><span class="pill">${order.status}</span></td>
           <td>${formatMoney(order.amount_ars)}</td>
           <td>${order.referral_link_id ? 'Sí' : 'No'}</td>
+          <td>${actionHtml}</td>
         `;
         $('ordersTableBody').appendChild(tr);
       });
     }
+
+    async function markOrderPaid(orderId) {
+      if (!window.confirm('¿Confirmar esta orden como pagada?')) return;
+      const sb = await requireClient();
+      const { data, error } = await sb.rpc('admin_mark_order_paid', { p_order_id: orderId });
+      if (error) throw error;
+      await refreshAll();
+      if (data?.referral_link_code) {
+        setStatus(`Orden aprobada. Link generado: ${buildReferralUrl(data.referral_link_code)}`, 'ok');
+      } else {
+        setStatus('Orden aprobada.', 'ok');
+      }
+    }
+
+    window.markOrderPaid = async (orderId) => {
+      try {
+        await markOrderPaid(orderId);
+      } catch (error) {
+        setStatus(error.message, 'error');
+      }
+    };
+
+    async function loadReferralLinks() {
+      if (!currentCampaignId) return;
+      const sb = await requireClient();
+      const [{ data: links, error: linksError }, { data: participantsData, error: participantsError }, { data: referrals, error: referralsError }] = await Promise.all([
+        sb.from('referral_links').select('id, owner_participant_id, code, clicks_count').eq('campaign_id', currentCampaignId).order('created_at', { ascending: false }),
+        sb.from('participants').select('id, full_name').eq('campaign_id', currentCampaignId),
+        sb.from('referrals').select('referral_link_id, bonus_entries_awarded').eq('campaign_id', currentCampaignId)
+      ]);
+      if (linksError) throw linksError;
+      if (participantsError) throw participantsError;
+      if (referralsError) throw referralsError;
+
+      const participantsMap = new Map((participantsData || []).map((item) => [item.id, item.full_name]));
+      const bonusMap = new Map();
+      (referrals || []).forEach((row) => {
+        bonusMap.set(row.referral_link_id, (bonusMap.get(row.referral_link_id) || 0) + Number(row.bonus_entries_awarded || 0));
+      });
+
+      $('referralsTableBody').innerHTML = links.length ? '' : '<tr><td colspan="5" class="muted">Sin datos.</td></tr>';
+      links.forEach((link) => {
+        const shareUrl = buildReferralUrl(link.code);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${escapeHtml(participantsMap.get(link.owner_participant_id) || '-')}</td>
+          <td><span class="pill">${escapeHtml(link.code)}</span></td>
+          <td>${link.clicks_count || 0}</td>
+          <td>${bonusMap.get(link.id) || 0}</td>
+          <td><button class="ghost" style="min-width:auto" onclick="copyReferralLink('${escapeHtml(shareUrl)}')">Copiar enlace</button></td>
+        `;
+        $('referralsTableBody').appendChild(tr);
+      });
+    }
+
+    window.copyReferralLink = async (url) => {
+      try {
+        await copyText(url);
+        setStatus('Enlace copiado al portapapeles.', 'ok');
+      } catch (error) {
+        setStatus(error.message, 'error');
+      }
+    };
 
     async function loadDashboard() {
       if (!currentCampaignId) return;
@@ -787,7 +884,7 @@
         currentCampaignRecord = data;
         hydrateCampaignForm(data);
       }
-      await Promise.all([loadPackages(), loadMedia(), loadProviderConfigs(), loadOrders(), loadDashboard()]);
+      await Promise.all([loadPackages(), loadMedia(), loadProviderConfigs(), loadOrders(), loadReferralLinks(), loadDashboard()]);
     }
 
     function bindEvents() {
