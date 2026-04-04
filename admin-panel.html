@@ -280,11 +280,12 @@
                   <th>Chances</th>
                   <th>Bonus</th>
                   <th>Precio</th>
+                  <th>Ahorro</th>
                   <th>Estado</th>
                 </tr>
               </thead>
               <tbody id="packagesTableBody">
-                <tr><td colspan="5" class="muted">Sin datos.</td></tr>
+                <tr><td colspan="6" class="muted">Sin datos.</td></tr>
               </tbody>
             </table>
           </div>
@@ -461,6 +462,11 @@
     const formatMoney = (value) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(value || 0);
     const formatDate = (value) => value ? new Date(value).toLocaleString('es-AR') : '-';
     const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+    const calculateSavings = (packPrice, totalEntries, singleChancePrice) => {
+      if (!singleChancePrice || Number(totalEntries) <= 1) return 0;
+      const theoreticalPrice = Number(singleChancePrice) * Number(totalEntries);
+      return theoreticalPrice > Number(packPrice) ? theoreticalPrice - Number(packPrice) : 0;
+    };
 
     function buildReferralUrl(code) {
       const base = window.location.href.replace(/admin-panel\.html.*$/i, 'sorteo-moto-tv-dinero.html');
@@ -672,14 +678,19 @@
         .order('entries_qty');
       if (error) throw error;
 
-      $('packagesTableBody').innerHTML = data.length ? '' : '<tr><td colspan="5" class="muted">Sin datos.</td></tr>';
+      const singlePack = (data || []).find((pkg) => Number(pkg.entries_qty || 0) + Number(pkg.bonus_entries || 0) === 1);
+      const singleChancePrice = Number(singlePack?.price_ars || 0);
+      $('packagesTableBody').innerHTML = data.length ? '' : '<tr><td colspan="6" class="muted">Sin datos.</td></tr>';
       data.forEach((pkg) => {
+        const totalEntries = Number(pkg.entries_qty || 0) + Number(pkg.bonus_entries || 0);
+        const savings = calculateSavings(pkg.price_ars, totalEntries, singleChancePrice);
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${pkg.name}<br><span class="muted">${pkg.description || ''}</span></td>
           <td>${pkg.entries_qty}</td>
           <td>${pkg.bonus_entries}</td>
           <td>${formatMoney(pkg.price_ars)}</td>
+          <td>${savings > 0 ? formatMoney(savings) : '-'}</td>
           <td><span class="pill">${pkg.status}${pkg.featured ? ' / destacado' : ''}</span></td>
         `;
         $('packagesTableBody').appendChild(tr);
