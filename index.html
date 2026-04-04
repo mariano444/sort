@@ -897,21 +897,6 @@
     <h2 class="section-title">Lista de<br><span style="color:var(--gold)">participantes</span></h2>
     <p class="section-sub">Cada persona que compró chances aparece aquí en tiempo real. Tu lugar en el sorteo es visible para todos.</p>
 
-    <div class="stats-row" style="margin-top:2rem">
-      <div class="stat-card">
-        <span class="stat-num" id="totalPart">0</span>
-        <span class="stat-label">Participantes</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num" id="totalChances">0</span>
-        <span class="stat-label">Chances vendidas</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-num" style="color:var(--red)">3</span>
-        <span class="stat-label">Premios en juego</span>
-      </div>
-    </div>
-
     <div class="participants-table-wrap reveal">
       <div class="table-header">
         <span class="table-title">Participantes registrados</span>
@@ -1167,9 +1152,7 @@ function scheduleLiveFeed() {
 }
 
 function updateStats(){
-  const tc = totalChances();
-  document.getElementById('totalPart').textContent = participants.length;
-  document.getElementById('totalChances').textContent = tc.toLocaleString('es-AR');
+  return;
 }
 
 function renderPackages(){
