@@ -461,13 +461,10 @@
     }
 
     async function loadProviderConfig() {
-      const { data, error } = await supabaseClient
-        .from('payment_provider_configs')
-        .select('*')
-        .eq('provider', $('providerName').value)
-        .eq('environment', $('providerEnv').value)
-        .limit(1)
-        .maybeSingle();
+      const { data, error } = await supabaseClient.rpc('admin_get_provider_config', {
+        p_provider: $('providerName').value,
+        p_environment: $('providerEnv').value
+      });
       if (error) throw error;
 
       $('providerActive').value = String(data?.is_active ?? false);
@@ -535,20 +532,20 @@
       }
 
       const payload = {
-        provider: $('providerName').value,
-        environment: $('providerEnv').value,
-        is_active: $('providerActive').value === 'true',
-        public_key: $('providerPublicKey').value.trim() || null,
-        access_token: $('providerAccessToken').value.trim() || null,
-        webhook_secret: $('providerWebhookSecret').value.trim() || null,
-        extra_config: extraConfig
+        p_provider: $('providerName').value,
+        p_environment: $('providerEnv').value,
+        p_is_active: $('providerActive').value === 'true',
+        p_public_key: $('providerPublicKey').value.trim() || null,
+        p_access_token: $('providerAccessToken').value.trim() || null,
+        p_webhook_secret: $('providerWebhookSecret').value.trim() || null,
+        p_extra_config: extraConfig
       };
 
       const { error } = await supabaseClient
-        .from('payment_provider_configs')
-        .upsert(payload, { onConflict: 'provider,environment' });
+        .rpc('admin_upsert_provider_config', payload);
       if (error) throw error;
       setAppStatus('Credenciales guardadas.', 'ok');
+      await loadProviderConfig();
     }
 
     async function login() {
