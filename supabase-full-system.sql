@@ -824,6 +824,55 @@ grant execute on function public.admin_mark_order_paid(uuid) to authenticated;
 grant execute on function public.admin_get_provider_config(payment_provider, payment_environment) to authenticated;
 grant execute on function public.admin_upsert_provider_config(payment_provider, payment_environment, boolean, text, text, text, jsonb) to authenticated;
 
+create or replace function public.admin_get_provider_config(
+  p_provider text,
+  p_environment text
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  return public.admin_get_provider_config(
+    p_provider::payment_provider,
+    p_environment::payment_environment
+  );
+end;
+$$;
+
+create or replace function public.admin_upsert_provider_config(
+  p_provider text,
+  p_environment text,
+  p_is_active boolean,
+  p_public_key text,
+  p_access_token text,
+  p_webhook_secret text,
+  p_extra_config jsonb default '{}'::jsonb
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  return public.admin_upsert_provider_config(
+    p_provider::payment_provider,
+    p_environment::payment_environment,
+    p_is_active,
+    p_public_key,
+    p_access_token,
+    p_webhook_secret,
+    p_extra_config
+  );
+end;
+$$;
+
+grant execute on function public.admin_get_provider_config(text, text) to authenticated;
+grant execute on function public.admin_upsert_provider_config(text, text, boolean, text, text, text, jsonb) to authenticated;
+
+notify pgrst, 'reload schema';
+
 create or replace view public.participant_dashboard as
 select
   p.id,
