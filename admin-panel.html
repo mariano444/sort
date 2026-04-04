@@ -160,11 +160,11 @@
         </section>
 
         <section class="card">
-          <h2 class="title">Campañas</h2>
+          <h2 class="title">Campaña de esta página</h2>
           <div class="row">
             <div>
               <label for="campaignSlug">Slug</label>
-              <input id="campaignSlug" placeholder="sorteo-moto-tv-dinero">
+              <input id="campaignSlug" placeholder="sorteo-moto-tv-dinero" value="sorteo-moto-tv-dinero">
             </div>
             <div>
               <label for="campaignTitle">Título</label>
@@ -222,6 +222,9 @@
             <button id="saveCampaignBtn">Guardar campaña</button>
             <button id="newCampaignBtn" class="ghost">Nueva campaña</button>
           </div>
+          <div class="notice" style="margin-top:16px;">
+            Esta administración apunta a la landing <code>sorteo-moto-tv-dinero.html</code> y usa por defecto el slug <code>sorteo-moto-tv-dinero</code>.
+          </div>
         </section>
 
         <section class="card">
@@ -266,6 +269,7 @@
           </div>
           <div class="inline-actions">
             <button id="savePackageBtn">Guardar paquete</button>
+            <button id="seedPackagesBtn" class="secondary">Cargar paquetes base</button>
             <button id="reloadPackagesBtn" class="ghost">Recargar paquetes</button>
           </div>
           <div style="overflow:auto; margin-top: 16px;">
@@ -367,6 +371,16 @@
               <textarea id="providerExtraJson" placeholder='{"success_url":"https://tu-dominio.com/gracias"}'></textarea>
             </div>
           </div>
+          <div class="row">
+            <div>
+              <label for="galiopayCommerceId">Galiopay commerce id</label>
+              <input id="galiopayCommerceId" placeholder="commerce_id">
+            </div>
+            <div>
+              <label for="galiopayApiUrl">Galiopay API URL</label>
+              <input id="galiopayApiUrl" placeholder="https://api.galiopay.com/...">
+            </div>
+          </div>
           <div class="inline-actions">
             <button id="saveProviderBtn">Guardar credenciales</button>
             <button id="reloadProvidersBtn" class="ghost">Recargar credenciales</button>
@@ -438,6 +452,7 @@
   <script>
     const DEFAULT_SUPABASE_URL = 'https://asokopamdmuvuupywjzt.supabase.co';
     const DEFAULT_SUPABASE_KEY = 'sb_publishable_zBhxdMJHw_uy_m3uRDj-ng_0yXz42EN';
+    const PAGE_CAMPAIGN_SLUG = 'sorteo-moto-tv-dinero';
     let supabaseClient = null;
     let currentCampaignId = '';
     let currentCampaignRecord = null;
@@ -508,7 +523,7 @@
 
     function clearCampaignForm() {
       currentCampaignRecord = null;
-      $('campaignSlug').value = '';
+      $('campaignSlug').value = PAGE_CAMPAIGN_SLUG;
       $('campaignTitle').value = '';
       $('campaignStatus').value = 'draft';
       $('campaignDrawAt').value = '';
@@ -552,11 +567,31 @@
         $('campaignPicker').appendChild(opt);
       });
 
-      if (data.length && !currentCampaignId) {
-        currentCampaignId = data[0].id;
+      const preferredCampaign = data.find((campaign) => campaign.slug === PAGE_CAMPAIGN_SLUG) || data[0];
+
+      if (preferredCampaign && !currentCampaignId) {
+        currentCampaignId = preferredCampaign.id;
         $('campaignPicker').value = currentCampaignId;
-        hydrateCampaignForm(data[0]);
+        hydrateCampaignForm(preferredCampaign);
       }
+    }
+
+    async function seedDefaultPackages() {
+      if (!currentCampaignId) throw new Error('Seleccioná o creá una campaña primero.');
+      const sb = await requireClient();
+      const packageSeed = [
+        { name: 'Starter', entries_qty: 1, bonus_entries: 0, price_ars: 2500, featured: false, sort_order: 1, description: 'Entrada simple' },
+        { name: 'Popular', entries_qty: 3, bonus_entries: 0, price_ars: 6000, featured: false, sort_order: 2, description: 'Desbloquea enlace único al pagarse' },
+        { name: 'Pro', entries_qty: 6, bonus_entries: 0, price_ars: 10000, featured: true, sort_order: 3, description: 'Pack sugerido' },
+        { name: 'Plus', entries_qty: 10, bonus_entries: 0, price_ars: 12000, featured: false, sort_order: 4, description: 'Más chances' },
+        { name: 'Power', entries_qty: 100, bonus_entries: 0, price_ars: 90000, featured: false, sort_order: 5, description: 'Pack grande' },
+        { name: 'Maximo', entries_qty: 1000, bonus_entries: 0, price_ars: 190000, featured: false, sort_order: 6, description: 'Pack mayorista' }
+      ].map((item) => ({ ...item, campaign_id: currentCampaignId, status: 'active' }));
+
+      const { error } = await sb.from('packages').insert(packageSeed);
+      if (error) throw error;
+      await loadPackages();
+      setStatus('Paquetes base cargados.', 'ok');
     }
 
     async function saveCampaign() {
@@ -706,6 +741,14 @@
         extraConfig = JSON.parse($('providerExtraJson').value.trim());
       }
 
+      if ($('providerName').value === 'galiopay') {
+        extraConfig = {
+          ...extraConfig,
+          commerce_id: $('galiopayCommerceId').value.trim() || null,
+          api_url: $('galiopayApiUrl').value.trim() || null
+        };
+      }
+
       const payload = {
         provider: $('providerName').value,
         environment: $('providerEnv').value,
@@ -745,6 +788,16 @@
         `;
         $('providersTableBody').appendChild(tr);
       });
+    }
+
+    function syncProviderFormByType() {
+      const isGaliopay = $('providerName').value === 'galiopay';
+      $('galiopayCommerceId').disabled = !isGaliopay;
+      $('galiopayApiUrl').disabled = !isGaliopay;
+      if (!isGaliopay) {
+        $('galiopayCommerceId').value = '';
+        $('galiopayApiUrl').value = '';
+      }
     }
 
     async function loadOrders() {
@@ -910,6 +963,9 @@
       $('savePackageBtn').addEventListener('click', async () => {
         try { await savePackage(); } catch (error) { setStatus(error.message, 'error'); }
       });
+      $('seedPackagesBtn').addEventListener('click', async () => {
+        try { await seedDefaultPackages(); } catch (error) { setStatus(error.message, 'error'); }
+      });
       $('uploadMediaBtn').addEventListener('click', async () => {
         try { await uploadMedia(); } catch (error) { setStatus(error.message, 'error'); }
       });
@@ -935,6 +991,7 @@
         currentCampaignId = event.target.value;
         try { await refreshAll(); setStatus('Campaña cargada.', 'ok'); } catch (error) { setStatus(error.message, 'error'); }
       });
+      $('providerName').addEventListener('change', syncProviderFormByType);
       $('copyReferralTemplateBtn').addEventListener('click', async () => {
         const url = `${window.location.origin.replace(/\/$/, '')}/?ref={{codigo_unico}}`;
         await navigator.clipboard.writeText(url);
@@ -945,6 +1002,7 @@
     async function boot() {
       loadConfig();
       bindEvents();
+      syncProviderFormByType();
       try {
         if ($('supabaseUrl').value && $('supabaseAnonKey').value) {
           buildClient();
