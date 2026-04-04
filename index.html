@@ -922,10 +922,6 @@
         <span class="stat-label">Chances vendidas</span>
       </div>
       <div class="stat-card">
-        <span class="stat-num" id="totalFill">0%</span>
-        <span class="stat-label">Cupos ocupados</span>
-      </div>
-      <div class="stat-card">
         <span class="stat-num" style="color:var(--red)">3</span>
         <span class="stat-label">Premios en juego</span>
       </div>
@@ -1201,7 +1197,6 @@ function updateStats(){
   const tc = totalChances();
   document.getElementById('totalPart').textContent = participants.length;
   document.getElementById('totalChances').textContent = tc.toLocaleString('es-AR');
-  document.getElementById('totalFill').textContent = Math.min(100, Math.round((tc / Math.max(currentMaxChances(), 1)) * 100)) + '%';
 }
 
 function renderPackages(){
@@ -1247,15 +1242,12 @@ function renderParticipants(filter=''){
 
   filtered.forEach((p, i) => {
     const globalIdx = participants.indexOf(p);
-    const dots = Math.min(p.purchasedChances || p.chances, 10);
-    let dotsHtml = '';
-    for(let d = 0; d < 10; d++) dotsHtml += `<div class="chance-dot${d < dots ? ' active' : ''}"></div>`;
     const row = document.createElement('tr');
     row.innerHTML = `
       <td style="color:var(--text2);font-size:0.8rem">#${globalIdx + 1}</td>
       <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(globalIdx)}22;color:${colorFor(globalIdx)}">${initials(p.name)}</div><div><div class="td-name">${p.name}</div></div></div></td>
       <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
-      <td><span class="chances-badge">x${Number(p.purchasedChances || 0).toLocaleString('es-AR')}</span></td>
+      <td><span class="chances-badge">x${Number(p.purchasedChances || p.chances || 0).toLocaleString('es-AR')}</span></td>
       <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
     `;
     body.appendChild(row);
@@ -1428,7 +1420,7 @@ async function loadParticipants(){
   participants = (data || []).map(row => ({
     name: row.full_name,
     city: row.city || 'Argentina',
-    purchasedChances: Number(row.purchased_entries || 0),
+    purchasedChances: Number(row.purchased_entries || row.total_entries || 0),
     chances: Number(row.total_entries || 0),
     date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' })
   }));
