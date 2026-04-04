@@ -79,7 +79,7 @@ create table if not exists public.campaigns (
   max_entries integer not null default 0,
   sold_entries integer not null default 0,
   referral_bonus_min integer not null default 2,
-  referral_bonus_max integer not null default 3,
+  referral_bonus_max integer not null default 2,
   referral_reward_message text default 'Tu amigo compró y sumaste chances extra.',
   status campaign_status not null default 'draft',
   cover_image_url text,
@@ -295,6 +295,8 @@ create or replace function public.current_user_is_admin()
 returns boolean
 language sql
 stable
+security definer
+set search_path = public
 as $$
   select app_private.is_admin(auth.uid());
 $$;
@@ -408,7 +410,14 @@ begin
         updated_at = now()
     where id = new.campaign_id;
 
-    perform public.ensure_participant_referral_link(new.participant_id, new.campaign_id);
+    if exists (
+      select 1
+      from public.participants
+      where id = new.participant_id
+        and total_entries >= 3
+    ) then
+      perform public.ensure_participant_referral_link(new.participant_id, new.campaign_id);
+    end if;
 
     if new.referral_link_id is not null then
       select *
@@ -425,7 +434,7 @@ begin
            from public.referrals
            where referred_order_id = new.id
          ) then
-        select floor(random() * ((referral_bonus_max - referral_bonus_min) + 1) + referral_bonus_min)::int
+        select greatest(referral_bonus_min, 0)
           into v_bonus
         from public.campaigns
         where id = new.campaign_id;
@@ -501,6 +510,219 @@ as $$
   where code = p_code
     and status = 'active';
 $$;
+
+create or replace function public.list_public_participants(p_campaign_slug text)
+returns table (
+  full_name text,
+  city text,
+  purchased_entries integer,
+  total_entries integer,
+  joined_at timestamptz
+)
+language sql
+security definer
+set search_path = public
+as $$
+  select
+    p.full_name,
+    coalesce(p.city, 'Argentina') as city,
+    coalesce((
+      select sum(o.total_entries)::int
+      from public.orders o
+      where o.participant_id = p.id
+        and o.status = 'paid'
+    ), 0) as purchased_entries,
+    p.total_entries,
+    p.created_at as joined_at
+  from public.participants p
+  join public.campaigns c on c.id = p.campaign_id
+  where c.slug = p_campaign_slug
+    and c.status = 'active'
+    and p.status = 'active'
+    and p.total_entries > 0
+  order by p.created_at desc
+  limit 200;
+$$;
+
+create or replace function public.create_order_from_landing(
+  p_campaign_slug text,
+  p_package_id uuid,
+  p_full_name text,
+  p_phone text,
+  p_city text default null,
+  p_payment_provider payment_provider default 'manual',
+  p_referral_code text default null
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_campaign public.campaigns%rowtype;
+  v_package public.packages%rowtype;
+  v_participant public.participants%rowtype;
+  v_referral_link_id uuid;
+  v_order public.orders%rowtype;
+begin
+  select *
+    into v_campaign
+  from public.campaigns
+  where slug = p_campaign_slug
+    and status = 'active'
+  limit 1;
+
+  if v_campaign.id is null then
+    raise exception 'No hay una campaña activa disponible';
+  end if;
+
+  select *
+    into v_package
+  from public.packages
+  where id = p_package_id
+    and campaign_id = v_campaign.id
+    and status = 'active'
+  limit 1;
+
+  if v_package.id is null then
+    raise exception 'El paquete seleccionado no está disponible';
+  end if;
+
+  if coalesce(trim(p_full_name), '') = '' or coalesce(trim(p_phone), '') = '' then
+    raise exception 'Nombre y WhatsApp son obligatorios';
+  end if;
+
+  select *
+    into v_participant
+  from public.participants
+  where campaign_id = v_campaign.id
+    and phone = p_phone
+  limit 1;
+
+  if v_participant.id is null then
+    insert into public.participants (
+      campaign_id,
+      full_name,
+      phone,
+      city,
+      source,
+      status
+    )
+    values (
+      v_campaign.id,
+      trim(p_full_name),
+      trim(p_phone),
+      nullif(trim(coalesce(p_city, '')), ''),
+      case when p_referral_code is not null then 'referral_link' else 'landing' end,
+      'active'
+    )
+    returning * into v_participant;
+  else
+    update public.participants
+    set full_name = trim(p_full_name),
+        city = coalesce(nullif(trim(coalesce(p_city, '')), ''), city),
+        updated_at = now()
+    where id = v_participant.id
+    returning * into v_participant;
+  end if;
+
+  if p_referral_code is not null and trim(p_referral_code) <> '' then
+    perform public.touch_referral_click(trim(p_referral_code));
+
+    select id
+      into v_referral_link_id
+    from public.referral_links
+    where code = trim(p_referral_code)
+      and campaign_id = v_campaign.id
+      and status = 'active'
+    limit 1;
+  end if;
+
+  insert into public.orders (
+    campaign_id,
+    participant_id,
+    package_id,
+    referral_link_id,
+    provider,
+    status,
+    quantity,
+    base_entries,
+    amount_ars,
+    total_entries
+  )
+  values (
+    v_campaign.id,
+    v_participant.id,
+    v_package.id,
+    v_referral_link_id,
+    p_payment_provider,
+    'pending_payment',
+    1,
+    0,
+    0,
+    0
+  )
+  returning * into v_order;
+
+  return jsonb_build_object(
+    'order_id', v_order.id,
+    'participant_id', v_participant.id,
+    'external_reference', v_order.external_reference,
+    'status', v_order.status,
+    'provider', v_order.provider,
+    'package_name', v_package.name,
+    'entries', v_package.entries_qty + v_package.bonus_entries,
+    'share_unlocked_after_payment', (v_package.entries_qty + v_package.bonus_entries) >= 3
+  );
+end;
+$$;
+
+create or replace function public.admin_mark_order_paid(p_order_id uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_order public.orders%rowtype;
+  v_referral_code text;
+begin
+  if not public.current_user_is_admin() then
+    raise exception 'No autorizado';
+  end if;
+
+  update public.orders
+  set status = 'paid',
+      updated_at = now()
+  where id = p_order_id
+  returning * into v_order;
+
+  if v_order.id is null then
+    raise exception 'Orden no encontrada';
+  end if;
+
+  select referral_link_code
+    into v_referral_code
+  from public.participants
+  where id = v_order.participant_id;
+
+  return jsonb_build_object(
+    'order_id', v_order.id,
+    'participant_id', v_order.participant_id,
+    'campaign_id', v_order.campaign_id,
+    'status', v_order.status,
+    'paid_at', v_order.paid_at,
+    'referral_link_code', v_referral_code
+  );
+end;
+$$;
+
+grant usage on schema app_private to anon, authenticated;
+grant execute on function app_private.is_admin(uuid) to anon, authenticated;
+grant execute on function public.current_user_is_admin() to anon, authenticated;
+grant execute on function public.list_public_participants(text) to anon, authenticated;
+grant execute on function public.create_order_from_landing(text, uuid, text, text, text, payment_provider, text) to anon, authenticated;
+grant execute on function public.admin_mark_order_paid(uuid) to authenticated;
 
 create or replace view public.participant_dashboard as
 select
@@ -787,7 +1009,7 @@ using (bucket_id = 'campaign-media' and public.current_user_is_admin());
 insert into public.system_settings (key, value)
 values
   ('checkout', jsonb_build_object('landing_base_url', 'https://tu-dominio.com', 'default_provider', 'mercado_pago')),
-  ('referrals', jsonb_build_object('enabled', true, 'default_bonus_min', 2, 'default_bonus_max', 3))
+  ('referrals', jsonb_build_object('enabled', true, 'default_bonus_min', 2, 'default_bonus_max', 2, 'unlock_after_entries', 3))
 on conflict (key) do nothing;
 
 comment on table public.payment_provider_configs is
