@@ -945,7 +945,6 @@
               <th>Participante</th>
               <th>Ciudad</th>
               <th>Compradas</th>
-              <th>Chances</th>
               <th>Fecha</th>
             </tr>
           </thead>
@@ -1257,14 +1256,13 @@ function renderParticipants(filter=''){
       <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(globalIdx)}22;color:${colorFor(globalIdx)}">${initials(p.name)}</div><div><div class="td-name">${p.name}</div></div></div></td>
       <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
       <td><span class="chances-badge">x${Number(p.purchasedChances || 0).toLocaleString('es-AR')}</span></td>
-      <td><div class="chances-bar">${dotsHtml}</div><div style="font-size:0.68rem;color:var(--text2);margin-top:2px">Total x${Number(p.chances).toLocaleString('es-AR')}</div></td>
       <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
     `;
     body.appendChild(row);
   });
 
   if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="6" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
+    body.innerHTML = '<tr><td colspan="5" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
   }
 
   updateStats();
