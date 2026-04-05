@@ -21,6 +21,7 @@
     --blue: #3B8BFF;
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .hidden { display: none !important; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--dark);
@@ -741,6 +742,71 @@
     white-space: nowrap;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
+  .payment-status-card {
+    display: none;
+    margin: 1.5rem auto 0;
+    max-width: 760px;
+    background: linear-gradient(145deg, rgba(28,28,42,0.98), rgba(19,19,28,0.96));
+    border: 1px solid rgba(245,200,66,0.24);
+    border-radius: 1.25rem;
+    padding: 1.2rem 1.3rem;
+    box-shadow: 0 24px 50px rgba(0,0,0,0.26);
+    text-align: left;
+    gap: 0.9rem;
+  }
+  .payment-status-card.show {
+    display: grid;
+  }
+  .payment-status-kicker {
+    color: var(--gold);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 800;
+  }
+  .payment-status-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    line-height: 0.95;
+    color: var(--text);
+  }
+  .payment-status-copy {
+    color: var(--text2);
+    line-height: 1.5;
+    font-size: 0.96rem;
+  }
+  .share-link-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  .share-link-input {
+    width: 100%;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color: var(--text);
+    padding: 0.9rem 1rem;
+  }
+  .share-link-btn {
+    width: auto;
+    min-width: 150px;
+    border: none;
+    border-radius: 999px;
+    padding: 0.9rem 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .share-link-btn.primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: var(--dark);
+  }
+  .share-link-btn.secondary {
+    background: rgba(255,255,255,0.08);
+    color: var(--text);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
 
   /* ---- ANIMATIONS ---- */
   .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s, transform 0.6s; }
@@ -761,6 +827,8 @@
     .prize-visual, .prize-moto-stack { height: 140px; }
     .prize-card.primary .prize-visual { height: 190px; }
     .live-feed { left: 12px; right: 12px; min-width: 0; max-width: none; }
+    .share-link-row { grid-template-columns: 1fr; }
+    .share-link-btn { width: 100%; }
   }
 </style>
 </head>
@@ -919,6 +987,17 @@
       </div>
     </div>
 
+    <div class="payment-status-card reveal" id="paymentStatusCard">
+      <div class="payment-status-kicker" id="paymentStatusKicker">Pago confirmado</div>
+      <div class="payment-status-title" id="paymentStatusTitle">Ya estás participando</div>
+      <div class="payment-status-copy" id="paymentStatusCopy">Cuando tu pago quede aprobado, tu nombre aparece en la lista y se habilita tu enlace único si corresponde.</div>
+      <div class="share-link-row hidden" id="shareLinkRow">
+        <input class="share-link-input" id="shareLinkInput" type="text" readonly>
+        <button class="share-link-btn secondary" id="copyShareBtn" type="button">Copiar enlace</button>
+        <button class="share-link-btn primary" id="shareWhatsappBtn" type="button">Compartir</button>
+      </div>
+    </div>
+
     <div style="text-align:center; margin-top:2rem">
       <a href="#paquetes" class="btn-primary">¡Sumate ahora!</a>
     </div>
@@ -1072,6 +1151,7 @@ const SUPABASE_URL = 'https://asokopamdmuvuupywjzt.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_zBhxdMJHw_uy_m3uRDj-ng_0yXz42EN';
 const CAMPAIGN_SLUG = 'sorteo-moto-tv-dinero';
 const MAX_FALLBACK_CHANCES = 5000;
+const FUNCTIONS_BASE_URL = `${SUPABASE_URL}/functions/v1`;
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let activeCampaign = null;
@@ -1081,6 +1161,7 @@ let selectedPkg = null;
 let selectedPaymentProvider = 'mercado_pago';
 let countdownInterval = null;
 let liveFeedTimeout = null;
+let latestOrderStatus = null;
 
 const COLORS = ['#F5C842','#3B8BFF','#00D46A','#FF6B3B','#BF5FFF','#FF3B7A'];
 function colorFor(i){ return COLORS[i % COLORS.length]; }
@@ -1102,11 +1183,72 @@ function getReferralCode(){
   return localStorage.getItem('raffle_referral_code') || '';
 }
 
+function getOrderReferenceFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('order_ref') || '';
+}
+
+function clearPaymentQueryState() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete('payment');
+  url.searchParams.delete('order_ref');
+  window.history.replaceState({}, '', url.toString());
+}
+
+function buildLandingShareUrl(code) {
+  const url = new URL(window.location.href);
+  url.search = '';
+  url.hash = '';
+  url.searchParams.set('ref', code);
+  return url.toString();
+}
+
 function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 4500);
+}
+
+function buildFunctionUrl(name) {
+  return `${FUNCTIONS_BASE_URL}/${name}`;
+}
+
+function showPaymentCard({ kicker, title, copy, shareUrl = '' }) {
+  const card = document.getElementById('paymentStatusCard');
+  const row = document.getElementById('shareLinkRow');
+  document.getElementById('paymentStatusKicker').textContent = kicker;
+  document.getElementById('paymentStatusTitle').textContent = title;
+  document.getElementById('paymentStatusCopy').textContent = copy;
+  document.getElementById('shareLinkInput').value = shareUrl || '';
+  row.classList.toggle('hidden', !shareUrl);
+  card.classList.add('show', 'visible');
+}
+
+async function copyShareLink() {
+  const value = document.getElementById('shareLinkInput').value;
+  if (!value) return;
+  try {
+    await navigator.clipboard.writeText(value);
+    showToast('Enlace copiado para compartir.');
+  } catch (_) {
+    showToast('No se pudo copiar el enlace.');
+  }
+}
+
+async function shareWhatsappLink() {
+  const value = document.getElementById('shareLinkInput').value;
+  if (!value) return;
+  const text = `Te comparto mi enlace del sorteo. Si compras desde acá me regalás 2 chances extra: ${value}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ text, url: value });
+      return;
+    } catch (_) {
+      // fall through to WhatsApp
+    }
+  }
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 function randomFrom(list) {
@@ -1308,6 +1450,33 @@ async function submitOrder(){
 
     if (error) throw error;
 
+    if (selectedPaymentProvider === 'galiopay') {
+      const response = await fetch(buildFunctionUrl('galiopay-create-payment'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`
+        },
+        body: JSON.stringify({
+          order_id: data.order_id,
+          provider: 'galiopay',
+          landing_url: window.location.origin + window.location.pathname,
+          landing_origin: window.location.origin
+        })
+      });
+
+      const checkout = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(checkout.error || 'No se pudo generar el link de pago de Galiopay.');
+      }
+
+      if (checkout.checkout_url) {
+        window.location.href = checkout.checkout_url;
+        return;
+      }
+    }
+
     document.getElementById('modal').classList.remove('open');
     await loadParticipants();
     renderPackages();
@@ -1316,7 +1485,7 @@ async function submitOrder(){
     const shareHint = data?.share_unlocked_after_payment
       ? ' Al aprobarse el pago se habilita tu enlace unico para compartir.'
       : '';
-    showToast('Reserva creada. El pago debe confirmarse desde administracion.' + shareHint);
+    showToast('Reserva creada correctamente.' + shareHint);
     setTimeout(() => document.getElementById('participantes').scrollIntoView({behavior:'smooth'}), 400);
   } catch (error) {
     console.error(error);
@@ -1382,8 +1551,77 @@ async function loadParticipants(){
   }));
 }
 
+async function loadPublicOrderStatus(orderRef) {
+  const { data, error } = await supabaseClient.rpc('get_public_order_status', {
+    p_external_reference: orderRef
+  });
+  if (error) throw error;
+  latestOrderStatus = data || null;
+  return latestOrderStatus;
+}
+
+async function handleReturnedPayment() {
+  const params = new URLSearchParams(window.location.search);
+  const paymentState = params.get('payment');
+  const orderRef = getOrderReferenceFromQuery();
+  if (!paymentState || !orderRef) return;
+
+  if (paymentState === 'failure') {
+    showPaymentCard({
+      kicker: 'Pago pendiente',
+      title: 'El pago no se aprobó',
+      copy: 'Podés intentarlo de nuevo con otro medio o volver a elegir tu pack.'
+    });
+    showToast('El pago no fue aprobado.');
+    clearPaymentQueryState();
+    return;
+  }
+
+  let statusData = null;
+  for (let attempt = 0; attempt < 6; attempt += 1) {
+    statusData = await loadPublicOrderStatus(orderRef);
+    if (statusData?.status === 'paid') break;
+    await new Promise(resolve => setTimeout(resolve, 2500));
+  }
+
+  if (!statusData) {
+    showToast('No pudimos verificar tu pago todavía.');
+    return;
+  }
+
+  if (statusData.status !== 'paid') {
+    showPaymentCard({
+      kicker: 'Pago en revisión',
+      title: 'Estamos confirmando tu compra',
+      copy: 'Cuando el pago se acredite, tu nombre aparecerá en la lista automáticamente.'
+    });
+    showToast('Tu pago quedó en revisión.');
+    clearPaymentQueryState();
+    return;
+  }
+
+  await loadParticipants();
+  renderParticipants(document.getElementById('searchInput').value);
+  scheduleLiveFeed();
+
+  const shareUrl = statusData.referral_link_code ? buildLandingShareUrl(statusData.referral_link_code) : '';
+  showPaymentCard({
+    kicker: 'Pago aprobado',
+    title: `${statusData.participant_name || 'Tu compra'} ya participa del sorteo`,
+    copy: shareUrl
+      ? `Tus chances ya están activas y también se habilitó tu enlace único. Cada compra aprobada desde ese enlace te suma 2 chances extra.`
+      : `Tus chances ya están activas y tu nombre aparece en la lista pública de participantes.`,
+    shareUrl
+  });
+  showToast(shareUrl ? 'Pago aprobado. Ya podés compartir tu enlace único.' : 'Pago aprobado. Ya aparecés en la lista.');
+  document.getElementById('participantes').scrollIntoView({ behavior: 'smooth' });
+  clearPaymentQueryState();
+}
+
 document.getElementById('searchInput').addEventListener('input', e => renderParticipants(e.target.value));
 document.getElementById('modalConfirm').onclick = submitOrder;
+document.getElementById('copyShareBtn').onclick = copyShareLink;
+document.getElementById('shareWhatsappBtn').onclick = shareWhatsappLink;
 
 document.querySelectorAll('.faq-q').forEach(btn => {
   btn.onclick = () => {
@@ -1412,6 +1650,7 @@ async function bootLanding(){
     renderParticipants();
     observeReveal();
     scheduleLiveFeed();
+    await handleReturnedPayment();
 
     if (getReferralCode()) {
       showToast('Entraste con un enlace referido. Si compras, ese enlace suma 2 chances extra a su titular.');
