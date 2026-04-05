@@ -476,11 +476,30 @@
     }
 
     async function loadProviderConfig() {
-      const { data, error } = await supabaseClient.rpc('admin_get_provider_config', {
+      let data = null;
+      const { data: rpcData, error } = await supabaseClient.rpc('admin_get_provider_config', {
         p_provider: $('providerName').value,
         p_environment: $('providerEnv').value
       });
-      if (error) throw error;
+
+      if (error) {
+        const isMissingRpc = error.code === 'PGRST202' || error.code === '404' || /404|not found/i.test(error.message || '');
+        if (!isMissingRpc) throw error;
+
+        const fallback = await supabaseClient
+          .from('payment_provider_configs')
+          .select('*')
+          .eq('provider', $('providerName').value)
+          .eq('environment', $('providerEnv').value)
+          .maybeSingle();
+        if (fallback.error) throw fallback.error;
+        data = fallback.data ? {
+          ...fallback.data,
+          extra_config: fallback.data.extra_config || {}
+        } : null;
+      } else {
+        data = rpcData;
+      }
 
       $('providerActive').value = String(data?.is_active ?? false);
       $('providerPublicKey').value = data?.public_key || '';
@@ -560,9 +579,27 @@
         p_extra_config: extraConfig
       };
 
-      const { error } = await supabaseClient
-        .rpc('admin_upsert_provider_config', payload);
-      if (error) throw error;
+      const { error } = await supabaseClient.rpc('admin_upsert_provider_config', payload);
+      if (error) {
+        const isMissingRpc = error.code === 'PGRST202' || error.code === '404' || /404|not found/i.test(error.message || '');
+        if (!isMissingRpc) throw error;
+
+        const fallback = await supabaseClient
+          .from('payment_provider_configs')
+          .upsert({
+            provider: payload.p_provider,
+            environment: payload.p_environment,
+            is_active: payload.p_is_active,
+            public_key: payload.p_public_key,
+            access_token: payload.p_access_token,
+            webhook_secret: payload.p_webhook_secret,
+            extra_config: payload.p_extra_config,
+            updated_by: session?.user?.id || null
+          }, {
+            onConflict: 'provider,environment'
+          });
+        if (fallback.error) throw fallback.error;
+      }
       setAppStatus('Credenciales guardadas.', 'ok');
       await loadProviderConfig();
     }
