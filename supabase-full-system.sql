@@ -677,6 +677,39 @@ begin
 end;
 $$;
 
+create or replace function public.get_public_order_status(p_external_reference text)
+returns jsonb
+language sql
+security definer
+set search_path = public
+as $$
+  select jsonb_build_object(
+    'order_id', o.id,
+    'status', o.status,
+    'provider', o.provider,
+    'paid_at', o.paid_at,
+    'created_at', o.created_at,
+    'participant_id', p.id,
+    'participant_name', p.full_name,
+    'city', coalesce(p.city, 'Argentina'),
+    'purchased_entries', coalesce((
+      select sum(po.total_entries)::int
+      from public.orders po
+      where po.participant_id = p.id
+        and po.status = 'paid'
+    ), 0),
+    'total_entries', p.total_entries,
+    'referral_link_code', p.referral_link_code,
+    'share_unlocked', (p.referral_link_code is not null),
+    'campaign_slug', c.slug
+  )
+  from public.orders o
+  join public.participants p on p.id = o.participant_id
+  join public.campaigns c on c.id = o.campaign_id
+  where o.external_reference = p_external_reference
+  limit 1;
+$$;
+
 create or replace function public.admin_mark_order_paid(p_order_id uuid)
 returns jsonb
 language plpgsql
@@ -820,6 +853,7 @@ grant execute on function app_private.is_admin(uuid) to anon, authenticated;
 grant execute on function public.current_user_is_admin() to anon, authenticated;
 grant execute on function public.list_public_participants(text) to anon, authenticated;
 grant execute on function public.create_order_from_landing(text, uuid, text, text, text, payment_provider, text) to anon, authenticated;
+grant execute on function public.get_public_order_status(text) to anon, authenticated;
 grant execute on function public.admin_mark_order_paid(uuid) to authenticated;
 grant execute on function public.admin_get_provider_config(payment_provider, payment_environment) to authenticated;
 grant execute on function public.admin_upsert_provider_config(payment_provider, payment_environment, boolean, text, text, text, jsonb) to authenticated;
