@@ -820,6 +820,11 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
+  body.modal-open .whatsapp-float {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
   .payment-status-card {
     display: none;
     margin: 1.5rem auto 0;
@@ -1258,7 +1263,7 @@ let activeCampaign = null;
 let packages = [];
 let participants = [];
 let selectedPkg = null;
-let selectedPaymentProvider = 'mercado_pago';
+let selectedPaymentProvider = 'galiopay';
 let countdownInterval = null;
 let liveFeedTimeout = null;
 let latestOrderStatus = null;
@@ -1612,11 +1617,25 @@ function openModal(pkgId){
   document.getElementById('f-phone').value = '';
   document.getElementById('f-city').value = '';
   document.getElementById('f-anonymous').checked = false;
-  document.getElementById('modal').classList.add('open');
+  selectPaymentProvider('galiopay');
+  setModalOpen(true);
 }
 
-document.getElementById('modalClose').onclick = () => document.getElementById('modal').classList.remove('open');
-document.getElementById('modal').onclick = e => { if (e.target === document.getElementById('modal')) document.getElementById('modal').classList.remove('open'); };
+function setModalOpen(isOpen) {
+  document.getElementById('modal').classList.toggle('open', isOpen);
+  document.body.classList.toggle('modal-open', isOpen);
+}
+
+function selectPaymentProvider(provider) {
+  const chip = document.querySelector(`.pm-chip[data-provider="${provider}"]`);
+  if (!chip) return;
+  document.querySelectorAll('.pm-chip').forEach(c => c.classList.remove('selected'));
+  chip.classList.add('selected');
+  selectedPaymentProvider = chip.dataset.provider || 'manual';
+}
+
+document.getElementById('modalClose').onclick = () => setModalOpen(false);
+document.getElementById('modal').onclick = e => { if (e.target === document.getElementById('modal')) setModalOpen(false); };
 
 function selectPM(el){
   document.querySelectorAll('.pm-chip').forEach(c => c.classList.remove('selected'));
@@ -1676,7 +1695,7 @@ async function submitOrder(){
       }
     }
 
-    document.getElementById('modal').classList.remove('open');
+    setModalOpen(false);
     await loadParticipants();
     renderPackages();
     renderParticipants(document.getElementById('searchInput').value);
