@@ -1454,9 +1454,7 @@ async function submitOrder(){
       const response = await fetch(buildFunctionUrl('galiopay-create-payment'), {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          apikey: SUPABASE_KEY,
-          Authorization: `Bearer ${SUPABASE_KEY}`
+          'Content-Type': 'text/plain;charset=UTF-8'
         },
         body: JSON.stringify({
           order_id: data.order_id,
