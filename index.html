@@ -1237,7 +1237,7 @@
 </div>
 <a class="whatsapp-float" href="https://wa.me/543518757751?text=Hola%2C%20quiero%20hacer%20una%20consulta%20sobre%20el%20sorteo." target="_blank" rel="noopener noreferrer">
   <span style="font-size:1.35rem">💬</span>
-  <span><small>Consultas</small>WhatsApp 3518757751</span>
+  <span><small>Consultas</small>WhatsApp</span>
 </a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1251,6 +1251,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const DEFAULT_SHARE_IMAGE = new URL('./assets/premios/moto-1.jpg', window.location.href).toString();
 const DEFAULT_SHARE_TITLE = 'Gran Sorteo Nacional â€” Moto, TV y efectivo';
 const DEFAULT_SHARE_DESCRIPTION = 'Participá desde cualquier punto de Argentina. Quedan pocos lugares y el sorteo puede hacerse antes al agotar chances.';
+const DRAW_TARGET_ISO = '2026-07-26T20:00:00-03:00';
 
 let activeCampaign = null;
 let packages = [];
@@ -1543,9 +1544,7 @@ function renderParticipants(filter=''){
 
 function setCountdown(targetIso){
   if (countdownInterval) clearInterval(countdownInterval);
-  const target = targetIso ? new Date(targetIso) : (() => {
-    return new Date('2026-07-26T20:00:00-03:00');
-  })();
+  const target = new Date(DRAW_TARGET_ISO);
 
   function tick(){
     const diff = target - Date.now();
@@ -1710,7 +1709,7 @@ async function loadCampaign(){
 
   if (!data) throw new Error('No hay una campana activa configurada.');
   activeCampaign = data;
-  setCountdown(activeCampaign.draw_at);
+  setCountdown(DRAW_TARGET_ISO);
 }
 
 async function loadPackages(){
