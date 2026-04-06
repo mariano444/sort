@@ -975,7 +975,6 @@
         <table>
           <thead>
             <tr>
-              <th>#</th>
               <th>Participante</th>
               <th>Ciudad</th>
               <th>Compradas</th>
@@ -1269,7 +1268,7 @@ function getRandomActivityMessage() {
   const chances = person.purchasedChances || person.chances || 1;
   return {
     text: `${person.name} de ${person.city} ${template}.`,
-    sub: `${chances} chance${chances > 1 ? 's' : ''} · hace ${randomFrom([1, 2, 3, 4, 5, 7, 9])} min`
+    sub: person.date
   };
 }
 
@@ -1332,27 +1331,33 @@ function renderPackages(){
 
 function renderParticipants(filter=''){
   const body = document.getElementById('participantsBody');
-  const tc = Math.max(totalChances(), 1);
   body.innerHTML = '';
-  const filtered = filter
+  const filteredParticipants = filter
     ? participants.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.city.toLowerCase().includes(filter.toLowerCase()))
     : participants;
 
-  filtered.forEach((p, i) => {
-    const globalIdx = participants.indexOf(p);
+  const expandedParticipants = filteredParticipants.flatMap((p) => {
+    const purchasedChances = Math.max(1, Number(p.purchasedChances || p.chances || 0));
+    return Array.from({ length: purchasedChances }, (_, idx) => ({
+      ...p,
+      purchasedChanceIndex: idx + 1,
+      sourceIndex: participants.indexOf(p),
+    }));
+  });
+
+  expandedParticipants.forEach((p) => {
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td style="color:var(--text2);font-size:0.8rem">#${globalIdx + 1}</td>
-      <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(globalIdx)}22;color:${colorFor(globalIdx)}">${initials(p.name)}</div><div><div class="td-name">${p.name}</div></div></div></td>
+      <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(p.sourceIndex)}22;color:${colorFor(p.sourceIndex)}">${initials(p.name)}</div><div><div class="td-name">${p.name}</div></div></div></td>
       <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
-      <td><span class="chances-badge">x${Number(p.purchasedChances || p.chances || 0).toLocaleString('es-AR')}</span></td>
+      <td><span class="chances-badge">#${p.purchasedChanceIndex.toLocaleString('es-AR')}</span></td>
       <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
     `;
     body.appendChild(row);
   });
 
-  if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="5" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
+  if (!expandedParticipants.length) {
+    body.innerHTML = '<tr><td colspan="4" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
   }
 
   updateStats();
@@ -1545,7 +1550,7 @@ async function loadParticipants(){
     city: row.city || 'Argentina',
     purchasedChances: Number(row.purchased_entries || row.total_entries || 0),
     chances: Number(row.total_entries || 0),
-    date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' })
+    date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
   }));
 }
 
