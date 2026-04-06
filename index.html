@@ -6,15 +6,15 @@
 <title>Gran Sorteo — Moto · TV 60" · $200.000</title>
 <meta name="description" content="Participá desde cualquier punto de Argentina por la moto, el TV o el efectivo. Quedan pocos lugares y el sorteo puede hacerse antes al agotar chances.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Gran Sorteo Nacional â€” Moto, TV y efectivo">
-<meta property="og:description" content="Te invito a participar de este sorteo nacional. Quedan pocos lugares y puede realizarse antes al agotar chances.">
-<meta property="og:image" content="./assets/premios/moto-1.jpg">
-<meta property="og:image:alt" content="Premios del sorteo nacional">
+<meta property="og:title" content="Gran Sorteo - Moto, TV y efectivo">
+<meta property="og:description" content="Te invito a participar de este sorteo. Quedan pocos lugares y puede realizarse antes al agotar chances.">
+<meta property="og:image" content="./assets/share/share-sorteo.png">
+<meta property="og:image:alt" content="Imagen promocional del sorteo">
 <meta property="og:locale" content="es_AR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gran Sorteo Nacional â€” Moto, TV y efectivo">
-<meta name="twitter:description" content="Te invito a participar de este sorteo nacional. Quedan pocos lugares y puede realizarse antes al agotar chances.">
-<meta name="twitter:image" content="./assets/premios/moto-1.jpg">
+<meta name="twitter:title" content="Gran Sorteo - Moto, TV y efectivo">
+<meta name="twitter:description" content="Te invito a participar de este sorteo. Quedan pocos lugares y puede realizarse antes al agotar chances.">
+<meta name="twitter:image" content="./assets/share/share-sorteo.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1249,9 +1249,9 @@ const CAMPAIGN_SLUG = 'sorteo-moto-tv-dinero';
 const MAX_FALLBACK_CHANCES = 5000;
 const FUNCTIONS_BASE_URL = `${SUPABASE_URL}/functions/v1`;
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-const DEFAULT_SHARE_IMAGE = new URL('./assets/premios/moto-1.jpg', window.location.href).toString();
-const DEFAULT_SHARE_TITLE = 'Gran Sorteo Nacional â€” Moto, TV y efectivo';
-const DEFAULT_SHARE_DESCRIPTION = 'Participá desde cualquier punto de Argentina. Quedan pocos lugares y el sorteo puede hacerse antes al agotar chances.';
+const DEFAULT_SHARE_IMAGE = new URL('./assets/share/share-sorteo.png', window.location.href).toString();
+const DEFAULT_SHARE_TITLE = 'Gran Sorteo - Moto, TV y efectivo';
+const DEFAULT_SHARE_DESCRIPTION = 'Participá de este sorteo. Quedan pocos lugares y puede hacerse antes al agotar chances.';
 const DRAW_TARGET_ISO = '2026-07-26T20:00:00-03:00';
 
 let activeCampaign = null;
@@ -1334,7 +1334,7 @@ function updateShareMetadata({ title, description, image, url }) {
 }
 
 function buildReferralShareCopy(label, shareUrl) {
-  return `${label} te invita a participar de este sorteo nacional. Quedan pocos lugares y puede hacerse antes al agotar chances. Sumate desde toda Argentina: ${shareUrl}`;
+  return `${label} te invita a participar de este sorteo. Quedan pocos lugares y puede hacerse antes al agotar chances. Sumate ahora: ${shareUrl}`;
 }
 
 function showToast(msg){
@@ -1812,7 +1812,7 @@ async function handleReturnedPayment() {
   const participantLabel = statusData.participant_name || 'Te invito';
   if (shareUrl) {
     updateShareMetadata({
-      title: `${participantLabel} te invita al Gran Sorteo Nacional`,
+      title: `${participantLabel} te invita al Gran Sorteo`,
       description: buildReferralShareCopy(participantLabel, shareUrl),
       image: DEFAULT_SHARE_IMAGE,
       url: shareUrl
