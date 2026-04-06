@@ -1387,7 +1387,7 @@ function renderParticipants(filter=''){
 
   filtered.forEach((p) => {
     const sourceIndex = participants.indexOf(p);
-    const purchasedChances = Math.max(1, Number(p.purchasedChances || p.chances || 0));
+    const purchasedChances = Math.max(1, Number(p.currentChances || p.purchasedChances || p.chances || 0));
     const detailId = `${p.publicCode || p.name}-${sourceIndex}-${p.date}`;
     const row = document.createElement('tr');
     row.className = 'participant-main-row';
@@ -1405,7 +1405,7 @@ function renderParticipants(filter=''){
         const detailRow = document.createElement('tr');
         detailRow.className = 'participant-detail-row';
         detailRow.innerHTML = `
-          <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(sourceIndex)}22;color:${colorFor(sourceIndex)}">${initials(p.name)}</div><div><div class="td-name">${p.name}</div></div></div></td>
+          <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(sourceIndex)}22;color:${colorFor(sourceIndex)}">${initials(p.detailLabel || p.displayName || p.name)}</div><div><div class="td-name">${p.detailLabel || p.displayName || p.name}</div></div></div></td>
           <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
           <td><span class="chances-badge">x${chanceNumber}</span></td>
           <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
@@ -1629,6 +1629,7 @@ async function loadParticipants(){
     city: row.city || 'Argentina',
     purchasedChances: Number(row.purchased_entries || row.total_entries || 0),
     chances: Number(row.total_entries || 0),
+    currentChances: Math.max(Number(row.purchased_entries || 0), Number(row.total_entries || 0)),
     date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
   }));
 }
