@@ -536,6 +536,7 @@
     flex-shrink: 0;
   }
   .td-name-cell { display: flex; align-items: center; gap: 0.75rem; }
+  .td-name-cell.expandable { cursor: pointer; }
   .td-name { font-weight: 600; }
   .td-city { font-size: 0.75rem; color: var(--text2); }
   .chances-badge {
@@ -544,6 +545,21 @@
     color: var(--gold);
     font-size: 0.75rem; font-weight: 700;
     padding: 0.2rem 0.6rem; border-radius: 0.3rem;
+  }
+  .chances-list { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .participant-detail-row td {
+    background: rgba(255,255,255,0.02);
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+  }
+  .participant-detail-wrap { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .participant-detail-chip {
+    display: inline-flex; align-items: center;
+    background: rgba(245,200,66,0.08);
+    border: 1px solid rgba(245,200,66,0.18);
+    color: var(--gold);
+    font-size: 0.75rem; font-weight: 700;
+    padding: 0.28rem 0.55rem; border-radius: 999px;
   }
   .chances-bar { display: flex; gap: 2px; }
   .chance-dot {
@@ -1161,6 +1177,7 @@ let selectedPaymentProvider = 'mercado_pago';
 let countdownInterval = null;
 let liveFeedTimeout = null;
 let latestOrderStatus = null;
+const expandedParticipantRows = new Set();
 
 const COLORS = ['#F5C842','#3B8BFF','#00D46A','#FF6B3B','#BF5FFF','#FF3B7A'];
 function colorFor(i){ return COLORS[i % COLORS.length]; }
@@ -1336,27 +1353,48 @@ function renderParticipants(filter=''){
     ? participants.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.city.toLowerCase().includes(filter.toLowerCase()))
     : participants;
 
-  const expandedParticipants = filteredParticipants.flatMap((p) => {
+  filteredParticipants.forEach((p) => {
+    const sourceIndex = participants.indexOf(p);
     const purchasedChances = Math.max(1, Number(p.purchasedChances || p.chances || 0));
-    return Array.from({ length: purchasedChances }, (_, idx) => ({
-      ...p,
-      purchasedChanceIndex: idx + 1,
-      sourceIndex: participants.indexOf(p),
-    }));
-  });
-
-  expandedParticipants.forEach((p) => {
+    const detailId = `${p.name}-${p.city}-${p.date}-${sourceIndex}`;
     const row = document.createElement('tr');
+    const chancesMarkup = Array.from({ length: purchasedChances }, (_, idx) => `<span class="chances-badge">X${idx + 1}</span>`).join('');
     row.innerHTML = `
-      <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(p.sourceIndex)}22;color:${colorFor(p.sourceIndex)}">${initials(p.name)}</div><div><div class="td-name">${p.name}</div></div></div></td>
+      <td><div class="td-name-cell expandable" data-detail-id="${detailId}"><div class="td-avatar" style="background:${colorFor(sourceIndex)}22;color:${colorFor(sourceIndex)}">${initials(p.name)}</div><div><div class="td-name">${p.name}</div></div></div></td>
       <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
-      <td><span class="chances-badge">#${p.purchasedChanceIndex.toLocaleString('es-AR')}</span></td>
+      <td><div class="chances-list">${chancesMarkup}</div></td>
       <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
     `;
     body.appendChild(row);
+
+    if (expandedParticipantRows.has(detailId)) {
+      const detailRow = document.createElement('tr');
+      detailRow.className = 'participant-detail-row';
+      detailRow.innerHTML = `
+        <td colspan="4">
+          <div class="participant-detail-wrap">
+            ${Array.from({ length: purchasedChances }, (_, idx) => `<span class="participant-detail-chip">Chance ${idx + 1}</span>`).join('')}
+          </div>
+        </td>
+      `;
+      body.appendChild(detailRow);
+    }
   });
 
-  if (!expandedParticipants.length) {
+  body.querySelectorAll('[data-detail-id]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const detailId = el.dataset.detailId;
+      if (!detailId) return;
+      if (expandedParticipantRows.has(detailId)) {
+        expandedParticipantRows.delete(detailId);
+      } else {
+        expandedParticipantRows.add(detailId);
+      }
+      renderParticipants(document.getElementById('searchInput').value);
+    });
+  });
+
+  if (!filteredParticipants.length) {
     body.innerHTML = '<tr><td colspan="4" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
   }
 
