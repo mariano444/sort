@@ -332,6 +332,7 @@
     display: flex; gap: 1.5rem; justify-content: center;
     margin-top: 2.5rem;
   }
+  .countdown-bar.hidden-until-thirty { display: none; }
   .countdown-unit { text-align: center; }
   .countdown-num {
     font-family: 'Bebas Neue', sans-serif;
@@ -958,7 +959,7 @@
     <a href="#paquetes" class="btn-primary">¡QUIERO MIS CHANCES!</a>
   </div>
 
-  <div class="countdown-bar reveal" style="transition-delay:0.4s">
+  <div class="countdown-bar reveal hidden-until-thirty" id="countdownBar" style="transition-delay:0.4s">
     <div class="countdown-unit">
       <span class="countdown-num" id="cd-d">00</span>
       <span class="countdown-label">Días</span>
@@ -1545,11 +1546,13 @@ function renderParticipants(filter=''){
 function setCountdown(targetIso){
   if (countdownInterval) clearInterval(countdownInterval);
   const target = new Date(DRAW_TARGET_ISO);
+  const countdownBar = document.getElementById('countdownBar');
 
   function tick(){
     const diff = target - Date.now();
     if (diff <= 0) {
       clearInterval(countdownInterval);
+      countdownBar.classList.remove('hidden-until-thirty');
       document.getElementById('countdownNote').textContent = 'Se acerca el cierre final. Aprovechá antes de que se agoten las chances.';
       return;
     }
@@ -1557,6 +1560,11 @@ function setCountdown(targetIso){
     const h = Math.floor((diff % 864e5) / 36e5);
     const m = Math.floor((diff % 36e5) / 6e4);
     const s = Math.floor((diff % 6e4) / 1e3);
+    if (d <= 30) {
+      countdownBar.classList.remove('hidden-until-thirty');
+    } else {
+      countdownBar.classList.add('hidden-until-thirty');
+    }
     document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
     document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
     document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
@@ -1566,6 +1574,8 @@ function setCountdown(targetIso){
       note.textContent = 'Ultimos dias. Quedan pocos lugares para hacer el sorteo antes.';
     } else if (d <= 10) {
       note.textContent = 'Se viene el cierre. Quedan pocos lugares y puede sortearse antes al agotar chances.';
+    } else if (d <= 30) {
+      note.textContent = 'Ya comenzo la cuenta regresiva. Quedan pocos lugares para hacer el sorteo antes.';
     } else {
       note.textContent = 'Quedan pocos lugares para hacer el sorteo antes.';
     }
