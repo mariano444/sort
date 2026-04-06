@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gran Sorteo — Moto · TV 60" · $200.000</title>
+<meta name="description" content="Participá desde cualquier punto de Argentina por la moto, el TV o el efectivo. Quedan pocos lugares y el sorteo puede hacerse antes al agotar chances.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Gran Sorteo Nacional â€” Moto, TV y efectivo">
+<meta property="og:description" content="Te invito a participar de este sorteo nacional. Quedan pocos lugares y puede realizarse antes al agotar chances.">
+<meta property="og:image" content="./assets/premios/moto-1.jpg">
+<meta property="og:image:alt" content="Premios del sorteo nacional">
+<meta property="og:locale" content="es_AR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gran Sorteo Nacional â€” Moto, TV y efectivo">
+<meta name="twitter:description" content="Te invito a participar de este sorteo nacional. Quedan pocos lugares y puede realizarse antes al agotar chances.">
+<meta name="twitter:image" content="./assets/premios/moto-1.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -776,6 +787,38 @@
     white-space: nowrap;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
+  .countdown-note {
+    position: relative; z-index: 2;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .whatsapp-float {
+    position: fixed;
+    right: 1.2rem;
+    bottom: 1.5rem;
+    z-index: 1300;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #1bd741, #12a832);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    box-shadow: 0 18px 36px rgba(0,0,0,0.28);
+  }
+  .whatsapp-float small {
+    display: block;
+    font-size: 0.68rem;
+    opacity: 0.9;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
   .payment-status-card {
     display: none;
     margin: 1.5rem auto 0;
@@ -861,6 +904,12 @@
     .prize-visual, .prize-moto-stack { height: 140px; }
     .prize-card.primary .prize-visual { height: 190px; }
     .live-feed { left: 12px; right: 12px; min-width: 0; max-width: none; }
+    .whatsapp-float {
+      right: 12px;
+      left: 12px;
+      bottom: 12px;
+      justify-content: center;
+    }
     .share-link-row { grid-template-columns: 1fr; }
     .share-link-btn { width: 100%; }
   }
@@ -930,6 +979,7 @@
       <span class="countdown-label">Seg</span>
     </div>
   </div>
+  <div class="countdown-note reveal" id="countdownNote" style="transition-delay:0.45s">Quedan pocos lugares para hacer el sorteo antes.</div>
 </div>
 
 <!-- URGENCY STRIP -->
@@ -1185,6 +1235,10 @@
     <div class="live-feed-sub" id="liveFeedSub">Ahora mismo</div>
   </div>
 </div>
+<a class="whatsapp-float" href="https://wa.me/543518757751?text=Hola%2C%20quiero%20hacer%20una%20consulta%20sobre%20el%20sorteo." target="_blank" rel="noopener noreferrer">
+  <span style="font-size:1.35rem">💬</span>
+  <span><small>Consultas</small>WhatsApp 3518757751</span>
+</a>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1194,6 +1248,9 @@ const CAMPAIGN_SLUG = 'sorteo-moto-tv-dinero';
 const MAX_FALLBACK_CHANCES = 5000;
 const FUNCTIONS_BASE_URL = `${SUPABASE_URL}/functions/v1`;
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const DEFAULT_SHARE_IMAGE = new URL('./assets/premios/moto-1.jpg', window.location.href).toString();
+const DEFAULT_SHARE_TITLE = 'Gran Sorteo Nacional â€” Moto, TV y efectivo';
+const DEFAULT_SHARE_DESCRIPTION = 'Participá desde cualquier punto de Argentina. Quedan pocos lugares y el sorteo puede hacerse antes al agotar chances.';
 
 let activeCampaign = null;
 let packages = [];
@@ -1245,6 +1302,39 @@ function buildLandingShareUrl(code) {
   return url.toString();
 }
 
+function setMetaContent(selector, content) {
+  const el = document.querySelector(selector);
+  if (el) el.setAttribute('content', content);
+}
+
+function updateShareMetadata({ title, description, image, url }) {
+  const nextTitle = title || DEFAULT_SHARE_TITLE;
+  const nextDescription = description || DEFAULT_SHARE_DESCRIPTION;
+  const nextImage = image || DEFAULT_SHARE_IMAGE;
+  const nextUrl = url || window.location.href;
+
+  document.title = nextTitle;
+  setMetaContent('meta[name="description"]', nextDescription);
+  setMetaContent('meta[property="og:title"]', nextTitle);
+  setMetaContent('meta[property="og:description"]', nextDescription);
+  setMetaContent('meta[property="og:image"]', nextImage);
+  setMetaContent('meta[name="twitter:title"]', nextTitle);
+  setMetaContent('meta[name="twitter:description"]', nextDescription);
+  setMetaContent('meta[name="twitter:image"]', nextImage);
+
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement('link');
+    canonical.setAttribute('rel', 'canonical');
+    document.head.appendChild(canonical);
+  }
+  canonical.setAttribute('href', nextUrl);
+}
+
+function buildReferralShareCopy(label, shareUrl) {
+  return `${label} te invita a participar de este sorteo nacional. Quedan pocos lugares y puede hacerse antes al agotar chances. Sumate desde toda Argentina: ${shareUrl}`;
+}
+
 function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1271,7 +1361,8 @@ async function copyShareLink() {
   const value = document.getElementById('shareLinkInput').value;
   if (!value) return;
   try {
-    await navigator.clipboard.writeText(value);
+    const label = (document.getElementById('paymentStatusTitle').textContent || 'Te invito').replace(' ya participa del sorteo', '');
+    await navigator.clipboard.writeText(buildReferralShareCopy(label, value));
     showToast('Enlace copiado para compartir.');
   } catch (_) {
     showToast('No se pudo copiar el enlace.');
@@ -1295,6 +1386,22 @@ async function shareWhatsappLink() {
 
 function randomFrom(list) {
   return list[Math.floor(Math.random() * list.length)];
+}
+
+async function shareWhatsappLink() {
+  const value = document.getElementById('shareLinkInput').value;
+  if (!value) return;
+  const label = (document.getElementById('paymentStatusTitle').textContent || 'Te invito').replace(' ya participa del sorteo', '');
+  const text = buildReferralShareCopy(label, value);
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: DEFAULT_SHARE_TITLE, text, url: value });
+      return;
+    } catch (_) {
+      // fall through to WhatsApp
+    }
+  }
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 function getRandomActivityMessage() {
@@ -1437,16 +1544,14 @@ function renderParticipants(filter=''){
 function setCountdown(targetIso){
   if (countdownInterval) clearInterval(countdownInterval);
   const target = targetIso ? new Date(targetIso) : (() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 18);
-    d.setHours(20,0,0,0);
-    return d;
+    return new Date('2026-07-26T20:00:00-03:00');
   })();
 
   function tick(){
     const diff = target - Date.now();
     if (diff <= 0) {
       clearInterval(countdownInterval);
+      document.getElementById('countdownNote').textContent = 'Se acerca el cierre final. Aprovechá antes de que se agoten las chances.';
       return;
     }
     const d = Math.floor(diff / 864e5);
@@ -1457,6 +1562,14 @@ function setCountdown(targetIso){
     document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
     document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
     document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+    const note = document.getElementById('countdownNote');
+    if (d <= 3) {
+      note.textContent = 'Ultimos dias. Quedan pocos lugares para hacer el sorteo antes.';
+    } else if (d <= 10) {
+      note.textContent = 'Se viene el cierre. Quedan pocos lugares y puede sortearse antes al agotar chances.';
+    } else {
+      note.textContent = 'Quedan pocos lugares para hacer el sorteo antes.';
+    }
   }
 
   tick();
@@ -1687,9 +1800,18 @@ async function handleReturnedPayment() {
   scheduleLiveFeed();
 
   const shareUrl = statusData.referral_link_code ? buildLandingShareUrl(statusData.referral_link_code) : '';
+  const participantLabel = statusData.participant_name || 'Te invito';
+  if (shareUrl) {
+    updateShareMetadata({
+      title: `${participantLabel} te invita al Gran Sorteo Nacional`,
+      description: buildReferralShareCopy(participantLabel, shareUrl),
+      image: DEFAULT_SHARE_IMAGE,
+      url: shareUrl
+    });
+  }
   showPaymentCard({
     kicker: 'Pago aprobado',
-    title: `${statusData.participant_name || 'Tu compra'} ya participa del sorteo`,
+    title: `${participantLabel} ya participa del sorteo`,
     copy: shareUrl
       ? `Tus chances ya están activas y también se habilitó tu enlace único. Cada compra aprobada desde ese enlace te suma 2 chances extra.`
       : `Tus chances ya están activas y ya aparecés en la lista pública de participantes.`,
@@ -1724,6 +1846,12 @@ function observeReveal(){
 
 async function bootLanding(){
   try {
+    updateShareMetadata({
+      title: DEFAULT_SHARE_TITLE,
+      description: DEFAULT_SHARE_DESCRIPTION,
+      image: DEFAULT_SHARE_IMAGE,
+      url: window.location.href
+    });
     createSparks();
     await loadCampaign();
     await loadPackages();
