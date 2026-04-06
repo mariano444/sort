@@ -545,6 +545,24 @@
     font-size: 0.75rem; font-weight: 700;
     padding: 0.2rem 0.6rem; border-radius: 0.3rem;
   }
+  .chances-list { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .participant-main-row { cursor: pointer; }
+  .participant-detail-row td {
+    background: rgba(255,255,255,0.02);
+    padding-top: 0.5rem;
+    padding-bottom: 1rem;
+  }
+  .participant-detail-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+  .participant-detail-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
+  .participant-detail-grid { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .participant-detail-chip {
+    display: inline-flex; align-items: center;
+    background: rgba(245,200,66,0.08);
+    border: 1px solid rgba(245,200,66,0.18);
+    color: var(--gold);
+    font-size: 0.75rem; font-weight: 700;
+    padding: 0.28rem 0.55rem; border-radius: 999px;
+  }
   .chances-bar { display: flex; gap: 2px; }
   .chance-dot {
     width: 8px; height: 8px; border-radius: 1px;
@@ -681,6 +699,22 @@
   .modal-pkg-info .label { font-size: 0.75rem; color: var(--text2); font-weight: 600; }
   .modal-pkg-info .value { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--gold); }
   .form-group { margin-bottom: 1rem; }
+  .form-check {
+    display: flex; align-items: flex-start; gap: 0.7rem;
+    padding: 0.85rem 1rem;
+    border-radius: 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .form-check input {
+    margin-top: 0.2rem;
+    accent-color: var(--gold);
+    width: 16px;
+    height: 16px;
+  }
+  .form-check-copy { display: grid; gap: 0.2rem; }
+  .form-check-title { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+  .form-check-sub { font-size: 0.8rem; line-height: 1.45; color: var(--text2); }
   .form-label { font-size: 0.78rem; font-weight: 700; color: var(--text2); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.35rem; display: block; }
   .form-input {
     width: 100%;
@@ -969,13 +1003,12 @@
       <div class="table-header">
         <span class="table-title">Participantes registrados</span>
         <span class="live-badge"><span class="live-dot"></span> EN VIVO</span>
-        <input type="text" class="search-input" id="searchInput" placeholder="Buscar por nombre...">
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar por nombre o código...">
       </div>
       <div style="overflow-x:auto">
         <table>
           <thead>
             <tr>
-              <th>#</th>
               <th>Participante</th>
               <th>Ciudad</th>
               <th>Compradas</th>
@@ -1118,6 +1151,15 @@
       <input class="form-input" type="text" id="f-city" placeholder="Tu ciudad">
     </div>
     <div class="form-group">
+      <label class="form-check">
+        <input type="checkbox" id="f-anonymous">
+        <span class="form-check-copy">
+          <span class="form-check-title">Quiero aparecer de forma anónima</span>
+          <span class="form-check-sub">En la lista pública vas a figurar como “Anónimo” junto con un código único de usuario.</span>
+        </span>
+      </label>
+    </div>
+    <div class="form-group">
       <label class="form-label">Método de pago preferido</label>
       <div class="payment-methods">
         <span class="pm-chip selected" data-provider="mercado_pago" onclick="selectPM(this)">💳 Mercado Pago</span>
@@ -1130,7 +1172,7 @@
     <div class="modal-trust">
       <span>🔒 Datos seguros</span>
       <span>✅ Confirmación inmediata</span>
-      <span>📋 Aparecés en lista</span>
+      <span>📋 Lista pública o anónima</span>
     </div>
   </div>
 </div>
@@ -1162,6 +1204,7 @@ let selectedPaymentProvider = 'mercado_pago';
 let countdownInterval = null;
 let liveFeedTimeout = null;
 let latestOrderStatus = null;
+const expandedParticipantRows = new Set();
 
 const COLORS = ['#F5C842','#3B8BFF','#00D46A','#FF6B3B','#BF5FFF','#FF3B7A'];
 function colorFor(i){ return COLORS[i % COLORS.length]; }
@@ -1266,10 +1309,9 @@ function getRandomActivityMessage() {
     'esta participando ahora mismo',
     'confirmo su interes en el sorteo'
   ]);
-  const chances = person.purchasedChances || person.chances || 1;
   return {
-    text: `${person.name} de ${person.city} ${template}.`,
-    sub: `${chances} chance${chances > 1 ? 's' : ''} · hace ${randomFrom([1, 2, 3, 4, 5, 7, 9])} min`
+    text: `${person.displayName || person.name} de ${person.city} ${template}.`,
+    sub: person.date
   };
 }
 
@@ -1332,27 +1374,64 @@ function renderPackages(){
 
 function renderParticipants(filter=''){
   const body = document.getElementById('participantsBody');
-  const tc = Math.max(totalChances(), 1);
   body.innerHTML = '';
+  const normalizedFilter = filter.toLowerCase();
   const filtered = filter
-    ? participants.filter(p => p.name.toLowerCase().includes(filter.toLowerCase()) || p.city.toLowerCase().includes(filter.toLowerCase()))
+    ? participants.filter(p =>
+        (p.displayName || p.name).toLowerCase().includes(normalizedFilter) ||
+        p.name.toLowerCase().includes(normalizedFilter) ||
+        p.city.toLowerCase().includes(normalizedFilter) ||
+        (p.publicCode || '').toLowerCase().includes(normalizedFilter)
+      )
     : participants;
 
-  filtered.forEach((p, i) => {
-    const globalIdx = participants.indexOf(p);
+  filtered.forEach((p) => {
+    const sourceIndex = participants.indexOf(p);
+    const purchasedChances = Math.max(1, Number(p.purchasedChances || p.chances || 0));
+    const detailId = `${p.publicCode || p.name}-${sourceIndex}-${p.date}`;
     const row = document.createElement('tr');
+    row.className = 'participant-main-row';
+    row.dataset.detailId = detailId;
     row.innerHTML = `
-      <td style="color:var(--text2);font-size:0.8rem">#${globalIdx + 1}</td>
-      <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(globalIdx)}22;color:${colorFor(globalIdx)}">${initials(p.name)}</div><div><div class="td-name">${p.name}</div></div></div></td>
+      <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(sourceIndex)}22;color:${colorFor(sourceIndex)}">${initials(p.displayName || p.name)}</div><div><div class="td-name">${p.displayName || p.name}</div></div></div></td>
       <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
-      <td><span class="chances-badge">x${Number(p.purchasedChances || p.chances || 0).toLocaleString('es-AR')}</span></td>
+      <td><div class="chances-list">${Array.from({ length: purchasedChances }, (_, idx) => `<span class="chances-badge">X${idx + 1}</span>`).join('')}</div></td>
       <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
     `;
     body.appendChild(row);
+
+    if (expandedParticipantRows.has(detailId)) {
+      const detailRow = document.createElement('tr');
+      detailRow.className = 'participant-detail-row';
+      detailRow.innerHTML = `
+        <td colspan="4">
+          <div class="participant-detail-wrap">
+            <div class="participant-detail-title">${p.detailLabel}</div>
+            <div class="participant-detail-grid">
+              ${Array.from({ length: purchasedChances }, (_, idx) => `<span class="participant-detail-chip">Chance ${idx + 1}</span>`).join('')}
+            </div>
+          </div>
+        </td>
+      `;
+      body.appendChild(detailRow);
+    }
+  });
+
+  body.querySelectorAll('.participant-main-row').forEach((row) => {
+    row.addEventListener('click', () => {
+      const { detailId } = row.dataset;
+      if (!detailId) return;
+      if (expandedParticipantRows.has(detailId)) {
+        expandedParticipantRows.delete(detailId);
+      } else {
+        expandedParticipantRows.add(detailId);
+      }
+      renderParticipants(document.getElementById('searchInput').value);
+    });
   });
 
   if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="5" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
+    body.innerHTML = '<tr><td colspan="4" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
   }
 
   updateStats();
@@ -1413,6 +1492,7 @@ function openModal(pkgId){
   document.getElementById('f-name').value = '';
   document.getElementById('f-phone').value = '';
   document.getElementById('f-city').value = '';
+  document.getElementById('f-anonymous').checked = false;
   document.getElementById('modal').classList.add('open');
 }
 
@@ -1429,6 +1509,7 @@ async function submitOrder(){
   const name = document.getElementById('f-name').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
   const city = document.getElementById('f-city').value.trim() || 'Argentina';
+  const wantsAnonymous = document.getElementById('f-anonymous').checked;
   if (!selectedPkg) return showToast('Elegí un paquete.');
   if (!name || !phone) return alert('Completá nombre y WhatsApp');
 
@@ -1444,6 +1525,7 @@ async function submitOrder(){
       p_full_name: name,
       p_phone: phone,
       p_city: city,
+      p_show_public_name: !wantsAnonymous,
       p_payment_provider: selectedPaymentProvider,
       p_referral_code: getReferralCode() || null
     });
@@ -1542,10 +1624,14 @@ async function loadParticipants(){
   if (error) throw error;
   participants = (data || []).map(row => ({
     name: row.full_name,
+    displayName: row.display_name || row.full_name,
+    detailLabel: row.is_anonymous ? (row.display_name || 'Anónimo') : row.full_name,
+    isAnonymous: Boolean(row.is_anonymous),
+    publicCode: row.public_code || '',
     city: row.city || 'Argentina',
     purchasedChances: Number(row.purchased_entries || row.total_entries || 0),
     chances: Number(row.total_entries || 0),
-    date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit' })
+    date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
   }));
 }
 
@@ -1608,7 +1694,7 @@ async function handleReturnedPayment() {
     title: `${statusData.participant_name || 'Tu compra'} ya participa del sorteo`,
     copy: shareUrl
       ? `Tus chances ya están activas y también se habilitó tu enlace único. Cada compra aprobada desde ese enlace te suma 2 chances extra.`
-      : `Tus chances ya están activas y tu nombre aparece en la lista pública de participantes.`,
+      : `Tus chances ya están activas y ya aparecés en la lista pública de participantes.`,
     shareUrl
   });
   showToast(shareUrl ? 'Pago aprobado. Ya podés compartir tu enlace único.' : 'Pago aprobado. Ya aparecés en la lista.');
