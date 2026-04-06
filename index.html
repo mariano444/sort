@@ -1395,25 +1395,23 @@ function renderParticipants(filter=''){
     row.innerHTML = `
       <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(sourceIndex)}22;color:${colorFor(sourceIndex)}">${initials(p.displayName || p.name)}</div><div><div class="td-name">${p.displayName || p.name}</div></div></div></td>
       <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
-      <td><div class="chances-list">${Array.from({ length: purchasedChances }, (_, idx) => `<span class="chances-badge">X${idx + 1}</span>`).join('')}</div></td>
+      <td><span class="chances-badge">x${purchasedChances.toLocaleString('es-AR')}</span></td>
       <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
     `;
     body.appendChild(row);
 
     if (expandedParticipantRows.has(detailId)) {
-      const detailRow = document.createElement('tr');
-      detailRow.className = 'participant-detail-row';
-      detailRow.innerHTML = `
-        <td colspan="4">
-          <div class="participant-detail-wrap">
-            <div class="participant-detail-title">${p.detailLabel}</div>
-            <div class="participant-detail-grid">
-              ${Array.from({ length: purchasedChances }, (_, idx) => `<span class="participant-detail-chip">Chance ${idx + 1}</span>`).join('')}
-            </div>
-          </div>
-        </td>
-      `;
-      body.appendChild(detailRow);
+      Array.from({ length: purchasedChances }, (_, idx) => idx + 1).forEach((chanceNumber) => {
+        const detailRow = document.createElement('tr');
+        detailRow.className = 'participant-detail-row';
+        detailRow.innerHTML = `
+          <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(sourceIndex)}22;color:${colorFor(sourceIndex)}">${initials(p.name)}</div><div><div class="td-name">${p.name}</div></div></div></td>
+          <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
+          <td><span class="chances-badge">x${chanceNumber}</span></td>
+          <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
+        `;
+        body.appendChild(detailRow);
+      });
     }
   });
 
