@@ -128,17 +128,17 @@ Deno.serve(async (req) => {
     const checkoutText =
       config.extra_config?.checkout_text ||
       `${order.campaigns.title} - ${totalEntries} chances`;
+    const checkoutImageUrl = String(config.extra_config?.checkout_image_url || "").trim();
+    const item = {
+      title: checkoutText,
+      quantity: 1,
+      unitPrice: Number(order.packages.price_ars || order.amount_ars || 0),
+      currencyId: "ARS",
+      ...(checkoutImageUrl ? { imageUrl: checkoutImageUrl } : {}),
+    };
 
     const payload = {
-      items: [
-        {
-          title: checkoutText,
-          quantity: 1,
-          unitPrice: Number(order.packages.price_ars || order.amount_ars || 0),
-          currencyId: "ARS",
-          imageUrl: config.extra_config?.checkout_image_url || null,
-        },
-      ],
+      items: [item],
       referenceId: order.external_reference,
       notificationUrl,
       sandbox: config.environment === "sandbox",
