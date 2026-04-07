@@ -466,6 +466,443 @@
 
   /* ---- PARTICIPANTS ---- */
   .participants-section { background: var(--dark); }
+  .draw-showcase {
+    margin: 2.2rem 0 1.5rem;
+    background:
+      radial-gradient(circle at top, rgba(245,200,66,0.15), transparent 45%),
+      linear-gradient(145deg, rgba(28,28,42,0.96), rgba(10,10,15,0.96));
+    border: 1px solid rgba(245,200,66,0.16);
+    border-radius: 1.35rem;
+    padding: 1.3rem;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 22px 54px rgba(0,0,0,0.28);
+  }
+  .draw-showcase.collapsed {
+    display: none;
+  }
+  .demo-launcher {
+    margin: 1.3rem 0 1.1rem;
+    padding: 1rem 1.1rem;
+    border-radius: 1.1rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(145deg, rgba(19,19,28,0.96), rgba(28,28,42,0.88));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .demo-launcher-copy {
+    display: grid;
+    gap: 0.28rem;
+  }
+  .demo-launcher-title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .demo-launcher-sub {
+    font-size: 0.88rem;
+    color: var(--text2);
+    max-width: 64ch;
+    line-height: 1.55;
+  }
+  .draw-showcase::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0.03), transparent 45%, rgba(245,200,66,0.06));
+    pointer-events: none;
+  }
+  .draw-showcase-panel {
+    display: grid;
+    grid-template-columns: minmax(280px, 1.1fr) minmax(280px, 0.9fr);
+    gap: 1rem;
+    align-items: stretch;
+    margin-bottom: 1rem;
+  }
+  .draw-showcase-copy,
+  .draw-showcase-stage {
+    position: relative;
+    z-index: 1;
+  }
+  .draw-showcase-copy {
+    padding: 1rem 0.9rem 0.8rem;
+  }
+  .draw-showcase-topline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+  }
+  .draw-showcase-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.9rem;
+  }
+  .draw-demo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.42rem 0.68rem;
+    border-radius: 999px;
+    background: rgba(59,139,255,0.12);
+    border: 1px solid rgba(59,139,255,0.26);
+    color: #cfe3ff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .draw-demo-badge::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 12px currentColor;
+  }
+  .draw-showcase-kicker::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 14px rgba(245,200,66,0.8);
+  }
+  .draw-showcase-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.65rem;
+    color: var(--text);
+  }
+  .draw-showcase-title span {
+    color: var(--gold);
+    text-shadow: 0 0 28px rgba(245,200,66,0.18);
+  }
+  .draw-showcase-sub {
+    max-width: 56ch;
+    color: var(--text2);
+    line-height: 1.65;
+    font-size: 0.95rem;
+  }
+  .draw-showcase-stage {
+    min-height: 250px;
+    border-radius: 1.2rem;
+    border: 1px solid rgba(255,255,255,0.07);
+    background:
+      radial-gradient(circle at top, rgba(59,139,255,0.16), transparent 40%),
+      linear-gradient(160deg, rgba(19,19,28,0.96), rgba(28,28,42,0.88));
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .draw-showcase-stage::before,
+  .draw-showcase-stage::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(4px);
+  }
+  .draw-showcase-stage::before {
+    width: 160px;
+    height: 160px;
+    right: -20px;
+    top: -30px;
+    background: radial-gradient(circle, rgba(245,200,66,0.22), rgba(245,200,66,0));
+    animation: showcaseOrb 6s ease-in-out infinite;
+  }
+  .draw-showcase-stage::after {
+    width: 120px;
+    height: 120px;
+    left: -10px;
+    bottom: -24px;
+    background: radial-gradient(circle, rgba(59,139,255,0.18), rgba(59,139,255,0));
+    animation: showcaseOrb 7.5s ease-in-out infinite reverse;
+  }
+  @keyframes showcaseOrb {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(0, -10px, 0) scale(1.08); }
+  }
+  .draw-stage-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    align-self: flex-start;
+    padding: 0.5rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text2);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .draw-stage-chip strong {
+    color: var(--text);
+    font-size: 0.76rem;
+  }
+  .draw-featured-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.9rem;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 1.15rem;
+    min-height: 132px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(245,200,66,0.04));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    transition: transform 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
+  }
+  .draw-featured-card::after {
+    content: '';
+    position: absolute;
+    inset: -14%;
+    border-radius: inherit;
+    background: radial-gradient(circle, rgba(245,200,66,0.18), rgba(245,200,66,0));
+    opacity: 0;
+    transform: scale(0.88);
+    transition: opacity 0.28s ease, transform 0.28s ease;
+    pointer-events: none;
+  }
+  .draw-featured-card.spotlight {
+    transform: scale(1.03);
+    border-color: rgba(245,200,66,0.45);
+    box-shadow: 0 0 0 1px rgba(245,200,66,0.14), 0 18px 44px rgba(245,200,66,0.1);
+    animation: drawSpotlightPulse 1.15s ease-in-out infinite;
+  }
+  .draw-featured-card.spotlight::after {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  @keyframes drawSpotlightPulse {
+    0%, 100% { transform: scale(1.03); box-shadow: 0 0 0 1px rgba(245,200,66,0.14), 0 18px 44px rgba(245,200,66,0.1); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 1px rgba(245,200,66,0.22), 0 26px 56px rgba(245,200,66,0.18); }
+  }
+  .draw-featured-avatar {
+    width: 62px;
+    height: 62px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    font-weight: 800;
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.02);
+  }
+  .draw-featured-body {
+    display: grid;
+    gap: 0.22rem;
+    min-width: 0;
+  }
+  .draw-featured-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text2);
+    font-weight: 800;
+  }
+  .draw-featured-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    line-height: 0.92;
+    letter-spacing: 0.03em;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .draw-featured-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    color: var(--text2);
+    font-size: 0.82rem;
+  }
+  .draw-featured-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .draw-featured-score {
+    display: grid;
+    gap: 0.4rem;
+    justify-items: end;
+    min-width: 110px;
+  }
+  .draw-featured-score-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: var(--text2);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .draw-featured-score-value {
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--gold);
+    font-size: 2.3rem;
+    line-height: 1;
+    text-shadow: 0 0 26px rgba(245,200,66,0.22);
+  }
+  .draw-showcase-status {
+    display: grid;
+    gap: 0.18rem;
+  }
+  .draw-showcase-status-label {
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .draw-showcase-status-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .draw-showcase-status-hint {
+    font-size: 0.85rem;
+    color: var(--text2);
+  }
+  .draw-intel-bar {
+    position: relative;
+    height: 9px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .draw-intel-fill {
+    width: 24%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--blue), var(--gold), #fff2b8);
+    box-shadow: 0 0 16px rgba(245,200,66,0.22);
+    transition: width 0.28s ease;
+  }
+  .draw-intel-glow {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+    transform: translateX(-100%);
+    animation: drawSweep 1.8s linear infinite;
+    opacity: 0.45;
+  }
+  @keyframes drawSweep {
+    to { transform: translateX(100%); }
+  }
+  .draw-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 0.95rem;
+  }
+  .draw-control-btn {
+    appearance: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 0.75rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+  }
+  .draw-control-btn:hover {
+    transform: translateY(-1px);
+    border-color: rgba(245,200,66,0.35);
+    background: rgba(245,200,66,0.08);
+  }
+  .draw-control-btn.primary {
+    background: linear-gradient(135deg, rgba(245,200,66,0.22), rgba(230,168,0,0.16));
+    border-color: rgba(245,200,66,0.34);
+    color: var(--gold);
+  }
+  .draw-control-btn.accent {
+    background: linear-gradient(135deg, rgba(0,212,106,0.16), rgba(0,212,106,0.08));
+    border-color: rgba(0,212,106,0.3);
+    color: #8ff0be;
+  }
+  .draw-showcase.paused .draw-intel-glow {
+    animation-play-state: paused;
+    opacity: 0.18;
+  }
+  .draw-showcase.paused .draw-featured-card {
+    border-color: rgba(255,255,255,0.12);
+    transform: none;
+    animation: none;
+  }
+  .draw-rail {
+    display: none;
+  }
+  .draw-rail-card {
+    min-width: 0;
+    padding: 0.8rem 0.9rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    transition: transform 0.32s ease, border-color 0.32s ease, background 0.32s ease, opacity 0.32s ease;
+    opacity: 0.66;
+  }
+  .draw-rail-card.active {
+    transform: translateY(-6px) scale(1.02);
+    border-color: rgba(59,139,255,0.4);
+    background: rgba(59,139,255,0.1);
+    opacity: 1;
+  }
+  .draw-rail-card.spotlight {
+    border-color: rgba(245,200,66,0.42);
+    background: rgba(245,200,66,0.1);
+    opacity: 1;
+  }
+  .draw-rail-name {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.22rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .draw-rail-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-size: 0.74rem;
+    color: var(--text2);
+  }
+  .draw-rail-empty {
+    padding: 1rem 1.1rem;
+    border-radius: 1rem;
+    border: 1px dashed rgba(255,255,255,0.14);
+    color: var(--text2);
+    background: rgba(255,255,255,0.02);
+  }
   .stats-row {
     display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem;
   }
@@ -488,6 +925,11 @@
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 1.2rem;
     overflow: hidden;
+  }
+  #participantsTableScroller {
+    max-height: min(62vh, 640px);
+    overflow-y: auto;
+    scroll-behavior: smooth;
   }
   .table-header {
     display: flex; align-items: center; justify-content: space-between;
@@ -523,7 +965,7 @@
   .search-input:focus { border-color: var(--gold); }
   .search-input::placeholder { color: var(--text2); }
 
-  table { width: 100%; border-collapse: collapse; }
+  table { width: 100%; min-width: 980px; border-collapse: collapse; table-layout: auto; }
   th {
     background: var(--dark3);
     font-size: 0.7rem; font-weight: 700;
@@ -533,11 +975,15 @@
     text-align: left;
     border-bottom: 1px solid rgba(255,255,255,0.07);
   }
+  th[data-col="participant-head"] {
+    padding-left: 1rem;
+  }
   td {
     padding: 0.85rem 1.25rem;
     font-size: 0.9rem;
+    vertical-align: middle;
     border-bottom: 1px solid rgba(255,255,255,0.04);
-    transition: background 0.15s;
+    transition: background 0.22s ease, transform 0.22s ease, color 0.22s ease, border-color 0.22s ease;
   }
   tr:hover td { background: rgba(255,255,255,0.02); }
   tr:last-child td { border-bottom: none; }
@@ -546,9 +992,34 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 0.75rem; font-weight: 700;
     flex-shrink: 0;
+    overflow: hidden;
   }
-  .td-name-cell { display: flex; align-items: center; gap: 0.75rem; }
-  .td-name { font-weight: 600; }
+  .td-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .participant-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+  }
+  td[data-col="participant"] {
+    min-width: 220px;
+    padding-left: 1rem;
+  }
+  .participant-label {
+    display: block;
+    min-width: 0;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text);
+  }
+  .participant-main-row td[data-col="participant"],
+  .participant-detail-row td[data-col="participant"] {
+    padding-right: 0.9rem;
+  }
   .td-city { font-size: 0.75rem; color: var(--text2); }
   .chances-badge {
     display: inline-flex; align-items: center;
@@ -558,7 +1029,117 @@
     padding: 0.2rem 0.6rem; border-radius: 0.3rem;
   }
   .chances-list { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-  .participant-main-row { cursor: pointer; }
+  .participant-main-row {
+    cursor: pointer;
+  }
+  .participant-main-row.is-draw-active td {
+    background: rgba(59,139,255,0.12);
+    box-shadow: inset 0 0 0 1px rgba(59,139,255,0.22);
+  }
+  .participant-main-row.is-draw-active,
+  .participant-main-row.is-draw-spotlight {
+    position: relative;
+  }
+  .participant-main-row.is-draw-active::before,
+  .participant-main-row.is-draw-spotlight::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transition: width 0.22s ease, background 0.22s ease;
+  }
+  .participant-main-row.is-draw-active::before {
+    width: 4px;
+    background: linear-gradient(180deg, rgba(59,139,255,0.9), rgba(59,139,255,0.35));
+  }
+  .participant-main-row.is-draw-active .participant-label,
+  .participant-main-row.is-draw-active .chances-badge {
+    color: #dcecff;
+  }
+  .participant-main-row.is-draw-spotlight td {
+    background: linear-gradient(90deg, rgba(245,200,66,0.16), rgba(245,200,66,0.06));
+    box-shadow: inset 3px 0 0 rgba(245,200,66,0.92), inset 0 0 0 1px rgba(245,200,66,0.22);
+    animation: drawRowPulse 1.15s ease-in-out infinite;
+  }
+  .participant-main-row.is-draw-spotlight::before {
+    width: 6px;
+    background: linear-gradient(180deg, rgba(245,200,66,1), rgba(230,168,0,0.52));
+  }
+  .participant-main-row.is-draw-spotlight .participant-label {
+    color: var(--gold);
+  }
+  .participant-main-row.is-draw-spotlight .td-avatar {
+    box-shadow: 0 0 0 6px rgba(245,200,66,0.08), 0 0 22px rgba(245,200,66,0.12);
+  }
+  @keyframes drawRowPulse {
+    0%, 100% { box-shadow: inset 3px 0 0 rgba(245,200,66,0.92), inset 0 0 0 1px rgba(245,200,66,0.22); }
+    50% { box-shadow: inset 3px 0 0 rgba(245,200,66,1), inset 0 0 0 1px rgba(245,200,66,0.36); }
+  }
+  .draw-showcase.is-focus-locked {
+    scroll-margin-top: 84px;
+  }
+  .demo-history {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 1.15rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(145deg, rgba(19,19,28,0.96), rgba(28,28,42,0.88));
+    display: none;
+  }
+  .demo-history.open {
+    display: block;
+  }
+  .demo-history-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .demo-history-title {
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .demo-history-sub {
+    font-size: 0.84rem;
+    color: var(--text2);
+  }
+  .demo-history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.8rem;
+  }
+  .demo-history-card {
+    padding: 0.95rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    display: grid;
+    gap: 0.28rem;
+  }
+  .demo-history-card strong {
+    color: var(--text);
+    font-size: 1rem;
+  }
+  .demo-history-meta {
+    color: var(--text2);
+    font-size: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .demo-history-empty {
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 1px dashed rgba(255,255,255,0.14);
+    color: var(--text2);
+    background: rgba(255,255,255,0.03);
+  }
   .message-cell {
     text-align: right;
   }
@@ -588,6 +1169,10 @@
     background: rgba(255,255,255,0.02);
     padding-top: 0.5rem;
     padding-bottom: 1rem;
+  }
+  .participant-main-row.is-draw-active + .participant-detail-row td,
+  .participant-main-row.is-draw-spotlight + .participant-detail-row td {
+    background: rgba(255,255,255,0.045);
   }
   .participant-detail-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
   .participant-detail-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
@@ -687,11 +1272,31 @@
     padding: 1.3rem 1.2rem;
   }
   .proof-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .proof-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .proof-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .proof-head-copy {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.8rem;
-    margin-bottom: 0.75rem;
   }
   .proof-name {
     font-weight: 800;
@@ -871,6 +1476,46 @@
   }
   .form-input:focus { border-color: var(--gold); }
   .form-input::placeholder { color: var(--text2); }
+  .file-upload {
+    display: grid;
+    gap: 0.7rem;
+  }
+  .file-upload-input {
+    width: 100%;
+    background: var(--dark3);
+    border: 1px dashed rgba(255,255,255,0.2);
+    color: var(--text2);
+    padding: 0.75rem 1rem;
+    border-radius: 0.6rem;
+  }
+  .file-upload-help {
+    font-size: 0.76rem;
+    color: var(--text2);
+    line-height: 1.45;
+  }
+  .photo-preview {
+    display: none;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.75rem 0.85rem;
+    border-radius: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .photo-preview.show {
+    display: flex;
+  }
+  .photo-preview img {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid rgba(245,200,66,0.35);
+  }
+  .photo-preview-copy {
+    font-size: 0.82rem;
+    color: var(--text2);
+  }
   .form-textarea {
     min-height: 90px;
     resize: vertical;
@@ -1077,6 +1722,21 @@
   @media (max-width: 600px) {
     .prizes-row { grid-template-columns: 1fr; }
     .packages-grid { grid-template-columns: 1fr 1fr; }
+    .draw-showcase { padding: 1rem; }
+    .draw-showcase-panel { grid-template-columns: 1fr; }
+    .draw-showcase-copy { padding: 0.2rem 0 0; }
+    .draw-showcase-stage { min-height: 0; }
+    .demo-launcher { align-items: flex-start; }
+    .draw-featured-card {
+      grid-template-columns: auto 1fr;
+      align-items: start;
+    }
+    .draw-featured-score {
+      grid-column: 1 / -1;
+      justify-items: start;
+      min-width: 0;
+    }
+    .draw-rail { grid-template-columns: 1fr; }
     th, td { padding: 0.6rem 0.75rem; }
     .modal { padding: 1.5rem; }
     .hero-title { font-size: 4.5rem; }
@@ -1228,17 +1888,92 @@
     <h2 class="section-title">Lista de<br><span style="color:var(--gold)">participantes</span></h2>
     <p class="section-sub">Cada participación aprobada aparece aquí con su fecha y cantidad de chances, para que puedas ver que el ingreso quedó registrado y que el proceso se mantiene visible.</p>
 
+    <div class="demo-launcher reveal hidden">
+      <div class="demo-launcher-copy">
+        <div class="demo-launcher-title">Demostracion en tiempo real</div>
+        <div class="demo-launcher-sub">Este bloque permite probar en vivo el funcionamiento del software para reforzar transparencia, confianza y claridad del proceso. Es una demostracion del sistema inteligente y sus resultados no son oficiales ni reemplazan el sorteo real.</div>
+      </div>
+      <button class="draw-control-btn primary" type="button" id="toggleDemoBtn">Iniciar demostracion</button>
+    </div>
+
+    <div class="draw-showcase reveal collapsed hidden" id="drawShowcase">
+      <div class="draw-showcase-panel">
+        <div class="draw-showcase-copy">
+          <div class="draw-showcase-topline">
+            <span class="draw-showcase-kicker">Demostracion de transparencia</span>
+            <span class="draw-demo-badge">Demostracion</span>
+          </div>
+          <h3 class="draw-showcase-title">Probador visual del <span>software de seleccion</span></h3>
+          <p class="draw-showcase-sub">Inicia la demostracion para observar en tiempo real como el sistema recorre participantes, se detiene automaticamente y deja asentado el punto exacto donde finaliza la prueba. Este modulo existe solo para demostrar el funcionamiento y no define resultados oficiales.</p>
+          <div class="draw-controls">
+            <button class="draw-control-btn primary" type="button" id="drawStartBtn">Iniciar prueba</button>
+            <button class="draw-control-btn accent" type="button" id="saveDemoResultBtn">Registrar resultado</button>
+            <button class="draw-control-btn" type="button" id="toggleDemoHistoryBtn">Participantes demostracion</button>
+          </div>
+        </div>
+        <div class="draw-showcase-stage">
+          <div class="draw-stage-chip">Ronda actual <strong id="drawRoundCounter">0</strong></div>
+          <div class="draw-featured-card" id="drawFeaturedCard">
+            <div class="draw-featured-avatar" id="drawFeaturedAvatar">--</div>
+            <div class="draw-featured-body">
+              <span class="draw-featured-label">Esperando participantes</span>
+              <strong class="draw-featured-name" id="drawFeaturedName">La animacion se activara sola</strong>
+              <div class="draw-featured-meta" id="drawFeaturedMeta">
+                <span class="draw-featured-pill">Se mostrara aqui</span>
+              </div>
+            </div>
+            <div class="draw-featured-score">
+              <span class="draw-featured-score-label">Chances</span>
+              <strong class="draw-featured-score-value" id="drawFeaturedScore">0</strong>
+            </div>
+          </div>
+          <div class="draw-showcase-status">
+            <span class="draw-showcase-status-label" id="drawPhaseLabel">Estado del sistema</span>
+            <strong class="draw-showcase-status-name" id="drawPhaseName">Esperando el listado en vivo</strong>
+            <span class="draw-showcase-status-hint" id="drawPhaseHint">Cuando haya participantes cargados, el sistema empezara a recorrerlos en bucle.</span>
+            <div class="draw-intel-bar">
+              <div class="draw-intel-fill" id="drawIntelFill"></div>
+              <div class="draw-intel-glow"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="draw-rail" id="drawRail">
+        <div class="draw-rail-empty">Todavia no hay participantes visibles para iniciar el recorrido animado.</div>
+      </div>
+      <div class="demo-history" id="demoHistoryPanel">
+        <div class="demo-history-head">
+          <div>
+            <div class="demo-history-title">Participantes demostracion</div>
+            <div class="demo-history-sub">Historial de participantes asentados manualmente desde esta demostracion.</div>
+          </div>
+        </div>
+        <div class="demo-history-grid" id="demoHistoryGrid">
+          <div class="demo-history-empty">Todavia no hay resultados de demostracion guardados.</div>
+        </div>
+      </div>
+    </div>
+
     <div class="participants-table-wrap reveal">
       <div class="table-header">
         <span class="table-title">Participantes registrados</span>
         <span class="live-badge"><span class="live-dot"></span> EN VIVO</span>
         <input type="text" class="search-input" id="searchInput" placeholder="Buscar por nombre o código...">
       </div>
-      <div style="overflow-x:auto">
+      <div style="overflow-x:auto" id="participantsTableScroller">
         <table>
+          <colgroup>
+            <col style="width:34%">
+            <col style="width:15%">
+            <col style="width:15%">
+            <col style="width:12%">
+            <col style="width:12%">
+            <col style="width:12%">
+          </colgroup>
           <thead>
             <tr>
-              <th>Participante</th>
+              <th data-col="participant-head">Participante</th>
+              <th>Provincia</th>
               <th>Ciudad</th>
               <th>Compradas</th>
               <th>Fecha</th>
@@ -1425,8 +2160,23 @@
       <input class="form-input" type="tel" id="f-phone" placeholder="Ej: 3516012345">
     </div>
     <div class="form-group">
+      <label class="form-label">Provincia</label>
+      <input class="form-input" type="text" id="f-province" placeholder="Tu provincia">
+    </div>
+    <div class="form-group">
       <label class="form-label">Ciudad</label>
       <input class="form-input" type="text" id="f-city" placeholder="Tu ciudad">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Foto de perfil opcional</label>
+      <div class="file-upload">
+        <input class="file-upload-input" type="file" id="f-photo" accept="image/*">
+        <div class="file-upload-help">Si subis una foto, se guardara con tu participacion y se mostrara en la lista publica.</div>
+        <div class="photo-preview" id="photoPreview">
+          <img id="photoPreviewImage" alt="Vista previa de foto de perfil">
+          <div class="photo-preview-copy" id="photoPreviewCopy">Foto lista para subirse con tu participacion.</div>
+        </div>
+      </div>
     </div>
     <div class="form-group">
       <label class="form-label">Opinión o expectativa opcional</label>
@@ -1507,10 +2257,13 @@ const DRAW_TARGET_ISO = '2026-07-26T20:00:00-03:00';
 let activeCampaign = null;
 let packages = [];
 let participants = [];
+let demoResults = [];
 let selectedPkg = null;
+let selectedPhotoFile = null;
 let selectedPaymentProvider = 'galiopay';
 let countdownInterval = null;
 let liveFeedTimeout = null;
+let drawAnimationTimeout = null;
 const fallbackProofMessages = [
   {
     name: 'Mariana',
@@ -1535,6 +2288,20 @@ const fallbackProofMessages = [
 ];
 let latestOrderStatus = null;
 const expandedParticipantRows = new Set();
+const drawShowcaseState = {
+  basePool: [],
+  cycle: [],
+  cyclePosition: 0,
+  spotlightPosition: -1,
+  round: 0,
+  activeParticipantIndex: -1,
+  activeEntryNumber: 0,
+  activeEntryPosition: 0,
+  activeSpotlight: false,
+  paused: false,
+  historyOpen: false,
+  hasStarted: false
+};
 
 const COLORS = ['#F5C842','#3B8BFF','#00D46A','#FF6B3B','#BF5FFF','#FF3B7A'];
 function colorFor(i){ return COLORS[i % COLORS.length]; }
@@ -1616,6 +2383,36 @@ function showToast(msg){
   setTimeout(() => t.classList.remove('show'), 4500);
 }
 
+function updatePhotoPreview(file) {
+  const preview = document.getElementById('photoPreview');
+  const image = document.getElementById('photoPreviewImage');
+  const copy = document.getElementById('photoPreviewCopy');
+  if (!file) {
+    preview.classList.remove('show');
+    image.removeAttribute('src');
+    copy.textContent = 'Foto lista para subirse con tu participacion.';
+    return;
+  }
+  const objectUrl = URL.createObjectURL(file);
+  image.src = objectUrl;
+  copy.textContent = `${file.name} listo para acompañar tu participacion.`;
+  preview.classList.add('show');
+}
+
+async function uploadParticipantPhoto(file, phone) {
+  if (!file) return null;
+  const fileExt = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const safePhone = phone.replace(/\D+/g, '') || Date.now().toString();
+  const filePath = `landing/${CAMPAIGN_SLUG}/${safePhone}-${Date.now()}.${fileExt}`;
+  const { error } = await supabaseClient.storage.from('participant-profiles').upload(filePath, file, {
+    cacheControl: '3600',
+    upsert: true
+  });
+  if (error) throw error;
+  const { data } = supabaseClient.storage.from('participant-profiles').getPublicUrl(filePath);
+  return data?.publicUrl || null;
+}
+
 function buildFunctionUrl(name) {
   return `${FUNCTIONS_BASE_URL}/${name}`;
 }
@@ -1662,6 +2459,423 @@ function randomFrom(list) {
   return list[Math.floor(Math.random() * list.length)];
 }
 
+function shuffleList(list) {
+  const copy = [...list];
+  for (let i = copy.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function getParticipantChances(participant) {
+  return Math.max(1, Number(participant.currentChances || participant.purchasedChances || participant.chances || 0));
+}
+
+function buildDrawEntryPoolBase() {
+  const pool = [];
+  participants.forEach((participant, participantIndex) => {
+    if (!participant) return;
+    const chances = getParticipantChances(participant);
+    for (let chanceNumber = 1; chanceNumber <= chances; chanceNumber += 1) {
+      pool.push({
+        participantIndex,
+        chanceNumber,
+        chanceLabel: `${participant.displayName || participant.name} · chance ${chanceNumber}`
+      });
+    }
+  });
+  return pool;
+}
+
+function refreshDrawEntryPool() {
+  drawShowcaseState.basePool = buildDrawEntryPoolBase();
+}
+
+function getDrawNarrative(participant, isSpotlight, cycleProgress) {
+  if (isSpotlight) {
+    return 'La demostracion alcanzo el punto final de la prueba y deja visible la chance exacta seleccionada dentro de la urna.';
+  }
+  if (cycleProgress < 0.2) return 'La demostracion comenzo a recorrer la urna completa, incluyendo cada chance activa de cada participante.';
+  if (cycleProgress > 0.72) return 'La prueba entra en su tramo final y empieza a acercarse a la chance donde se detendra automaticamente.';
+  return 'El sistema sigue recorriendo chances individuales en tiempo real para mostrar una simulacion mas fiel del mecanismo de seleccion.';
+}
+
+function getActiveDemoParticipant() {
+  if (drawShowcaseState.activeParticipantIndex < 0 || !participants[drawShowcaseState.activeParticipantIndex]) {
+    return null;
+  }
+  return participants[drawShowcaseState.activeParticipantIndex];
+}
+
+function renderDemoHistory() {
+  const grid = document.getElementById('demoHistoryGrid');
+  if (!grid) return;
+  if (!demoResults.length) {
+    grid.innerHTML = '<div class="demo-history-empty">Todavia no hay resultados de demostracion guardados.</div>';
+    return;
+  }
+  grid.innerHTML = demoResults.map((item) => `
+    <div class="demo-history-card">
+      <strong>${escapeHtml(item.display_name || item.full_name || 'Participante')}</strong>
+      <div class="demo-history-meta">
+        <span>${escapeHtml([item.city || '', item.province || ''].filter(Boolean).join(', ') || 'Argentina')}</span>
+        <span>${escapeHtml(item.recorded_at_label || '')}</span>
+      </div>
+      <div class="demo-history-meta">
+        <span>${escapeHtml(item.public_code || 'Registro demo')}</span>
+        <span>x${Number(item.chances || 0).toLocaleString('es-AR')}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleDemoHistory() {
+  drawShowcaseState.historyOpen = !drawShowcaseState.historyOpen;
+  const panel = document.getElementById('demoHistoryPanel');
+  const button = document.getElementById('toggleDemoHistoryBtn');
+  panel?.classList.toggle('open', drawShowcaseState.historyOpen);
+  if (button) {
+    button.textContent = drawShowcaseState.historyOpen ? 'Ocultar participantes demo' : 'Participantes demostracion';
+  }
+}
+
+function toggleDemoShowcase() {
+  const showcase = document.getElementById('drawShowcase');
+  const button = document.getElementById('toggleDemoBtn');
+  if (!showcase || !button) return;
+  const willOpen = showcase.classList.contains('collapsed');
+  showcase.classList.toggle('collapsed', !willOpen);
+  button.textContent = willOpen ? 'Ocultar demostracion' : 'Iniciar demostracion';
+}
+
+function updateDrawControls() {
+  const showcase = document.getElementById('drawShowcase');
+  const startBtn = document.getElementById('drawStartBtn');
+  const saveBtn = document.getElementById('saveDemoResultBtn');
+  if (!showcase || !startBtn || !saveBtn) return;
+  showcase.classList.toggle('paused', drawShowcaseState.paused);
+  startBtn.disabled = !participants.length || drawShowcaseState.hasStarted;
+  startBtn.style.opacity = startBtn.disabled ? '0.5' : '1';
+  saveBtn.disabled = !getActiveDemoParticipant() || !drawShowcaseState.paused || !drawShowcaseState.hasStarted;
+  saveBtn.style.opacity = saveBtn.disabled ? '0.5' : '1';
+}
+
+function pauseDrawShowcase() {
+  drawShowcaseState.paused = true;
+  stopDrawShowcase();
+  updateDrawControls();
+  document.getElementById('drawPhaseLabel').textContent = 'Prueba detenida';
+  document.getElementById('drawPhaseName').textContent = 'El software freno en el foco actual';
+  document.getElementById('drawPhaseHint').textContent = 'Ahora puedes registrar este resultado de demostracion. Este dato sirve solo como evidencia visual del funcionamiento y no como resultado oficial.';
+}
+
+function startDemoTrial() {
+  if (!participants.length) {
+    renderDrawShowcaseEmpty();
+    return;
+  }
+  drawShowcaseState.hasStarted = true;
+  drawShowcaseState.paused = false;
+  updateDrawControls();
+  if (!drawShowcaseState.cycle.length || drawShowcaseState.cyclePosition >= drawShowcaseState.cycle.length) {
+    prepareDrawShowcaseRound();
+  }
+  document.getElementById('participantsTableScroller')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  tickDrawShowcase();
+  document.getElementById('drawPhaseLabel').textContent = 'Prueba en curso';
+  document.getElementById('drawPhaseName').textContent = 'El software esta recorriendo participantes en vivo';
+  document.getElementById('drawPhaseHint').textContent = 'La prueba se detendra sola en el elegido y luego podras registrar ese resultado.';
+}
+
+function syncParticipantTableFocus(activeIndex, isSpotlight) {
+  const rows = document.querySelectorAll('.participant-main-row');
+  if (!drawShowcaseState.hasStarted) {
+    rows.forEach((row) => {
+      row.classList.remove('is-draw-active', 'is-draw-spotlight');
+    });
+    document.getElementById('drawShowcase')?.classList.remove('is-focus-locked');
+    return;
+  }
+  rows.forEach((row) => {
+    const rowIndex = Number(row.dataset.participantIndex);
+    const isActive = rowIndex === activeIndex;
+    row.classList.toggle('is-draw-active', isActive && !isSpotlight);
+    row.classList.toggle('is-draw-spotlight', isActive && isSpotlight);
+  });
+
+  const activeRow = document.querySelector(`.participant-main-row[data-participant-index="${activeIndex}"]`);
+  if (!activeRow) return;
+
+  const scroller = document.getElementById('participantsTableScroller');
+  if (!scroller) return;
+
+  const rowTop = activeRow.offsetTop;
+  const rowBottom = rowTop + activeRow.offsetHeight;
+  const currentTop = scroller.scrollTop;
+  const visibleTop = currentTop + 54;
+  const visibleBottom = currentTop + scroller.clientHeight - 54;
+  const shouldLockView = isSpotlight || !drawShowcaseState.paused;
+  if (shouldLockView || rowTop < visibleTop || rowBottom > visibleBottom) {
+    const targetTop = Math.max(0, rowTop - (scroller.clientHeight * 0.45));
+    scroller.scrollTo({ top: targetTop, behavior: 'smooth' });
+  }
+
+  if (shouldLockView) {
+    const showcase = document.getElementById('drawShowcase');
+    showcase?.classList.add('is-focus-locked');
+  }
+}
+
+function getDrawDelay(participant, isSpotlight) {
+  const chanceWeight = Math.min(getParticipantChances(participant), 12);
+  const cycleProgress = drawShowcaseState.cycle.length
+    ? drawShowcaseState.cyclePosition / drawShowcaseState.cycle.length
+    : 0;
+  const introBoost = cycleProgress < 0.18 ? -32 : cycleProgress > 0.72 ? 42 : 0;
+  if (isSpotlight) {
+    return 2400 + (chanceWeight * 45) + Math.random() * 1200;
+  }
+  return Math.max(95, 150 + introBoost + (chanceWeight * 4) + (Math.random() * 90));
+}
+
+function renderDrawShowcaseEmpty() {
+  const rail = document.getElementById('drawRail');
+  const card = document.getElementById('drawFeaturedCard');
+  document.getElementById('drawShowcase')?.classList.remove('is-focus-locked');
+  drawShowcaseState.activeParticipantIndex = -1;
+  drawShowcaseState.activeEntryNumber = 0;
+  drawShowcaseState.activeEntryPosition = 0;
+  drawShowcaseState.activeSpotlight = false;
+  drawShowcaseState.hasStarted = false;
+  if (card) card.classList.remove('spotlight');
+  syncParticipantTableFocus(-1, false);
+  document.getElementById('drawRoundCounter').textContent = '0';
+  document.getElementById('drawFeaturedAvatar').textContent = '--';
+  document.getElementById('drawFeaturedAvatar').style.background = 'rgba(255,255,255,0.06)';
+  document.getElementById('drawFeaturedAvatar').style.color = 'var(--text)';
+  document.getElementById('drawFeaturedName').textContent = 'La animacion se activara sola';
+  document.getElementById('drawFeaturedMeta').innerHTML = '<span class="draw-featured-pill">Sin datos todavia</span>';
+  document.getElementById('drawFeaturedScore').textContent = '0';
+  document.getElementById('drawPhaseLabel').textContent = 'Prueba disponible';
+  document.getElementById('drawPhaseName').textContent = 'Lista para iniciar la demostracion del funcionamiento';
+  document.getElementById('drawPhaseHint').textContent = 'Pulsa iniciar prueba, deja que el sistema recorra la lista y luego registra el punto exacto donde freno.';
+  document.getElementById('drawIntelFill').style.width = '18%';
+  updateDrawControls();
+  if (rail) {
+    rail.innerHTML = '<div class="draw-rail-empty">Todavia no hay participantes visibles para iniciar el recorrido animado.</div>';
+  }
+}
+
+async function loadDemoResults() {
+  try {
+    const { data, error } = await supabaseClient.rpc('list_demo_draw_results', {
+      p_campaign_slug: CAMPAIGN_SLUG
+    });
+    if (error) throw error;
+    demoResults = (data || []).map((row) => ({
+      ...row,
+      recorded_at_label: row.recorded_at
+        ? new Date(row.recorded_at).toLocaleString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+        : ''
+    }));
+  } catch (error) {
+    console.warn('No se pudo cargar el historial demo.', error);
+    demoResults = [];
+  }
+  renderDemoHistory();
+}
+
+async function saveCurrentDemoResult() {
+  const participant = getActiveDemoParticipant();
+  if (!participant) {
+    showToast('Todavia no hay un participante seleccionado donde freno la prueba.');
+    return;
+  }
+  try {
+    const { error } = await supabaseClient.rpc('record_demo_draw_result', {
+      p_campaign_slug: CAMPAIGN_SLUG,
+      p_participant_public_code: participant.publicCode || '',
+      p_display_name: participant.displayName || participant.name,
+      p_full_name: participant.name || participant.displayName || ''
+    });
+    if (error) throw error;
+    await loadDemoResults();
+    if (!drawShowcaseState.historyOpen) {
+      toggleDemoHistory();
+    }
+    showToast(`Resultado registrado donde freno: ${participant.displayName || participant.name}.`);
+  } catch (error) {
+    console.error(error);
+    showToast('No se pudo registrar donde freno la prueba. Revisa la migracion SQL.');
+  }
+}
+
+function renderDrawShowcase(entry, isSpotlight, delay) {
+  if (!participants.length || !entry || typeof entry.participantIndex !== 'number') {
+    renderDrawShowcaseEmpty();
+    return;
+  }
+
+  const activeIndex = entry.participantIndex;
+  const participant = participants[activeIndex];
+  if (!participant) {
+    renderDrawShowcaseEmpty();
+    return;
+  }
+  const activeColor = colorFor(activeIndex);
+  drawShowcaseState.activeParticipantIndex = activeIndex;
+  drawShowcaseState.activeEntryNumber = entry.chanceNumber;
+  drawShowcaseState.activeEntryPosition = drawShowcaseState.cyclePosition + 1;
+  drawShowcaseState.activeSpotlight = Boolean(isSpotlight);
+  syncParticipantTableFocus(activeIndex, isSpotlight);
+  const rail = document.getElementById('drawRail');
+  const featuredCard = document.getElementById('drawFeaturedCard');
+  const featuredAvatar = document.getElementById('drawFeaturedAvatar');
+  const featuredName = document.getElementById('drawFeaturedName');
+  const featuredMeta = document.getElementById('drawFeaturedMeta');
+  const featuredScore = document.getElementById('drawFeaturedScore');
+  const phaseLabel = document.getElementById('drawPhaseLabel');
+  const phaseName = document.getElementById('drawPhaseName');
+  const phaseHint = document.getElementById('drawPhaseHint');
+  const intelFill = document.getElementById('drawIntelFill');
+  const cycleProgress = drawShowcaseState.cycle.length
+    ? (drawShowcaseState.cyclePosition + 1) / drawShowcaseState.cycle.length
+    : 0;
+  document.getElementById('drawShowcase')?.classList.toggle('is-focus-locked', Boolean(isSpotlight));
+
+  featuredCard.classList.toggle('spotlight', Boolean(isSpotlight));
+  featuredAvatar.textContent = initials(participant.displayName || participant.name);
+  featuredAvatar.style.background = `${activeColor}22`;
+  featuredAvatar.style.color = activeColor;
+  featuredName.textContent = participant.displayName || participant.name;
+  featuredMeta.innerHTML = `
+    <span class="draw-featured-pill">${escapeHtml(participant.province || 'Argentina')}</span>
+    <span class="draw-featured-pill">${escapeHtml(participant.city || 'Sin ciudad')}</span>
+    <span class="draw-featured-pill">${escapeHtml(participant.date || 'Hoy')}</span>
+    <span class="draw-featured-pill">${participant.publicCode ? escapeHtml(participant.publicCode) : 'Registro visible'}</span>
+  `;
+  featuredScore.textContent = getParticipantChances(participant).toLocaleString('es-AR');
+  document.getElementById('drawRoundCounter').textContent = String(drawShowcaseState.round);
+
+  phaseLabel.textContent = isSpotlight ? 'Pausa aleatoria' : 'Recorrido dinamico';
+  phaseName.textContent = isSpotlight
+    ? `${participant.displayName || participant.name} quedo seleccionado en la demostracion`
+    : 'La lista esta recorriendo participantes en tiempo real';
+  phaseHint.textContent = getDrawNarrative(participant, isSpotlight, cycleProgress);
+  intelFill.style.width = `${Math.max(16, Math.min(100, cycleProgress * 100))}%`;
+
+  const visibleCards = [];
+  const cardCount = Math.min(Math.max(drawShowcaseState.cycle.length, 1), 5);
+  for (let offset = 0; offset < cardCount; offset += 1) {
+    const cyclePosition = (drawShowcaseState.cyclePosition + offset) % drawShowcaseState.cycle.length;
+    const cycleEntry = drawShowcaseState.cycle[cyclePosition];
+    if (!cycleEntry || typeof cycleEntry.participantIndex !== 'number') {
+      continue;
+    }
+    const item = participants[cycleEntry.participantIndex];
+    if (!item) {
+      continue;
+    }
+    visibleCards.push(`
+      <div class="draw-rail-card${offset === 0 ? ' active' : ''}${cyclePosition === drawShowcaseState.spotlightPosition ? ' spotlight' : ''}">
+        <span class="draw-rail-name">${escapeHtml(item.displayName || item.name)}</span>
+        <div class="draw-rail-meta">
+          <span>${escapeHtml(participantLocation(item))}</span>
+          <span>Chance ${cycleEntry.chanceNumber}</span>
+        </div>
+      </div>
+    `);
+  }
+  rail.innerHTML = visibleCards.join('');
+}
+
+function stopDrawShowcase() {
+  if (drawAnimationTimeout) {
+    clearTimeout(drawAnimationTimeout);
+    drawAnimationTimeout = null;
+  }
+}
+
+function prepareDrawShowcaseRound() {
+  drawShowcaseState.cycle = shuffleList(drawShowcaseState.basePool);
+  drawShowcaseState.cyclePosition = 0;
+  drawShowcaseState.spotlightPosition = drawShowcaseState.cycle.length ? Math.floor(Math.random() * drawShowcaseState.cycle.length) : -1;
+  drawShowcaseState.round += 1;
+}
+
+function tickDrawShowcase() {
+  if (!participants.length) {
+    stopDrawShowcase();
+    renderDrawShowcaseEmpty();
+    return;
+  }
+  if (drawShowcaseState.paused) {
+    updateDrawControls();
+    return;
+  }
+
+  if (!drawShowcaseState.cycle.length || drawShowcaseState.cyclePosition >= drawShowcaseState.cycle.length) {
+    prepareDrawShowcaseRound();
+  }
+  if (!drawShowcaseState.cycle.length) {
+    renderDrawShowcaseEmpty();
+    return;
+  }
+
+  const cyclePosition = drawShowcaseState.cyclePosition;
+  const entry = drawShowcaseState.cycle[cyclePosition];
+  if (!entry || typeof entry.participantIndex !== 'number' || !participants[entry.participantIndex]) {
+    drawShowcaseState.cyclePosition += 1;
+    if (drawShowcaseState.cyclePosition >= drawShowcaseState.cycle.length) {
+      prepareDrawShowcaseRound();
+    }
+    tickDrawShowcase();
+    return;
+  }
+  const isSpotlight = cyclePosition === drawShowcaseState.spotlightPosition;
+  const participant = participants[entry.participantIndex];
+  const delay = getDrawDelay(participant, isSpotlight);
+  renderDrawShowcase(entry, isSpotlight, delay);
+  drawShowcaseState.cyclePosition += 1;
+  if (isSpotlight) {
+    drawAnimationTimeout = setTimeout(() => {
+      pauseDrawShowcase();
+    }, delay);
+    return;
+  }
+  drawAnimationTimeout = setTimeout(() => {
+    if (drawShowcaseState.cyclePosition >= drawShowcaseState.cycle.length) {
+      prepareDrawShowcaseRound();
+    }
+    tickDrawShowcase();
+  }, delay);
+}
+
+function startDrawShowcase() {
+  stopDrawShowcase();
+  if (!participants.length) {
+    renderDrawShowcaseEmpty();
+    return;
+  }
+  drawShowcaseState.paused = true;
+  drawShowcaseState.hasStarted = false;
+  updateDrawControls();
+  prepareDrawShowcaseRound();
+  if (!drawShowcaseState.cycle.length) {
+    renderDrawShowcaseEmpty();
+    return;
+  }
+  const entry = drawShowcaseState.cycle[drawShowcaseState.cyclePosition];
+  if (!entry || typeof entry.participantIndex !== 'number' || !participants[entry.participantIndex]) {
+    renderDrawShowcaseEmpty();
+    return;
+  }
+  const participant = participants[entry.participantIndex];
+  const delay = getDrawDelay(participant, false);
+  renderDrawShowcase(entry, false, delay);
+}
+
 async function shareWhatsappLink() {
   const value = document.getElementById('shareLinkInput').value;
   if (!value) return;
@@ -1690,7 +2904,7 @@ function getRandomActivityMessage() {
     'confirmo su interes en el sorteo'
   ]);
   return {
-    text: `${person.displayName || person.name} de ${person.city} ${template}.`,
+    text: `${person.displayName || person.name} de ${participantLocation(person)} ${template}.`,
     sub: person.date
   };
 }
@@ -1760,7 +2974,8 @@ function renderParticipants(filter=''){
     ? participants.filter(p =>
         (p.displayName || p.name).toLowerCase().includes(normalizedFilter) ||
         p.name.toLowerCase().includes(normalizedFilter) ||
-        p.city.toLowerCase().includes(normalizedFilter) ||
+        (p.city || '').toLowerCase().includes(normalizedFilter) ||
+        (p.province || '').toLowerCase().includes(normalizedFilter) ||
         (p.publicCode || '').toLowerCase().includes(normalizedFilter)
       )
     : participants;
@@ -1772,30 +2987,37 @@ function renderParticipants(filter=''){
     const row = document.createElement('tr');
     row.className = 'participant-main-row';
     row.dataset.detailId = detailId;
+    row.dataset.participantIndex = String(sourceIndex);
+    const avatarHtml = renderParticipantAvatar(p, p.displayName || p.name, colorFor(sourceIndex));
     row.innerHTML = `
-      <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(sourceIndex)}22;color:${colorFor(sourceIndex)}">${initials(p.displayName || p.name)}</div><div><div class="td-name">${p.displayName || p.name}</div></div></div></td>
-      <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
-      <td><span class="chances-badge">x${purchasedChances.toLocaleString('es-AR')}</span></td>
-      <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
-      <td class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(p.city || 'Argentina')}"><span class="message-trigger-icon">💬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
+      <td data-col="participant"><div class="td-name-cell">${avatarHtml}<div class="td-name-copy"><div class="td-name">${p.displayName || p.name}</div></div></div></td>
+      <td data-col="province"><span style="font-size:0.8rem;color:var(--text2)">${p.province || '-'}</span></td>
+      <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${p.city || '-'}</span></td>
+      <td data-col="entries"><span class="chances-badge">x${purchasedChances.toLocaleString('es-AR')}</span></td>
+      <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
+      <td data-col="message" class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(participantLocation(p))}"><span class="message-trigger-icon">💬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
     `;
     body.appendChild(row);
 
     if (expandedParticipantRows.has(detailId)) {
       Array.from({ length: purchasedChances }, (_, idx) => idx + 1).forEach((chanceNumber) => {
         const detailRow = document.createElement('tr');
+        const detailAvatarHtml = renderParticipantAvatar(p, p.detailLabel || p.displayName || p.name, colorFor(sourceIndex));
         detailRow.className = 'participant-detail-row';
         detailRow.innerHTML = `
-          <td><div class="td-name-cell"><div class="td-avatar" style="background:${colorFor(sourceIndex)}22;color:${colorFor(sourceIndex)}">${initials(p.detailLabel || p.displayName || p.name)}</div><div><div class="td-name">${p.detailLabel || p.displayName || p.name}</div></div></div></td>
-          <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
-          <td><span class="chances-badge">x${chanceNumber}</span></td>
-          <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
-          <td class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(p.city || 'Argentina')}"><span class="message-trigger-icon">💬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
+          <td data-col="participant"><div class="td-name-cell">${detailAvatarHtml}<div class="td-name-copy"><div class="td-name">${p.detailLabel || p.displayName || p.name}</div></div></div></td>
+          <td data-col="province"><span style="font-size:0.8rem;color:var(--text2)">${p.province || '-'}</span></td>
+          <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${p.city || '-'}</span></td>
+          <td data-col="entries"><span class="chances-badge">x${chanceNumber}</span></td>
+          <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
+          <td data-col="message" class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(participantLocation(p))}"><span class="message-trigger-icon">💬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
         `;
         body.appendChild(detailRow);
       });
     }
   });
+
+  syncParticipantTableFocus(drawShowcaseState.activeParticipantIndex, drawShowcaseState.activeSpotlight);
 
   body.querySelectorAll('.message-trigger:not(.empty)').forEach((button) => {
     button.addEventListener('click', (event) => {
@@ -1822,7 +3044,7 @@ function renderParticipants(filter=''){
   });
 
   if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="5" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
+    body.innerHTML = '<tr><td colspan="6" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
   }
 
   updateStats();
@@ -1836,16 +3058,20 @@ function renderProofMessages() {
     .filter((p) => p.opinionMessage)
     .map((p) => ({
       name: p.displayName || p.name,
-      city: p.city || 'Argentina',
-      message: p.opinionMessage
+      city: participantLocation(p),
+      message: p.opinionMessage,
+      photoUrl: p.photoUrl || ''
     }));
 
   const cards = dynamicMessages.length ? dynamicMessages : [];
   grid.innerHTML = cards.map((item, index) => `
     <div class="proof-card reveal" style="transition-delay:${Math.min(index * 0.08, 0.32)}s">
       <div class="proof-head">
-        <span class="proof-name">${escapeHtml(item.name)}</span>
-        <span class="proof-city">${escapeHtml(item.city)}</span>
+        <div class="proof-avatar">${item.photoUrl ? `<img src="${escapeHtml(item.photoUrl)}" alt="${escapeHtml(item.name)}">` : ''}</div>
+        <div class="proof-head-copy">
+          <span class="proof-name">${escapeHtml(item.name)}</span>
+          <span class="proof-city">${escapeHtml(item.city)}</span>
+        </div>
       </div>
       <div class="proof-copy">"${escapeHtml(item.message)}"</div>
     </div>
@@ -1921,9 +3147,13 @@ function openModal(pkgId){
   document.getElementById('modal-pkg-price').textContent = '$' + Number(selectedPkg.price_ars || 0).toLocaleString('es-AR');
   document.getElementById('f-name').value = '';
   document.getElementById('f-phone').value = '';
+  document.getElementById('f-province').value = '';
   document.getElementById('f-city').value = '';
+  document.getElementById('f-photo').value = '';
   document.getElementById('f-message').value = '';
   document.getElementById('f-anonymous').checked = false;
+  selectedPhotoFile = null;
+  updatePhotoPreview(null);
   updateMessagePreview();
   selectPaymentProvider('galiopay');
   setModalOpen(true);
@@ -1960,6 +3190,11 @@ function updateMessagePreview() {
 }
 
 document.getElementById('f-message').addEventListener('input', updateMessagePreview);
+document.getElementById('f-photo').addEventListener('change', (event) => {
+  const [file] = event.target.files || [];
+  selectedPhotoFile = file || null;
+  updatePhotoPreview(selectedPhotoFile);
+});
 document.getElementById('opinionModalClose').onclick = () => document.getElementById('opinionModal').classList.remove('open');
 document.getElementById('opinionModal').onclick = e => { if (e.target === document.getElementById('opinionModal')) document.getElementById('opinionModal').classList.remove('open'); };
 
@@ -1979,10 +3214,35 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
+function renderParticipantAvatar(participant, fallbackLabel, color) {
+  if (participant.photoUrl) {
+    return `<div class="td-avatar"><img src="${escapeHtml(participant.photoUrl)}" alt="${escapeHtml(fallbackLabel)}"></div>`;
+  }
+  return `<div class="td-avatar" style="background:${color}22;color:${color}">${escapeHtml(initials(fallbackLabel))}</div>`;
+}
+
+function participantLocation(participant) {
+  const province = participant.province || '';
+  const city = participant.city || '';
+  return province || city || 'Argentina';
+}
+
+function normalizeParticipantLocation(row) {
+  const rawProvince = (row.province || '').trim();
+  const rawCity = (row.city || '').trim();
+  const normalizedCity = rawCity.toLowerCase();
+  const hasLegacyLocation = !rawProvince && rawCity && normalizedCity !== 'argentina';
+  return {
+    province: hasLegacyLocation ? rawCity : rawProvince,
+    city: hasLegacyLocation || normalizedCity === 'argentina' ? '' : rawCity
+  };
+}
+
 async function submitOrder(){
   const name = document.getElementById('f-name').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
-  const city = document.getElementById('f-city').value.trim() || 'Argentina';
+  const province = document.getElementById('f-province').value.trim() || 'Argentina';
+  const city = document.getElementById('f-city').value.trim() || '';
   const opinionMessage = document.getElementById('f-message').value.trim();
   const wantsAnonymous = document.getElementById('f-anonymous').checked;
   if (!selectedPkg) return showToast('Elegí un paquete.');
@@ -1994,12 +3254,15 @@ async function submitOrder(){
   button.textContent = 'PROCESANDO...';
 
   try {
+    const photoUrl = await uploadParticipantPhoto(selectedPhotoFile, phone);
     const { data, error } = await supabaseClient.rpc('create_order_from_landing', {
       p_campaign_slug: CAMPAIGN_SLUG,
       p_package_id: selectedPkg.id,
       p_full_name: name,
       p_phone: phone,
+      p_province: province,
       p_city: city,
+      p_photo_url: photoUrl,
       p_show_public_name: !wantsAnonymous,
       p_payment_provider: selectedPaymentProvider,
       p_referral_code: getReferralCode() || null,
@@ -2098,20 +3361,31 @@ async function loadParticipants(){
   });
 
   if (error) throw error;
-  participants = (data || []).map(row => ({
-    name: row.full_name,
-    displayName: row.display_name || row.full_name,
+  participants = (data || []).map((row, index) => {
+    const location = normalizeParticipantLocation(row);
+    const displayName = row.display_name || row.full_name;
+    const fullName = row.full_name || displayName;
+    const province = location.province;
+    const city = location.city;
+    return {
+      sourceIndex: index,
+      name: fullName,
+      displayName,
     detailLabel: row.is_anonymous ? (row.display_name || 'Anónimo') : row.full_name,
-    isAnonymous: Boolean(row.is_anonymous),
-    publicCode: row.public_code || '',
-    city: row.city || 'Argentina',
-    purchasedChances: Number(row.purchased_entries || row.total_entries || 0),
-    chances: Number(row.total_entries || 0),
-    currentChances: Math.max(Number(row.purchased_entries || 0), Number(row.total_entries || 0)),
-    opinionMessage: (row.opinion_message || '').trim(),
-    date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
-  }));
+      isAnonymous: Boolean(row.is_anonymous),
+      publicCode: row.public_code || '',
+      photoUrl: row.photo_url || '',
+      province: location.province,
+      city: location.city,
+      purchasedChances: Number(row.purchased_entries || row.total_entries || 0),
+      chances: Number(row.total_entries || 0),
+      currentChances: Math.max(Number(row.purchased_entries || 0), Number(row.total_entries || 0)),
+      opinionMessage: (row.opinion_message || '').trim(),
+      date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    };
+  });
   renderProofMessages();
+  startDrawShowcase();
 }
 
 async function loadPublicOrderStatus(orderRef) {
@@ -2121,6 +3395,125 @@ async function loadPublicOrderStatus(orderRef) {
   if (error) throw error;
   latestOrderStatus = data || null;
   return latestOrderStatus;
+}
+
+function renderParticipants(filter=''){
+  const body = document.getElementById('participantsBody');
+  if (!body) return;
+  body.innerHTML = '';
+
+  const normalizedFilter = (filter || '').trim().toLowerCase();
+  const filtered = normalizedFilter
+    ? participants.filter((participant) => (participant.searchIndex || '').includes(normalizedFilter))
+    : participants;
+
+  if (!filtered.length) {
+    body.innerHTML = '<tr><td colspan="6" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
+    updateStats();
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  filtered.forEach((participant) => {
+    const sourceIndex = Number.isInteger(participant.sourceIndex) ? participant.sourceIndex : participants.indexOf(participant);
+    const purchasedChances = getParticipantChances(participant);
+    const detailId = `${participant.publicCode || participant.name}-${sourceIndex}-${participant.date}`;
+    const avatarHtml = renderParticipantAvatar(participant, participant.displayName || participant.name, colorFor(sourceIndex));
+
+    const row = document.createElement('tr');
+    row.className = 'participant-main-row';
+    row.dataset.detailId = detailId;
+    row.dataset.participantIndex = String(sourceIndex);
+    row.innerHTML = `
+      <td data-col="participant"><div class="participant-cell">${avatarHtml}<span class="participant-label">${escapeHtml(participant.displayName || participant.name)}</span></div></td>
+      <td data-col="province"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.province || '-')}</span></td>
+      <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.city || '-')}</span></td>
+      <td data-col="entries"><span class="chances-badge">x${purchasedChances.toLocaleString('es-AR')}</span></td>
+      <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.date)}</td>
+      <td data-col="message" class="message-cell"><button type="button" class="message-trigger${participant.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(participant.opinionMessage || '')}" data-author="${encodeURIComponent(participant.displayName || participant.name)}" data-city="${encodeURIComponent(participantLocation(participant))}"><span class="message-trigger-icon">💬</span><span>${participant.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
+    `;
+    fragment.appendChild(row);
+
+    if (expandedParticipantRows.has(detailId)) {
+      Array.from({ length: purchasedChances }, (_, idx) => idx + 1).forEach((chanceNumber) => {
+        const detailRow = document.createElement('tr');
+        detailRow.className = 'participant-detail-row';
+        detailRow.innerHTML = `
+          <td data-col="participant"><div class="participant-cell">${avatarHtml}<span class="participant-label">${escapeHtml(participant.detailLabel || participant.displayName || participant.name)}</span></div></td>
+          <td data-col="province"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.province || '-')}</span></td>
+          <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.city || '-')}</span></td>
+          <td data-col="entries"><span class="chances-badge">x${chanceNumber}</span></td>
+          <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.date)}</td>
+          <td data-col="message" class="message-cell"><button type="button" class="message-trigger${participant.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(participant.opinionMessage || '')}" data-author="${encodeURIComponent(participant.displayName || participant.name)}" data-city="${encodeURIComponent(participantLocation(participant))}"><span class="message-trigger-icon">💬</span><span>${participant.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
+        `;
+        fragment.appendChild(detailRow);
+      });
+    }
+  });
+
+  body.appendChild(fragment);
+  syncParticipantTableFocus(drawShowcaseState.activeParticipantIndex, drawShowcaseState.activeSpotlight);
+
+  body.querySelectorAll('.message-trigger:not(.empty)').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      openOpinionModal({
+        message: decodeURIComponent(button.dataset.opinion || ''),
+        author: decodeURIComponent(button.dataset.author || 'Participante'),
+        city: decodeURIComponent(button.dataset.city || 'Argentina')
+      });
+    });
+  });
+
+  body.querySelectorAll('.participant-main-row').forEach((row) => {
+    row.addEventListener('click', () => {
+      const { detailId } = row.dataset;
+      if (!detailId) return;
+      if (expandedParticipantRows.has(detailId)) {
+        expandedParticipantRows.delete(detailId);
+      } else {
+        expandedParticipantRows.add(detailId);
+      }
+      renderParticipants(document.getElementById('searchInput')?.value || '');
+    });
+  });
+
+  updateStats();
+}
+
+async function loadParticipants(){
+  const { data, error } = await supabaseClient.rpc('list_public_participants', {
+    p_campaign_slug: CAMPAIGN_SLUG
+  });
+
+  if (error) throw error;
+  participants = (data || []).map((row, index) => {
+    const location = normalizeParticipantLocation(row);
+    const displayName = row.display_name || row.full_name;
+    const fullName = row.full_name || displayName;
+    const province = location.province;
+    const city = location.city;
+    return {
+      sourceIndex: index,
+      name: fullName,
+      displayName,
+      detailLabel: row.is_anonymous ? (displayName || 'AnÃ³nimo') : fullName,
+      isAnonymous: Boolean(row.is_anonymous),
+      publicCode: row.public_code || '',
+      photoUrl: row.photo_url || '',
+      province,
+      city,
+      purchasedChances: Number(row.purchased_entries || row.total_entries || 0),
+      chances: Number(row.total_entries || 0),
+      currentChances: Math.max(Number(row.purchased_entries || 0), Number(row.total_entries || 0)),
+      opinionMessage: (row.opinion_message || '').trim(),
+      searchIndex: [displayName, fullName, province, city, row.public_code || ''].join(' ').toLowerCase(),
+      date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+    };
+  });
+  refreshDrawEntryPool();
+  renderProofMessages();
+  startDrawShowcase();
 }
 
 async function handleReturnedPayment() {
@@ -2165,6 +3558,7 @@ async function handleReturnedPayment() {
 
   await loadParticipants();
   renderParticipants(document.getElementById('searchInput').value);
+  startDrawShowcase();
   scheduleLiveFeed();
 
   const shareUrl = statusData.referral_link_code ? buildLandingShareUrl(statusData.referral_link_code) : '';
@@ -2194,6 +3588,10 @@ document.getElementById('searchInput').addEventListener('input', e => renderPart
 document.getElementById('modalConfirm').onclick = submitOrder;
 document.getElementById('copyShareBtn').onclick = copyShareLink;
 document.getElementById('shareWhatsappBtn').onclick = shareWhatsappLink;
+document.getElementById('toggleDemoBtn').onclick = toggleDemoShowcase;
+document.getElementById('drawStartBtn').onclick = startDemoTrial;
+document.getElementById('saveDemoResultBtn').onclick = saveCurrentDemoResult;
+document.getElementById('toggleDemoHistoryBtn').onclick = toggleDemoHistory;
 
 document.querySelectorAll('.faq-q').forEach(btn => {
   btn.onclick = () => {
@@ -2224,8 +3622,10 @@ async function bootLanding(){
     await loadCampaign();
     await loadPackages();
     await loadParticipants();
+    await loadDemoResults();
     renderPackages();
     renderParticipants();
+    startDrawShowcase();
     observeReveal();
     scheduleLiveFeed();
     await handleReturnedPayment();
