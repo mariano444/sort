@@ -559,6 +559,31 @@
   }
   .chances-list { display: flex; flex-wrap: wrap; gap: 0.35rem; }
   .participant-main-row { cursor: pointer; }
+  .message-cell {
+    text-align: right;
+  }
+  .message-trigger {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--text);
+    border-radius: 999px;
+    padding: 0.35rem 0.7rem;
+    font-size: 0.72rem; font-weight: 700;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s, background 0.2s;
+  }
+  .message-trigger:hover {
+    border-color: var(--gold);
+    background: rgba(245,200,66,0.08);
+    transform: translateY(-1px);
+  }
+  .message-trigger.empty {
+    opacity: 0.45;
+    cursor: default;
+    pointer-events: none;
+  }
+  .message-trigger-icon { font-size: 0.9rem; line-height: 1; }
   .participant-detail-row td {
     background: rgba(255,255,255,0.02);
     padding-top: 0.5rem;
@@ -607,6 +632,93 @@
   .step-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
   .step-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
   .step-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+
+  /* ---- DRAW PROCESS ---- */
+  .draw-process-section {
+    background: linear-gradient(180deg, var(--dark), var(--dark2));
+  }
+  .draw-process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .draw-card {
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1.1rem;
+    padding: 1.35rem 1.25rem;
+  }
+  .draw-card-title {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 0.45rem;
+  }
+  .draw-card-copy {
+    font-size: 0.85rem;
+    line-height: 1.65;
+    color: var(--text2);
+  }
+  .draw-highlight {
+    margin-top: 1.4rem;
+    padding: 1rem 1.1rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(245,200,66,0.18);
+    background: rgba(245,200,66,0.06);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ---- SOCIAL PROOF ---- */
+  .proof-section {
+    background: var(--dark);
+  }
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .proof-card {
+    background: var(--dark3);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 1.1rem;
+    padding: 1.3rem 1.2rem;
+  }
+  .proof-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .proof-name {
+    font-weight: 800;
+    color: var(--text);
+    font-size: 0.92rem;
+  }
+  .proof-city {
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .proof-copy {
+    color: var(--text2);
+    font-size: 0.86rem;
+    line-height: 1.65;
+  }
+  .proof-empty {
+    margin-top: 2rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: 1rem;
+    border: 1px dashed rgba(255,255,255,0.14);
+    color: var(--text2);
+    line-height: 1.65;
+    background: rgba(255,255,255,0.02);
+  }
 
   /* ---- FAQ ---- */
   .faq-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
@@ -700,6 +812,24 @@
     margin-bottom: 0.25rem;
   }
   .modal-sub { font-size: 0.85rem; color: var(--text2); margin-bottom: 1.5rem; }
+  .modal-assurance {
+    display: grid;
+    gap: 0.55rem;
+    margin: -0.25rem 0 1.1rem;
+    padding: 0.95rem 1rem;
+    border-radius: 0.9rem;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(245,200,66,0.12);
+  }
+  .modal-assurance strong {
+    color: var(--text);
+    font-size: 0.92rem;
+  }
+  .modal-assurance span {
+    color: var(--text2);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
   .modal-pkg-display {
     background: var(--dark3);
     border: 1px solid rgba(245,200,66,0.2);
@@ -741,6 +871,42 @@
   }
   .form-input:focus { border-color: var(--gold); }
   .form-input::placeholder { color: var(--text2); }
+  .form-textarea {
+    min-height: 90px;
+    resize: vertical;
+  }
+  .form-help {
+    margin-top: 0.45rem;
+    font-size: 0.76rem;
+    color: var(--text2);
+    line-height: 1.45;
+  }
+  .message-preview {
+    display: none;
+    margin: 0.2rem 0 1rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.8rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.16);
+  }
+  .message-preview.show {
+    display: block;
+  }
+  .message-preview-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--gold);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .message-preview-copy {
+    color: var(--text);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
   .payment-methods {
     display: flex; flex-wrap: wrap; gap: 0.5rem;
     margin-bottom: 1.5rem;
@@ -771,6 +937,13 @@
     display: flex; justify-content: center; gap: 1.5rem;
     margin-top: 1rem;
     font-size: 0.72rem; color: var(--text2); flex-wrap: wrap;
+  }
+  .opinion-modal-copy {
+    color: var(--text2);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-top: 1rem;
+    white-space: pre-wrap;
   }
 
   /* ---- TOAST ---- */
@@ -931,7 +1104,7 @@
   <div class="hero-badge">🔥 SORTEO NACIONAL — QUEDAN POCOS LUGARES</div>
 
   <h1 class="hero-title">GRAN<br>SORTEO</h1>
-  <p class="hero-subtitle">Una chance puede cambiar tu vida</p>
+  <p class="hero-subtitle">Un sorteo claro, visible y con más posibilidades para quienes suman más chances</p>
 
   <div class="prizes-row">
     <div class="prize-card primary reveal">
@@ -997,23 +1170,23 @@
 <div class="trust-strip">
   <div class="trust-item">
     <div class="trust-icon">🔒</div>
-    <span class="trust-label">Datos seguros<br>y protegidos</span>
+    <span class="trust-label">Reserva registrada<br>y datos protegidos</span>
   </div>
   <div class="trust-item">
     <div class="trust-icon">📋</div>
-    <span class="trust-label">Lista pública<br>de participantes</span>
+    <span class="trust-label">Lista pública<br>con participaciones activas</span>
   </div>
   <div class="trust-item">
     <div class="trust-icon">🎥</div>
-    <span class="trust-label">Participan desde<br>toda Argentina</span>
+    <span class="trust-label">Participan personas<br>de toda Argentina</span>
   </div>
   <div class="trust-item">
     <div class="trust-icon">✅</div>
-    <span class="trust-label">Premio o equivalente<br>en dinero</span>
+    <span class="trust-label">Entrega coordinada<br>con el ganador</span>
   </div>
   <div class="trust-item">
     <div class="trust-icon">🏆</div>
-    <span class="trust-label">3 premios<br>garantizados</span>
+    <span class="trust-label">3 ganadores<br>seleccionados al azar</span>
   </div>
 </div>
 
@@ -1040,7 +1213,7 @@
   <div class="section-inner">
     <span class="section-tag">💎 Elige tu pack</span>
     <h2 class="section-title">Más chances,<br><span style="color:var(--gold)">más posibilidades</span></h2>
-    <p class="section-sub">Cada chance te acerca al premio. Aprovechá los packs más grandes para multiplicar tus oportunidades.</p>
+    <p class="section-sub">Cada chance suma una participación real dentro del sistema de selección. Mientras más chances tengas, más posibilidades tenés de quedar entre los 3 ganadores.</p>
 
     <div class="packages-grid" id="packagesGrid">
       <!-- generado por JS -->
@@ -1053,7 +1226,7 @@
   <div class="section-inner">
     <span class="section-tag">👥 Transparencia total</span>
     <h2 class="section-title">Lista de<br><span style="color:var(--gold)">participantes</span></h2>
-    <p class="section-sub">Cada persona que compró chances aparece aquí. Participan usuarios de toda la Argentina.</p>
+    <p class="section-sub">Cada participación aprobada aparece aquí con su fecha y cantidad de chances, para que puedas ver que el ingreso quedó registrado y que el proceso se mantiene visible.</p>
 
     <div class="participants-table-wrap reveal">
       <div class="table-header">
@@ -1069,6 +1242,7 @@
               <th>Ciudad</th>
               <th>Compradas</th>
               <th>Fecha</th>
+              <th>Mensaje</th>
             </tr>
           </thead>
           <tbody id="participantsBody"></tbody>
@@ -1079,7 +1253,7 @@
     <div class="payment-status-card reveal" id="paymentStatusCard">
       <div class="payment-status-kicker" id="paymentStatusKicker">Pago confirmado</div>
       <div class="payment-status-title" id="paymentStatusTitle">Ya estás participando</div>
-      <div class="payment-status-copy" id="paymentStatusCopy">Cuando tu pago quede aprobado, tu nombre aparece en la lista y se habilita tu enlace único si corresponde.</div>
+      <div class="payment-status-copy" id="paymentStatusCopy">Cuando tu pago quede aprobado, tus chances quedan activas, tu participación aparece en la lista y se habilita tu enlace único si corresponde.</div>
       <div class="share-link-row hidden" id="shareLinkRow">
         <input class="share-link-input" id="shareLinkInput" type="text" readonly>
         <button class="share-link-btn secondary" id="copyShareBtn" type="button">Copiar enlace</button>
@@ -1103,27 +1277,68 @@
         <span class="step-num">1</span>
         <span class="step-icon">🎯</span>
         <div class="step-title">Elegí tu pack</div>
-        <p class="step-desc">Seleccioná la cantidad de chances que querés. Podés comprar desde 1 hasta 1000.</p>
+        <p class="step-desc">Elegís el pack que más te conviene. Cada chance representa una participación real dentro del sistema de selección aleatoria, por eso mientras más chances tengas, más posibilidades acumulás.</p>
       </div>
       <div class="step reveal" style="transition-delay:0.1s">
         <span class="step-num">2</span>
         <span class="step-icon">💳</span>
         <div class="step-title">Completá el pago</div>
-        <p class="step-desc">Pagá por transferencia, Mercado Pago o efectivo. Confirmamos en el momento.</p>
+        <p class="step-desc">Completás tus datos y pagás de forma simple. Tu reserva queda registrada y, cuando el pago se acredita, tus chances quedan activas con seguimiento claro del proceso.</p>
       </div>
       <div class="step reveal" style="transition-delay:0.2s">
         <span class="step-num">3</span>
         <span class="step-icon">📋</span>
         <div class="step-title">Aparecés en la lista</div>
-        <p class="step-desc">Tu nombre queda visible en la lista pública. Todos pueden ver quién participa.</p>
+        <p class="step-desc">Tu participación se refleja en la lista pública o, si preferís privacidad, podés figurar como anónimo con un código único para conservar transparencia sin exponer tu nombre.</p>
       </div>
       <div class="step reveal" style="transition-delay:0.3s">
         <span class="step-num">4</span>
         <span class="step-icon">🎰</span>
         <div class="step-title">Sorteo nacional</div>
-        <p class="step-desc">El sorteo se realiza el 26 de julio o antes al agotar chances. Quedan pocos lugares.</p>
+        <p class="step-desc">El sistema realiza una selección aleatoria de 3 participantes entre todas las chances activas. El sorteo se hace el 26 de julio o antes si se agotan las chances.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="draw-process-section">
+  <div class="section-inner">
+    <span class="section-tag">🎲 Selección transparente</span>
+    <h2 class="section-title">Cómo se eligen<br><span style="color:var(--gold)">los 3 ganadores</span></h2>
+    <p class="section-sub">El proceso está pensado para que cada chance cuente como una participación dentro de una selección aleatoria. No importa de dónde participes: si tu chance está activa, entra en el sorteo.</p>
+
+    <div class="draw-process-grid">
+      <div class="draw-card reveal">
+        <div class="draw-card-title">1. Se registran las chances activas</div>
+        <div class="draw-card-copy">Cada pago aprobado activa la cantidad exacta de chances compradas. Esas participaciones quedan asociadas al participante y visibles en la lista.</div>
+      </div>
+      <div class="draw-card reveal" style="transition-delay:0.1s">
+        <div class="draw-card-title">2. Un sistema avanzado selecciona al azar</div>
+        <div class="draw-card-copy">Al cierre del sorteo, un sistema de selección aleatoria toma todas las chances activas y elige 3 participantes ganadores de forma imparcial.</div>
+      </div>
+      <div class="draw-card reveal" style="transition-delay:0.2s">
+        <div class="draw-card-title">3. Más chances, más posibilidades</div>
+        <div class="draw-card-copy">Si una persona tiene más chances, participa más veces dentro del sistema. Eso no garantiza ganar, pero sí aumenta sus posibilidades frente a quien tiene menos chances.</div>
+      </div>
+      <div class="draw-card reveal" style="transition-delay:0.3s">
+        <div class="draw-card-title">4. Entrega coordinada con el ganador</div>
+        <div class="draw-card-copy">Una vez confirmados los ganadores, se coordina la entrega dentro de las 48 horas siguientes. Se organiza el retiro, envío o equivalente en dinero según corresponda al premio publicado.</div>
+      </div>
+    </div>
+
+    <div class="draw-highlight reveal" style="transition-delay:0.35s">
+      El objetivo es que el proceso sea simple de entender: comprás chances, tu pago se acredita, tus participaciones quedan activas y luego entrás en una selección aleatoria de 3 ganadores. Mientras más chances acumulás, más posibilidades tenés de ganar.
+    </div>
+  </div>
+</section>
+
+<section class="proof-section">
+  <div class="section-inner">
+    <span class="section-tag">💬 Opiniones y expectativas</span>
+    <h2 class="section-title">Mensajes que suman<br><span style="color:var(--gold)">confianza</span></h2>
+    <p class="section-sub">Compartimos opiniones y expectativas frecuentes de personas que valoran la claridad del proceso, la lista pública y la coordinación de la entrega con cada ganador.</p>
+
+    <div class="proof-grid" id="proofGrid"></div>
   </div>
 </section>
 
@@ -1135,23 +1350,27 @@
     <div class="faq-list">
       <div class="faq-item">
         <button class="faq-q">¿Cómo sé que el sorteo es real? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">La lista de participantes es pública y verificable. Participan personas de toda la Argentina y el sistema de selección es aleatorio y transparente.</div>
+        <div class="faq-a">La lista de participantes se actualiza con pagos aprobados y muestra la cantidad de chances activas de cada persona. Eso permite ver que cada participación queda registrada y que el proceso sea mucho más claro, visible y confiable.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q">¿Cómo se realizará el sorteo? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">Cada chance tiene un número asignado. El sorteo se realiza el 26 de julio o antes al agotar chances. Se extraen 3 números ganadores para los 3 premios.</div>
+        <div class="faq-a">Cada chance equivale a una participación dentro del sistema. Al cierre del sorteo, un sistema avanzado de selección aleatoria toma todas las chances activas y elige 3 participantes ganadores. Si comprás más chances, participás más veces y aumentás tus posibilidades.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q">¿Cuándo se entrega el premio? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">Los premios se coordinan con el ganador en las 48 horas posteriores al sorteo. Se entrega el premio publicado o su equivalente en dinero.</div>
+        <div class="faq-a">Los premios se coordinan con cada ganador dentro de las 48 horas posteriores al sorteo. Se contacta al ganador, se valida la forma de entrega y se organiza el retiro, envío o equivalente en dinero según el premio publicado.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q">¿Puedo comprar más de un pack? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">¡Sí! Podés comprar todos los packs que quieras. Cada pack suma más chances al sorteo. Cuantas más chances tengas, mayor es tu probabilidad de ganar.</div>
+        <div class="faq-a">Sí. Podés comprar más de un pack y todas tus chances se acumulan en tu mismo usuario. Eso hace que tengas más oportunidades dentro del sorteo final.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q">¿Qué métodos de pago aceptan? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">Aceptamos transferencia bancaria, Mercado Pago, Alias/CBU y efectivo. Una vez confirmado el pago, tu nombre aparece en la lista de participantes.</div>
+        <div class="faq-a">Podés abonar con los medios habilitados en el formulario. Una vez aprobado el pago, tus chances quedan activas y tu participación aparece en la lista pública o como anónimo, según elijas, para que siempre haya registro visible del ingreso.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">¿Cómo funcionan los referidos? <span class="faq-arrow">▼</span></button>
+        <div class="faq-a">Si tu compra aprobada habilita tu enlace único, podés compartirlo. Cuando otra persona compra desde ese enlace y se acredita el pago, el sistema suma 2 chances extra a tu cuenta automáticamente, aumentando tus posibilidades dentro de la selección.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q">¿Hay fecha límite para participar? <span class="faq-arrow">▼</span></button>
@@ -1164,7 +1383,7 @@
 <!-- BOTTOM CTA -->
 <section class="bottom-cta">
   <h2 class="bottom-cta-title reveal">¿Y si sos<br>el próximo ganador?</h2>
-  <p class="bottom-cta-sub reveal">No existe el "no tengo suerte" si ni siquiera intentás. Por $2.500 podés llevarte una moto.</p>
+  <p class="bottom-cta-sub reveal">Participás con un proceso claro, con registro visible y una selección aleatoria de 3 ganadores. Mientras más chances sumás, más posibilidades tenés.</p>
   <div class="reveal" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap">
     <a href="#paquetes" class="btn-primary">¡COMPRAR CHANCES AHORA!</a>
     <a href="#participantes" class="btn-secondary">Ver participantes</a>
@@ -1182,7 +1401,11 @@
   <div class="modal">
     <button class="modal-close" id="modalClose">✕</button>
     <div class="modal-title">¡Casi listo! 🎉</div>
-    <p class="modal-sub">Completá tus datos para reservar tus chances</p>
+    <p class="modal-sub">Completá tus datos para reservar tus chances y avanzar a un pago simple y seguro.</p>
+    <div class="modal-assurance">
+      <strong>Tu reserva queda asociada a tus datos, al pack elegido y al estado del pago.</strong>
+      <span>Cuando el pago se acredita, tus chances se activan y tu participación se refleja en la lista pública o como anónimo si así lo elegís. Eso ayuda a que el proceso sea más claro, ordenado y confiable.</span>
+    </div>
     <div class="modal-pkg-display">
       <div class="modal-pkg-info">
         <span class="label">Pack seleccionado</span>
@@ -1206,6 +1429,15 @@
       <input class="form-input" type="text" id="f-city" placeholder="Tu ciudad">
     </div>
     <div class="form-group">
+      <label class="form-label">Opinión o expectativa opcional</label>
+      <textarea class="form-input form-textarea" id="f-message" placeholder="Ej: Me encanta participar, ojalá tenga suerte. / Me gusta que la lista sea pública y transparente."></textarea>
+      <div class="form-help">Si querés, podés dejar una reseña breve, qué te parece el sorteo o cuáles son tus expectativas. Es completamente opcional y se muestra abajo dentro del formulario como referencia.</div>
+    </div>
+    <div class="message-preview" id="messagePreview">
+      <span class="message-preview-label">Tu opinión o expectativa</span>
+      <div class="message-preview-copy" id="messagePreviewCopy"></div>
+    </div>
+    <div class="form-group">
       <label class="form-check">
         <input type="checkbox" id="f-anonymous">
         <span class="form-check-copy">
@@ -1225,10 +1457,23 @@
     </div>
     <button class="modal-confirm" id="modalConfirm">CONFIRMAR Y PAGAR ✓</button>
     <div class="modal-trust">
-      <span>🔒 Datos seguros</span>
-      <span>✅ Confirmación inmediata</span>
-      <span>📋 Lista pública o anónima</span>
+      <span>🔒 Datos y reserva asociados a tu compra</span>
+      <span>✅ Chances activadas al acreditarse el pago</span>
+      <span>📋 Participación visible o anónima, según elijas</span>
     </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="opinionModal">
+  <div class="modal">
+    <button class="modal-close" id="opinionModalClose">✕</button>
+    <div class="modal-title">💬 Opinión o expectativa</div>
+    <p class="modal-sub">Mensaje compartido por una persona que ya participa del sorteo.</p>
+    <div class="modal-assurance">
+      <strong id="opinionAuthor">Participante</strong>
+      <span id="opinionMeta">Su mensaje aparece como parte de las opiniones visibles del sorteo.</span>
+    </div>
+    <div class="opinion-modal-copy" id="opinionModalCopy"></div>
   </div>
 </div>
 
@@ -1266,6 +1511,28 @@ let selectedPkg = null;
 let selectedPaymentProvider = 'galiopay';
 let countdownInterval = null;
 let liveFeedTimeout = null;
+const fallbackProofMessages = [
+  {
+    name: 'Mariana',
+    city: 'Cordoba',
+    message: 'Me dio confianza ver que las participaciones aparecen con fecha y cantidad de chances. Eso hace que el sorteo se sienta más claro y serio.'
+  },
+  {
+    name: 'Leandro',
+    city: 'Rosario',
+    message: 'Me gusta que expliquen que mientras más chances comprás, más veces participás en la selección aleatoria. Se entiende rápido y genera seguridad.'
+  },
+  {
+    name: 'Camila',
+    city: 'Buenos Aires',
+    message: 'Saber que la entrega se coordina directamente con el ganador y que existe opción de equivalente en dinero me transmite mucha más tranquilidad.'
+  },
+  {
+    name: 'Franco',
+    city: 'Mendoza',
+    message: 'La opción de aparecer anónimo pero seguir participando con registro visible me parece una muy buena forma de combinar privacidad con transparencia.'
+  }
+];
 let latestOrderStatus = null;
 const expandedParticipantRows = new Set();
 
@@ -1476,7 +1743,7 @@ function renderPackages(){
       <span class="pkg-price">$${totalPrice.toLocaleString('es-AR')}</span>
       <span class="pkg-price-unit">$${perChance} por chance</span>
       <span class="pkg-saving">${savingsLabel}</span>
-      <span class="pkg-price-unit">${chances >= 3 ? 'Al pagar habilita link unico y regala 2 chances por referido' : '&nbsp;'}</span>
+      <span class="pkg-price-unit">${chances >= 3 ? 'Con 3 o más chances se habilita tu link único y cada referido aprobado te suma 2 chances extra' : '&nbsp;'}</span>
       <button class="pkg-btn" onclick="openModal('${pkg.id}')">Quiero ${chances >= 1000 ? (chances/1000)+'K' : chances} chance${chances > 1 ? 's' : ''}</button>
     `;
     grid.appendChild(div);
@@ -1510,6 +1777,7 @@ function renderParticipants(filter=''){
       <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
       <td><span class="chances-badge">x${purchasedChances.toLocaleString('es-AR')}</span></td>
       <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
+      <td class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(p.city || 'Argentina')}"><span class="message-trigger-icon">💬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
     `;
     body.appendChild(row);
 
@@ -1522,10 +1790,22 @@ function renderParticipants(filter=''){
           <td><span style="font-size:0.8rem;color:var(--text2)">${p.city}</span></td>
           <td><span class="chances-badge">x${chanceNumber}</span></td>
           <td style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
+          <td class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(p.city || 'Argentina')}"><span class="message-trigger-icon">💬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
         `;
         body.appendChild(detailRow);
       });
     }
+  });
+
+  body.querySelectorAll('.message-trigger:not(.empty)').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      openOpinionModal({
+        message: decodeURIComponent(button.dataset.opinion || ''),
+        author: decodeURIComponent(button.dataset.author || 'Participante'),
+        city: decodeURIComponent(button.dataset.city || 'Argentina')
+      });
+    });
   });
 
   body.querySelectorAll('.participant-main-row').forEach((row) => {
@@ -1542,10 +1822,36 @@ function renderParticipants(filter=''){
   });
 
   if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="4" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
+    body.innerHTML = '<tr><td colspan="5" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
   }
 
   updateStats();
+}
+
+function renderProofMessages() {
+  const grid = document.getElementById('proofGrid');
+  if (!grid) return;
+
+  const dynamicMessages = participants
+    .filter((p) => p.opinionMessage)
+    .map((p) => ({
+      name: p.displayName || p.name,
+      city: p.city || 'Argentina',
+      message: p.opinionMessage
+    }));
+
+  const cards = dynamicMessages.length ? dynamicMessages : [];
+  grid.innerHTML = cards.map((item, index) => `
+    <div class="proof-card reveal" style="transition-delay:${Math.min(index * 0.08, 0.32)}s">
+      <div class="proof-head">
+        <span class="proof-name">${escapeHtml(item.name)}</span>
+        <span class="proof-city">${escapeHtml(item.city)}</span>
+      </div>
+      <div class="proof-copy">"${escapeHtml(item.message)}"</div>
+    </div>
+  `).join('');
+
+  observeReveal();
 }
 
 function setCountdown(targetIso){
@@ -1616,7 +1922,9 @@ function openModal(pkgId){
   document.getElementById('f-name').value = '';
   document.getElementById('f-phone').value = '';
   document.getElementById('f-city').value = '';
+  document.getElementById('f-message').value = '';
   document.getElementById('f-anonymous').checked = false;
+  updateMessagePreview();
   selectPaymentProvider('galiopay');
   setModalOpen(true);
 }
@@ -1643,10 +1951,39 @@ function selectPM(el){
   selectedPaymentProvider = el.dataset.provider || 'manual';
 }
 
+function updateMessagePreview() {
+  const value = document.getElementById('f-message').value.trim();
+  const preview = document.getElementById('messagePreview');
+  const copy = document.getElementById('messagePreviewCopy');
+  copy.textContent = value;
+  preview.classList.toggle('show', Boolean(value));
+}
+
+document.getElementById('f-message').addEventListener('input', updateMessagePreview);
+document.getElementById('opinionModalClose').onclick = () => document.getElementById('opinionModal').classList.remove('open');
+document.getElementById('opinionModal').onclick = e => { if (e.target === document.getElementById('opinionModal')) document.getElementById('opinionModal').classList.remove('open'); };
+
+function openOpinionModal({ message, author, city }) {
+  document.getElementById('opinionAuthor').textContent = author;
+  document.getElementById('opinionMeta').textContent = `${city} · Mensaje compartido desde el formulario del sorteo.`;
+  document.getElementById('opinionModalCopy').textContent = message;
+  document.getElementById('opinionModal').classList.add('open');
+}
+
+function escapeHtml(value) {
+  return String(value || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 async function submitOrder(){
   const name = document.getElementById('f-name').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
   const city = document.getElementById('f-city').value.trim() || 'Argentina';
+  const opinionMessage = document.getElementById('f-message').value.trim();
   const wantsAnonymous = document.getElementById('f-anonymous').checked;
   if (!selectedPkg) return showToast('Elegí un paquete.');
   if (!name || !phone) return alert('Completá nombre y WhatsApp');
@@ -1665,7 +2002,8 @@ async function submitOrder(){
       p_city: city,
       p_show_public_name: !wantsAnonymous,
       p_payment_provider: selectedPaymentProvider,
-      p_referral_code: getReferralCode() || null
+      p_referral_code: getReferralCode() || null,
+      p_opinion_message: opinionMessage || null
     });
 
     if (error) throw error;
@@ -1770,8 +2108,10 @@ async function loadParticipants(){
     purchasedChances: Number(row.purchased_entries || row.total_entries || 0),
     chances: Number(row.total_entries || 0),
     currentChances: Math.max(Number(row.purchased_entries || 0), Number(row.total_entries || 0)),
+    opinionMessage: (row.opinion_message || '').trim(),
     date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
   }));
+  renderProofMessages();
 }
 
 async function loadPublicOrderStatus(orderRef) {
@@ -1841,8 +2181,8 @@ async function handleReturnedPayment() {
     kicker: 'Pago aprobado',
     title: `${participantLabel} ya participa del sorteo`,
     copy: shareUrl
-      ? `Tus chances ya están activas y también se habilitó tu enlace único. Cada compra aprobada desde ese enlace te suma 2 chances extra.`
-      : `Tus chances ya están activas y ya aparecés en la lista pública de participantes.`,
+      ? `Tus chances ya están activas, tu compra quedó registrada y también se habilitó tu enlace único. Cada compra aprobada desde ese enlace te suma 2 chances extra.`
+      : `Tus chances ya están activas, tu compra quedó registrada y ya aparecés en la lista pública de participantes.`,
     shareUrl
   });
   showToast(shareUrl ? 'Pago aprobado. Ya podés compartir tu enlace único.' : 'Pago aprobado. Ya aparecés en la lista.');
