@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gran Sorteo — Moto · TV 60" · $200.000</title>
-<meta name="description" content="Participá desde cualquier punto de Argentina por la moto, el TV o el efectivo. Quedan pocos lugares y el sorteo puede hacerse antes al agotar chances.">
+<title>Gran Sorteo - Fiat Uno 2014 Impecable</title>
+<meta name="description" content="Participa desde cualquier punto de Argentina por un Fiat Uno 2014 impecable. Quedan pocos lugares y el sorteo puede hacerse antes al agotar chances.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Gran Sorteo - Moto, TV y efectivo">
-<meta property="og:description" content="Te invito a participar de este sorteo. Quedan pocos lugares y puede realizarse antes al agotar chances.">
+<meta property="og:title" content="Gran Sorteo - Fiat Uno 2014 Impecable">
+<meta property="og:description" content="Te invito a participar de este sorteo por un Fiat Uno 2014 impecable. Quedan pocos lugares y puede realizarse antes al agotar chances.">
 <meta property="og:image" content="./assets/share/share-sorteo.png">
 <meta property="og:image:alt" content="Imagen promocional del sorteo">
 <meta property="og:locale" content="es_AR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gran Sorteo - Moto, TV y efectivo">
-<meta name="twitter:description" content="Te invito a participar de este sorteo. Quedan pocos lugares y puede realizarse antes al agotar chances.">
+<meta name="twitter:title" content="Gran Sorteo - Fiat Uno 2014 Impecable">
+<meta name="twitter:description" content="Te invito a participar de este sorteo por un Fiat Uno 2014 impecable. Quedan pocos lugares y puede realizarse antes al agotar chances.">
 <meta name="twitter:image" content="./assets/share/share-sorteo.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet">
 <style>
@@ -117,7 +117,8 @@
   .prizes-row {
     position: relative; z-index: 2;
     display: grid;
-    grid-template-columns: minmax(340px, 520px) repeat(2, minmax(180px, 240px));
+    grid-template-columns: minmax(320px, 1100px);
+    justify-content: center;
     gap: 1rem;
     align-items: stretch;
     margin-bottom: 3rem;
@@ -202,32 +203,190 @@
     height: 180px;
   }
   .prize-card.primary {
+    width: min(100%, 1100px);
     text-align: left;
     padding: 1.6rem 1.6rem 1.25rem;
   }
   .prize-card.primary .prize-name {
-    font-size: 2rem;
+    font-size: clamp(2.3rem, 4vw, 3.4rem);
     line-height: 0.92;
   }
   .prize-card.primary .prize-detail {
-    max-width: 24ch;
+    max-width: 34ch;
   }
   .prize-card.primary .prize-visual {
-    height: 240px;
-    margin-bottom: 0.35rem;
+    height: auto;
+    margin-bottom: 1rem;
   }
   .prize-card.primary .prize-visual::before {
-    inset: 12% 10% 2%;
+    inset: 2% 4% 0;
     background: radial-gradient(circle at center, rgba(255,232,180,0.46) 0%, rgba(255,255,255,0.12) 36%, rgba(255,255,255,0) 74%);
   }
   .prize-card.primary .prize-image {
     width: 100%;
-    max-width: 330px;
-    max-height: 220px;
+    max-width: none;
+    max-height: none;
   }
   .prize-card.tv .prize-image {
     width: 100%;
     max-width: 220px;
+  }
+  .prize-gallery {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+  .prize-shot {
+    position: relative;
+    min-height: 180px;
+    border-radius: 1.1rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    padding: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .prize-shot img {
+    width: 100%;
+    height: 170px;
+    object-fit: contain;
+    filter: drop-shadow(0 16px 24px rgba(0,0,0,0.32));
+  }
+  .prize-summary {
+    display: grid;
+    gap: 0.45rem;
+  }
+  .prize-eyebrow {
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .prize-specs {
+    color: var(--text2);
+    font-size: 0.98rem;
+    line-height: 1.5;
+  }
+  .auto-showcase {
+    position: relative;
+    padding: 2rem 1rem 0;
+    background:
+      radial-gradient(circle at top center, rgba(245,200,66,0.05), transparent 42%),
+      linear-gradient(180deg, rgba(10,10,15,0), rgba(10,10,15,0.55) 28%);
+  }
+  .auto-showcase-wrap {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.92fr 1.08fr;
+    gap: 1.15rem;
+    align-items: stretch;
+  }
+  .auto-showcase-copy,
+  .auto-showcase-grid {
+    background: linear-gradient(145deg, rgba(24,24,34,0.96), rgba(16,16,24,0.98));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 1.5rem;
+    box-shadow: 0 18px 38px rgba(0,0,0,0.22);
+  }
+  .auto-showcase-copy {
+    padding: 1.7rem;
+    display: grid;
+    gap: 0.95rem;
+  }
+  .auto-showcase-kicker {
+    color: var(--gold);
+    font-size: 0.74rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  .auto-showcase-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.3rem, 4.8vw, 4rem);
+    line-height: 0.9;
+    color: var(--text);
+  }
+  .auto-showcase-title span {
+    color: var(--gold);
+    text-shadow: 0 0 26px rgba(245,200,66,0.16);
+  }
+  .auto-showcase-text {
+    color: var(--text2);
+    font-size: 0.98rem;
+    line-height: 1.7;
+    max-width: 44ch;
+  }
+  .auto-showcase-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+  .auto-pill {
+    padding: 0.55rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    color: var(--text2);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .auto-showcase-grid {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.95rem;
+  }
+  .auto-photo-card {
+    position: relative;
+    min-height: 190px;
+    border-radius: 1.15rem;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+    background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+    transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+  }
+  .auto-photo-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245,200,66,0.22);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.22);
+  }
+  .auto-photo-card.featured {
+    grid-column: span 2;
+    min-height: 240px;
+  }
+  .auto-photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+    filter: drop-shadow(0 16px 28px rgba(0,0,0,0.32));
+  }
+  .auto-photo-label {
+    position: absolute;
+    left: 0.8rem;
+    right: 0.8rem;
+    bottom: 0.8rem;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.62rem 0.78rem;
+    border-radius: 999px;
+    background: rgba(10,10,15,0.74);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+  .auto-photo-label strong {
+    color: var(--gold);
+    font-weight: 800;
   }
   .live-feed {
     position: fixed;
@@ -1741,7 +1900,13 @@
     .modal { padding: 1.5rem; }
     .hero-title { font-size: 4.5rem; }
     .prize-visual, .prize-moto-stack { height: 140px; }
-    .prize-card.primary .prize-visual { height: 190px; }
+    .prize-card.primary .prize-visual { height: auto; }
+    .prize-gallery { grid-template-columns: 1fr 1fr; }
+    .prize-shot { min-height: 150px; }
+    .prize-shot img { height: 140px; }
+    .auto-showcase-wrap { grid-template-columns: 1fr; }
+    .auto-showcase-grid { grid-template-columns: 1fr; }
+    .auto-photo-card.featured { grid-column: span 1; min-height: 220px; }
     .live-feed { left: 12px; right: 12px; min-width: 0; max-width: none; }
     .whatsapp-float {
       right: 12px;
@@ -1761,46 +1926,40 @@
   <div class="hero-bg"></div>
   <div class="hero-sparks" id="sparks"></div>
 
-  <div class="hero-badge">🔥 SORTEO NACIONAL — QUEDAN POCOS LUGARES</div>
+  <div class="hero-badge">SORTEO NACIONAL - QUEDAN POCOS LUGARES</div>
 
   <h1 class="hero-title">GRAN<br>SORTEO</h1>
-  <p class="hero-subtitle">Un sorteo claro, visible y con más posibilidades para quienes suman más chances</p>
+  <p class="hero-subtitle">Un solo premio. Un Fiat Uno 2014 impecable.</p>
 
   <div class="prizes-row">
     <div class="prize-card primary reveal">
       <div class="prize-visual">
-        <img class="prize-image" src="./assets/premios/moto-adventure.png" alt="Honda XR 190 premio principal">
-      </div>
-      <span class="prize-name">HONDA XR 190</span>
-      <span class="prize-detail">Entrega coordinada a todo el país o su equivalente en dinero.</span>
-    </div>
-    <div class="prize-card tv reveal" style="transition-delay:0.1s">
-      <div class="prize-visual">
-        <img class="prize-image" src="./assets/premios/tv-premio.png" alt="Smart TV premio">
-      </div>
-      <span class="prize-name">Smart TV</span>
-      <span class="prize-detail">LED 60" · 4K Ultra HD</span>
-    </div>
-    <div class="prize-card cash reveal" style="transition-delay:0.2s">
-      <div class="prize-visual">
-        <div>
-          <span class="prize-amount">$200K</span>
-          <span class="prize-icon">💵</span>
+        <div class="prize-gallery">
+          <div class="prize-shot"><img class="prize-image" src="./assets/premios/fiat-uno-frente-angulo.png" alt="Fiat Uno 2014 vista frontal en angulo"></div>
+          <div class="prize-shot"><img class="prize-image" src="./assets/premios/fiat-uno-frente.png" alt="Fiat Uno 2014 vista frontal"></div>
+          <div class="prize-shot"><img class="prize-image" src="./assets/premios/fiat-uno-interior.png" alt="Fiat Uno 2014 interior"></div>
+          <div class="prize-shot"><img class="prize-image" src="./assets/premios/fiat-uno-atras-angulo-1.png" alt="Fiat Uno 2014 vista trasera lateral"></div>
+          <div class="prize-shot"><img class="prize-image" src="./assets/premios/fiat-uno-atras.png" alt="Fiat Uno 2014 vista trasera"></div>
+          <div class="prize-shot"><img class="prize-image" src="./assets/premios/fiat-uno-atras-angulo-2.png" alt="Fiat Uno 2014 vista trasera en angulo"></div>
         </div>
       </div>
-      <span class="prize-name">Efectivo</span>
-      <span class="prize-detail">Efectivo · Transferencia</span>
+      <div class="prize-summary">
+        <span class="prize-eyebrow">Premio unico</span>
+        <span class="prize-name">HERMOSO FIAT UNO 2014</span>
+        <span class="prize-detail">Impecable. Entrega coordinada con el ganador.</span>
+        <span class="prize-specs">Se participa por un solo premio: el auto publicado en esta pagina, con todas sus fotos visibles para que el premio quede claro desde el primer vistazo.</span>
+      </div>
     </div>
   </div>
 
   <div class="hero-cta reveal" style="transition-delay:0.3s">
-    <a href="#paquetes" class="btn-primary">¡QUIERO MIS CHANCES!</a>
+    <a href="#paquetes" class="btn-primary">QUIERO MIS CHANCES</a>
   </div>
 
   <div class="countdown-bar reveal hidden-until-thirty" id="countdownBar" style="transition-delay:0.4s">
     <div class="countdown-unit">
       <span class="countdown-num" id="cd-d">00</span>
-      <span class="countdown-label">Días</span>
+      <span class="countdown-label">DÃ­as</span>
     </div>
     <div class="countdown-sep">:</div>
     <div class="countdown-unit">
@@ -1823,57 +1982,57 @@
 
 <!-- URGENCY STRIP -->
 <div class="urgency-strip">
-  <span>⚡ SORTEO NACIONAL · 26 DE JULIO O ANTES AL AGOTAR CHANCES · QUEDAN POCOS LUGARES · MÁS CHANCES = MÁS POSIBILIDADES DE GANAR · ⚡ SORTEO NACIONAL · 26 DE JULIO O ANTES AL AGOTAR CHANCES · QUEDAN POCOS LUGARES · MÁS CHANCES = MÁS POSIBILIDADES DE GANAR · </span>
+  <span>SORTEO NACIONAL · FIAT UNO 2014 IMPECABLE · PREMIO UNICO · 26 DE JULIO O ANTES AL AGOTAR CHANCES · QUEDAN POCOS LUGARES · SORTEO NACIONAL · FIAT UNO 2014 IMPECABLE · PREMIO UNICO · 26 DE JULIO O ANTES AL AGOTAR CHANCES · QUEDAN POCOS LUGARES · </span>
 </div>
 
 <!-- TRUST STRIP -->
 <div class="trust-strip">
   <div class="trust-item">
-    <div class="trust-icon">🔒</div>
+    <div class="trust-icon">OK</div>
     <span class="trust-label">Reserva registrada<br>y datos protegidos</span>
   </div>
   <div class="trust-item">
-    <div class="trust-icon">📋</div>
-    <span class="trust-label">Lista pública<br>con participaciones activas</span>
+    <div class="trust-icon">VIP</div>
+    <span class="trust-label">Lista publica<br>con participaciones activas</span>
   </div>
   <div class="trust-item">
-    <div class="trust-icon">🎥</div>
+    <div class="trust-icon">AR</div>
     <span class="trust-label">Participan personas<br>de toda Argentina</span>
   </div>
   <div class="trust-item">
-    <div class="trust-icon">✅</div>
+    <div class="trust-icon">GO</div>
     <span class="trust-label">Entrega coordinada<br>con el ganador</span>
   </div>
   <div class="trust-item">
-    <div class="trust-icon">🏆</div>
-    <span class="trust-label">3 ganadores<br>seleccionados al azar</span>
+    <div class="trust-icon">1</div>
+    <span class="trust-label">1 ganador<br>seleccionado al azar</span>
   </div>
 </div>
 
 <!-- TICKER -->
 <div class="ticker">
   <div class="ticker-inner" id="ticker">
-    <span class="ticker-item">🏍️ Moto 0km lista para entrega</span>
-    <span class="ticker-item">📺 Smart TV LED 60" 4K</span>
-    <span class="ticker-item">💵 $200.000 en efectivo</span>
-    <span class="ticker-item">⭐ Más chances = más posibilidades</span>
-    <span class="ticker-item">🔒 Sorteo 100% transparente</span>
-    <span class="ticker-item">🇦🇷 Participás desde toda Argentina</span>
-    <span class="ticker-item">🏍️ Moto 0km lista para entrega</span>
-    <span class="ticker-item">📺 Smart TV LED 60" 4K</span>
-    <span class="ticker-item">💵 $200.000 en efectivo</span>
-    <span class="ticker-item">⭐ Más chances = más posibilidades</span>
-    <span class="ticker-item">🔒 Sorteo 100% transparente</span>
-    <span class="ticker-item">🇦🇷 Participás desde toda Argentina</span>
+    <span class="ticker-item">Fiat Uno 2014 impecable</span>
+    <span class="ticker-item">Premio unico publicado con 6 fotos reales</span>
+    <span class="ticker-item">1 ganador seleccionado al azar</span>
+    <span class="ticker-item">Mas chances = mas posibilidades</span>
+    <span class="ticker-item">Sorteo 100% transparente</span>
+    <span class="ticker-item">Participas desde toda Argentina</span>
+    <span class="ticker-item">Fiat Uno 2014 impecable</span>
+    <span class="ticker-item">Premio unico publicado con 6 fotos reales</span>
+    <span class="ticker-item">1 ganador seleccionado al azar</span>
+    <span class="ticker-item">Mas chances = mas posibilidades</span>
+    <span class="ticker-item">Sorteo 100% transparente</span>
+    <span class="ticker-item">Participas desde toda Argentina</span>
   </div>
 </div>
 
 <!-- PACKAGES -->
 <section id="paquetes" class="packages-section">
   <div class="section-inner">
-    <span class="section-tag">💎 Elige tu pack</span>
-    <h2 class="section-title">Más chances,<br><span style="color:var(--gold)">más posibilidades</span></h2>
-    <p class="section-sub">Cada chance suma una participación real dentro del sistema de selección. Mientras más chances tengas, más posibilidades tenés de quedar entre los 3 ganadores.</p>
+    <span class="section-tag">ðŸ’Ž Elige tu pack</span>
+    <h2 class="section-title">MÃ¡s chances,<br><span style="color:var(--gold)">mÃ¡s posibilidades</span></h2>
+    <p class="section-sub">Cada chance suma una participacion real dentro del sistema de seleccion. Mientras mas chances tengas, mas posibilidades tenes de quedarte con el Fiat Uno 2014.</p>
 
     <div class="packages-grid" id="packagesGrid">
       <!-- generado por JS -->
@@ -1884,9 +2043,9 @@
 <!-- PARTICIPANTS -->
 <section id="participantes" class="participants-section">
   <div class="section-inner">
-    <span class="section-tag">👥 Transparencia total</span>
+    <span class="section-tag">ðŸ‘¥ Transparencia total</span>
     <h2 class="section-title">Lista de<br><span style="color:var(--gold)">participantes</span></h2>
-    <p class="section-sub">Cada participación aprobada aparece aquí con su fecha y cantidad de chances, para que puedas ver que el ingreso quedó registrado y que el proceso se mantiene visible.</p>
+    <p class="section-sub">Cada participaciÃ³n aprobada aparece aquÃ­ con su fecha y cantidad de chances, para que puedas ver que el ingreso quedÃ³ registrado y que el proceso se mantiene visible.</p>
 
     <div class="demo-launcher reveal hidden">
       <div class="demo-launcher-copy">
@@ -1958,7 +2117,7 @@
       <div class="table-header">
         <span class="table-title">Participantes registrados</span>
         <span class="live-badge"><span class="live-dot"></span> EN VIVO</span>
-        <input type="text" class="search-input" id="searchInput" placeholder="Buscar por nombre o código...">
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar por nombre o cÃ³digo...">
       </div>
       <div style="overflow-x:auto" id="participantsTableScroller">
         <table>
@@ -1987,8 +2146,8 @@
 
     <div class="payment-status-card reveal" id="paymentStatusCard">
       <div class="payment-status-kicker" id="paymentStatusKicker">Pago confirmado</div>
-      <div class="payment-status-title" id="paymentStatusTitle">Ya estás participando</div>
-      <div class="payment-status-copy" id="paymentStatusCopy">Cuando tu pago quede aprobado, tus chances quedan activas, tu participación aparece en la lista y se habilita tu enlace único si corresponde.</div>
+      <div class="payment-status-title" id="paymentStatusTitle">Ya estÃ¡s participando</div>
+      <div class="payment-status-copy" id="paymentStatusCopy">Cuando tu pago quede aprobado, tus chances quedan activas, tu participaciÃ³n aparece en la lista y se habilita tu enlace Ãºnico si corresponde.</div>
       <div class="share-link-row hidden" id="shareLinkRow">
         <input class="share-link-input" id="shareLinkInput" type="text" readonly>
         <button class="share-link-btn secondary" id="copyShareBtn" type="button">Copiar enlace</button>
@@ -1997,7 +2156,49 @@
     </div>
 
     <div style="text-align:center; margin-top:2rem">
-      <a href="#paquetes" class="btn-primary">¡Sumate ahora!</a>
+      <a href="#paquetes" class="btn-primary">Â¡Sumate ahora!</a>
+    </div>
+  </div>
+</section>
+
+<section class="auto-showcase">
+  <div class="auto-showcase-wrap reveal">
+    <div class="auto-showcase-copy">
+      <span class="auto-showcase-kicker">Galeria del premio</span>
+      <h2 class="auto-showcase-title">Hermoso <span>Fiat Uno</span><br>2014 impecable</h2>
+      <p class="auto-showcase-text">Una presentacion mas prolija del premio, ubicada debajo de la lista de participantes para acompañar el recorrido de la pagina con una seccion visual mas armoniosa, clara y profesional.</p>
+      <div class="auto-showcase-pills">
+        <span class="auto-pill">Premio unico</span>
+        <span class="auto-pill">6 fotos reales</span>
+        <span class="auto-pill">Exterior e interior</span>
+        <span class="auto-pill">Entrega coordinada</span>
+      </div>
+    </div>
+    <div class="auto-showcase-grid">
+      <div class="auto-photo-card featured">
+        <img src="./assets/premios/fiat-uno-frente-angulo.png" alt="Hermoso Fiat Uno 2014 vista principal">
+        <div class="auto-photo-label"><span>Vista principal</span><strong>Fiat Uno</strong></div>
+      </div>
+      <div class="auto-photo-card">
+        <img src="./assets/premios/fiat-uno-frente.png" alt="Hermoso Fiat Uno 2014 frente">
+        <div class="auto-photo-label"><span>Frente</span><strong>Exterior</strong></div>
+      </div>
+      <div class="auto-photo-card">
+        <img src="./assets/premios/fiat-uno-interior.png" alt="Hermoso Fiat Uno 2014 interior">
+        <div class="auto-photo-label"><span>Interior</span><strong>Cabina</strong></div>
+      </div>
+      <div class="auto-photo-card">
+        <img src="./assets/premios/fiat-uno-atras-angulo-1.png" alt="Hermoso Fiat Uno 2014 lateral trasera">
+        <div class="auto-photo-label"><span>Lateral trasera</span><strong>Perfil</strong></div>
+      </div>
+      <div class="auto-photo-card">
+        <img src="./assets/premios/fiat-uno-atras.png" alt="Hermoso Fiat Uno 2014 parte trasera">
+        <div class="auto-photo-label"><span>Parte trasera</span><strong>Detalle</strong></div>
+      </div>
+      <div class="auto-photo-card featured">
+        <img src="./assets/premios/fiat-uno-atras-angulo-2.png" alt="Hermoso Fiat Uno 2014 vista final">
+        <div class="auto-photo-label"><span>Vista final</span><strong>Impecable</strong></div>
+      </div>
     </div>
   </div>
 </section>
@@ -2005,32 +2206,32 @@
 <!-- HOW IT WORKS -->
 <section class="how-section">
   <div class="section-inner">
-    <span class="section-tag">❓ ¿Cómo funciona?</span>
+    <span class="section-tag">â“ Â¿CÃ³mo funciona?</span>
     <h2 class="section-title">Simple,<br><span style="color:var(--gold)">transparente, real</span></h2>
     <div class="steps-grid">
       <div class="step reveal">
         <span class="step-num">1</span>
-        <span class="step-icon">🎯</span>
-        <div class="step-title">Elegí tu pack</div>
-        <p class="step-desc">Elegís el pack que más te conviene. Cada chance representa una participación real dentro del sistema de selección aleatoria, por eso mientras más chances tengas, más posibilidades acumulás.</p>
+        <span class="step-icon">ðŸŽ¯</span>
+        <div class="step-title">ElegÃ­ tu pack</div>
+        <p class="step-desc">ElegÃ­s el pack que mÃ¡s te conviene. Cada chance representa una participaciÃ³n real dentro del sistema de selecciÃ³n aleatoria, por eso mientras mÃ¡s chances tengas, mÃ¡s posibilidades acumulÃ¡s.</p>
       </div>
       <div class="step reveal" style="transition-delay:0.1s">
         <span class="step-num">2</span>
-        <span class="step-icon">💳</span>
-        <div class="step-title">Completá el pago</div>
-        <p class="step-desc">Completás tus datos y pagás de forma simple. Tu reserva queda registrada y, cuando el pago se acredita, tus chances quedan activas con seguimiento claro del proceso.</p>
+        <span class="step-icon">ðŸ’³</span>
+        <div class="step-title">CompletÃ¡ el pago</div>
+        <p class="step-desc">CompletÃ¡s tus datos y pagÃ¡s de forma simple. Tu reserva queda registrada y, cuando el pago se acredita, tus chances quedan activas con seguimiento claro del proceso.</p>
       </div>
       <div class="step reveal" style="transition-delay:0.2s">
         <span class="step-num">3</span>
-        <span class="step-icon">📋</span>
-        <div class="step-title">Aparecés en la lista</div>
-        <p class="step-desc">Tu participación se refleja en la lista pública o, si preferís privacidad, podés figurar como anónimo con un código único para conservar transparencia sin exponer tu nombre.</p>
+        <span class="step-icon">ðŸ“‹</span>
+        <div class="step-title">AparecÃ©s en la lista</div>
+        <p class="step-desc">Tu participaciÃ³n se refleja en la lista pÃºblica o, si preferÃ­s privacidad, podÃ©s figurar como anÃ³nimo con un cÃ³digo Ãºnico para conservar transparencia sin exponer tu nombre.</p>
       </div>
       <div class="step reveal" style="transition-delay:0.3s">
         <span class="step-num">4</span>
-        <span class="step-icon">🎰</span>
+        <span class="step-icon">ðŸŽ°</span>
         <div class="step-title">Sorteo nacional</div>
-        <p class="step-desc">El sistema realiza una selección aleatoria de 3 participantes entre todas las chances activas. El sorteo se hace el 26 de julio o antes si se agotan las chances.</p>
+        <p class="step-desc">El sistema realiza una seleccion aleatoria de 1 participante entre todas las chances activas. El sorteo se hace el 26 de julio o antes si se agotan las chances.</p>
       </div>
     </div>
   </div>
@@ -2038,9 +2239,9 @@
 
 <section class="draw-process-section">
   <div class="section-inner">
-    <span class="section-tag">🎲 Selección transparente</span>
-    <h2 class="section-title">Cómo se eligen<br><span style="color:var(--gold)">los 3 ganadores</span></h2>
-    <p class="section-sub">El proceso está pensado para que cada chance cuente como una participación dentro de una selección aleatoria. No importa de dónde participes: si tu chance está activa, entra en el sorteo.</p>
+    <span class="section-tag">ðŸŽ² SelecciÃ³n transparente</span>
+    <h2 class="section-title">Como se elige<br><span style="color:var(--gold)">al ganador</span></h2>
+    <p class="section-sub">El proceso esta pensado para que cada chance cuente como una participacion dentro de una seleccion aleatoria. No importa de donde participes: si tu chance esta activa, entra en el sorteo.</p>
 
     <div class="draw-process-grid">
       <div class="draw-card reveal">
@@ -2049,29 +2250,29 @@
       </div>
       <div class="draw-card reveal" style="transition-delay:0.1s">
         <div class="draw-card-title">2. Un sistema avanzado selecciona al azar</div>
-        <div class="draw-card-copy">Al cierre del sorteo, un sistema de selección aleatoria toma todas las chances activas y elige 3 participantes ganadores de forma imparcial.</div>
+        <div class="draw-card-copy">Al cierre del sorteo, un sistema de seleccion aleatoria toma todas las chances activas y elige 1 ganador de forma imparcial.</div>
       </div>
       <div class="draw-card reveal" style="transition-delay:0.2s">
-        <div class="draw-card-title">3. Más chances, más posibilidades</div>
-        <div class="draw-card-copy">Si una persona tiene más chances, participa más veces dentro del sistema. Eso no garantiza ganar, pero sí aumenta sus posibilidades frente a quien tiene menos chances.</div>
+        <div class="draw-card-title">3. MÃ¡s chances, mÃ¡s posibilidades</div>
+        <div class="draw-card-copy">Si una persona tiene mÃ¡s chances, participa mÃ¡s veces dentro del sistema. Eso no garantiza ganar, pero sÃ­ aumenta sus posibilidades frente a quien tiene menos chances.</div>
       </div>
       <div class="draw-card reveal" style="transition-delay:0.3s">
         <div class="draw-card-title">4. Entrega coordinada con el ganador</div>
-        <div class="draw-card-copy">Una vez confirmados los ganadores, se coordina la entrega dentro de las 48 horas siguientes. Se organiza el retiro, envío o equivalente en dinero según corresponda al premio publicado.</div>
+        <div class="draw-card-copy">Una vez confirmado el ganador, se coordina la entrega dentro de las 48 horas siguientes. Se organiza el retiro del Fiat Uno 2014 publicado.</div>
       </div>
     </div>
 
     <div class="draw-highlight reveal" style="transition-delay:0.35s">
-      El objetivo es que el proceso sea simple de entender: comprás chances, tu pago se acredita, tus participaciones quedan activas y luego entrás en una selección aleatoria de 3 ganadores. Mientras más chances acumulás, más posibilidades tenés de ganar.
+      El objetivo es que el proceso sea simple de entender: compras chances, tu pago se acredita, tus participaciones quedan activas y luego entras en una seleccion aleatoria de 1 ganador. Mientras mas chances acumulas, mas posibilidades tenes de ganar.
     </div>
   </div>
 </section>
 
 <section class="proof-section">
   <div class="section-inner">
-    <span class="section-tag">💬 Opiniones y expectativas</span>
+    <span class="section-tag">ðŸ’¬ Opiniones y expectativas</span>
     <h2 class="section-title">Mensajes que suman<br><span style="color:var(--gold)">confianza</span></h2>
-    <p class="section-sub">Compartimos opiniones y expectativas frecuentes de personas que valoran la claridad del proceso, la lista pública y la coordinación de la entrega con cada ganador.</p>
+    <p class="section-sub">Compartimos opiniones y expectativas frecuentes de personas que valoran la claridad del proceso, la lista pÃºblica y la coordinaciÃ³n de la entrega con cada ganador.</p>
 
     <div class="proof-grid" id="proofGrid"></div>
   </div>
@@ -2080,36 +2281,36 @@
 <!-- FAQ -->
 <section style="background:var(--dark)">
   <div class="section-inner">
-    <span class="section-tag">❓ Preguntas frecuentes</span>
-    <h2 class="section-title">Todo lo que<br><span style="color:var(--gold)">necesitás saber</span></h2>
+    <span class="section-tag">â“ Preguntas frecuentes</span>
+    <h2 class="section-title">Todo lo que<br><span style="color:var(--gold)">necesitÃ¡s saber</span></h2>
     <div class="faq-list">
       <div class="faq-item">
-        <button class="faq-q">¿Cómo sé que el sorteo es real? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">La lista de participantes se actualiza con pagos aprobados y muestra la cantidad de chances activas de cada persona. Eso permite ver que cada participación queda registrada y que el proceso sea mucho más claro, visible y confiable.</div>
+        <button class="faq-q">Â¿CÃ³mo sÃ© que el sorteo es real? <span class="faq-arrow">â–¼</span></button>
+        <div class="faq-a">La lista de participantes se actualiza con pagos aprobados y muestra la cantidad de chances activas de cada persona. Eso permite ver que cada participaciÃ³n queda registrada y que el proceso sea mucho mÃ¡s claro, visible y confiable.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">¿Cómo se realizará el sorteo? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">Cada chance equivale a una participación dentro del sistema. Al cierre del sorteo, un sistema avanzado de selección aleatoria toma todas las chances activas y elige 3 participantes ganadores. Si comprás más chances, participás más veces y aumentás tus posibilidades.</div>
+        <button class="faq-q">Â¿CÃ³mo se realizarÃ¡ el sorteo? <span class="faq-arrow">â–¼</span></button>
+        <div class="faq-a">Cada chance equivale a una participacion dentro del sistema. Al cierre del sorteo, un sistema avanzado de seleccion aleatoria toma todas las chances activas y elige 1 ganador. Si compras mas chances, participas mas veces y aumentas tus posibilidades.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">¿Cuándo se entrega el premio? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">Los premios se coordinan con cada ganador dentro de las 48 horas posteriores al sorteo. Se contacta al ganador, se valida la forma de entrega y se organiza el retiro, envío o equivalente en dinero según el premio publicado.</div>
+        <button class="faq-q">Â¿CuÃ¡ndo se entrega el premio? <span class="faq-arrow">â–¼</span></button>
+        <div class="faq-a">El premio se coordina con el ganador dentro de las 48 horas posteriores al sorteo. Se contacta al ganador, se valida la forma de entrega y se organiza el retiro del Fiat Uno 2014 publicado.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">¿Puedo comprar más de un pack? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">Sí. Podés comprar más de un pack y todas tus chances se acumulan en tu mismo usuario. Eso hace que tengas más oportunidades dentro del sorteo final.</div>
+        <button class="faq-q">Â¿Puedo comprar mÃ¡s de un pack? <span class="faq-arrow">â–¼</span></button>
+        <div class="faq-a">SÃ­. PodÃ©s comprar mÃ¡s de un pack y todas tus chances se acumulan en tu mismo usuario. Eso hace que tengas mÃ¡s oportunidades dentro del sorteo final.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">¿Qué métodos de pago aceptan? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">Podés abonar con los medios habilitados en el formulario. Una vez aprobado el pago, tus chances quedan activas y tu participación aparece en la lista pública o como anónimo, según elijas, para que siempre haya registro visible del ingreso.</div>
+        <button class="faq-q">Â¿QuÃ© mÃ©todos de pago aceptan? <span class="faq-arrow">â–¼</span></button>
+        <div class="faq-a">PodÃ©s abonar con los medios habilitados en el formulario. Una vez aprobado el pago, tus chances quedan activas y tu participaciÃ³n aparece en la lista pÃºblica o como anÃ³nimo, segÃºn elijas, para que siempre haya registro visible del ingreso.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">¿Cómo funcionan los referidos? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">Si tu compra aprobada habilita tu enlace único, podés compartirlo. Cuando otra persona compra desde ese enlace y se acredita el pago, el sistema suma 2 chances extra a tu cuenta automáticamente, aumentando tus posibilidades dentro de la selección.</div>
+        <button class="faq-q">Â¿CÃ³mo funcionan los referidos? <span class="faq-arrow">â–¼</span></button>
+        <div class="faq-a">Si tu compra aprobada habilita tu enlace Ãºnico, podÃ©s compartirlo. Cuando otra persona compra desde ese enlace y se acredita el pago, el sistema suma 2 chances extra a tu cuenta automÃ¡ticamente, aumentando tus posibilidades dentro de la selecciÃ³n.</div>
       </div>
       <div class="faq-item">
-        <button class="faq-q">¿Hay fecha límite para participar? <span class="faq-arrow">▼</span></button>
-        <div class="faq-a">La fecha prevista es el 26 de julio o antes al agotar chances. Quedan pocos lugares, así que te recomendamos no esperar al último momento.</div>
+        <button class="faq-q">Â¿Hay fecha lÃ­mite para participar? <span class="faq-arrow">â–¼</span></button>
+        <div class="faq-a">La fecha prevista es el 26 de julio o antes al agotar chances. Quedan pocos lugares, asÃ­ que te recomendamos no esperar al Ãºltimo momento.</div>
       </div>
     </div>
   </div>
@@ -2117,10 +2318,10 @@
 
 <!-- BOTTOM CTA -->
 <section class="bottom-cta">
-  <h2 class="bottom-cta-title reveal">¿Y si sos<br>el próximo ganador?</h2>
-  <p class="bottom-cta-sub reveal">Participás con un proceso claro, con registro visible y una selección aleatoria de 3 ganadores. Mientras más chances sumás, más posibilidades tenés.</p>
+  <h2 class="bottom-cta-title reveal">Â¿Y si sos<br>el prÃ³ximo ganador?</h2>
+  <p class="bottom-cta-sub reveal">Participas con un proceso claro, con registro visible y una seleccion aleatoria de 1 ganador. Mientras mas chances sumas, mas posibilidades tenes.</p>
   <div class="reveal" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap">
-    <a href="#paquetes" class="btn-primary">¡COMPRAR CHANCES AHORA!</a>
+    <a href="#paquetes" class="btn-primary">Â¡COMPRAR CHANCES AHORA!</a>
     <a href="#participantes" class="btn-secondary">Ver participantes</a>
   </div>
 </section>
@@ -2128,27 +2329,27 @@
 <!-- FOOTER -->
 <footer>
   <strong style="color:var(--gold)">Gran Sorteo</strong><br>
-  Lista pública de participantes · Nacional para toda la Argentina · 3 premios garantizados
+  Lista publica de participantes · Nacional para toda la Argentina · 1 premio garantizado
 </footer>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
-    <button class="modal-close" id="modalClose">✕</button>
-    <div class="modal-title">¡Casi listo! 🎉</div>
-    <p class="modal-sub">Completá tus datos para reservar tus chances y avanzar a un pago simple y seguro.</p>
+    <button class="modal-close" id="modalClose">âœ•</button>
+    <div class="modal-title">Â¡Casi listo! ðŸŽ‰</div>
+    <p class="modal-sub">CompletÃ¡ tus datos para reservar tus chances y avanzar a un pago simple y seguro.</p>
     <div class="modal-assurance">
       <strong>Tu reserva queda asociada a tus datos, al pack elegido y al estado del pago.</strong>
-      <span>Cuando el pago se acredita, tus chances se activan y tu participación se refleja en la lista pública o como anónimo si así lo elegís. Eso ayuda a que el proceso sea más claro, ordenado y confiable.</span>
+      <span>Cuando el pago se acredita, tus chances se activan y tu participaciÃ³n se refleja en la lista pÃºblica o como anÃ³nimo si asÃ­ lo elegÃ­s. Eso ayuda a que el proceso sea mÃ¡s claro, ordenado y confiable.</span>
     </div>
     <div class="modal-pkg-display">
       <div class="modal-pkg-info">
         <span class="label">Pack seleccionado</span>
-        <span class="value" id="modal-pkg-name">—</span>
+        <span class="value" id="modal-pkg-name">â€”</span>
       </div>
       <div class="modal-pkg-info" style="text-align:right">
         <span class="label">Total a pagar</span>
-        <span class="value" id="modal-pkg-price">—</span>
+        <span class="value" id="modal-pkg-price">â€”</span>
       </div>
     </div>
     <div class="form-group">
@@ -2179,45 +2380,45 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="form-label">Opinión o expectativa opcional</label>
-      <textarea class="form-input form-textarea" id="f-message" placeholder="Ej: Me encanta participar, ojalá tenga suerte. / Me gusta que la lista sea pública y transparente."></textarea>
-      <div class="form-help">Si querés, podés dejar una reseña breve, qué te parece el sorteo o cuáles son tus expectativas. Es completamente opcional y se muestra abajo dentro del formulario como referencia.</div>
+      <label class="form-label">OpiniÃ³n o expectativa opcional</label>
+      <textarea class="form-input form-textarea" id="f-message" placeholder="Ej: Me encanta participar, ojalÃ¡ tenga suerte. / Me gusta que la lista sea pÃºblica y transparente."></textarea>
+      <div class="form-help">Si querÃ©s, podÃ©s dejar una reseÃ±a breve, quÃ© te parece el sorteo o cuÃ¡les son tus expectativas. Es completamente opcional y se muestra abajo dentro del formulario como referencia.</div>
     </div>
     <div class="message-preview" id="messagePreview">
-      <span class="message-preview-label">Tu opinión o expectativa</span>
+      <span class="message-preview-label">Tu opiniÃ³n o expectativa</span>
       <div class="message-preview-copy" id="messagePreviewCopy"></div>
     </div>
     <div class="form-group">
       <label class="form-check">
         <input type="checkbox" id="f-anonymous">
         <span class="form-check-copy">
-          <span class="form-check-title">Quiero aparecer de forma anónima</span>
-          <span class="form-check-sub">En la lista pública vas a figurar como “Anónimo” junto con un código único de usuario.</span>
+          <span class="form-check-title">Quiero aparecer de forma anÃ³nima</span>
+          <span class="form-check-sub">En la lista pÃºblica vas a figurar como â€œAnÃ³nimoâ€ junto con un cÃ³digo Ãºnico de usuario.</span>
         </span>
       </label>
     </div>
     <div class="form-group">
-      <label class="form-label">Método de pago preferido</label>
+      <label class="form-label">MÃ©todo de pago preferido</label>
       <div class="payment-methods">
-        <!--span class="pm-chip selected" data-provider="mercado_pago" onclick="selectPM(this)">💳 Mercado Pago</span-->
-        <span class="pm-chip selected" data-provider="galiopay" onclick="selectPM(this)">🏦 Transferencia</span>
-        <!--span class="pm-chip" data-provider="manual" onclick="selectPM(this)">🏦 Transferencia</span>
-        <span class="pm-chip" data-provider="manual" onclick="selectPM(this)">💵 Efectivo</span-->
+        <!--span class="pm-chip selected" data-provider="mercado_pago" onclick="selectPM(this)">ðŸ’³ Mercado Pago</span-->
+        <span class="pm-chip selected" data-provider="galiopay" onclick="selectPM(this)">ðŸ¦ Transferencia</span>
+        <!--span class="pm-chip" data-provider="manual" onclick="selectPM(this)">ðŸ¦ Transferencia</span>
+        <span class="pm-chip" data-provider="manual" onclick="selectPM(this)">ðŸ’µ Efectivo</span-->
       </div>
     </div>
-    <button class="modal-confirm" id="modalConfirm">CONFIRMAR Y PAGAR ✓</button>
+    <button class="modal-confirm" id="modalConfirm">CONFIRMAR Y PAGAR âœ“</button>
     <div class="modal-trust">
-      <span>🔒 Datos y reserva asociados a tu compra</span>
-      <span>✅ Chances activadas al acreditarse el pago</span>
-      <span>📋 Participación visible o anónima, según elijas</span>
+      <span>ðŸ”’ Datos y reserva asociados a tu compra</span>
+      <span>âœ… Chances activadas al acreditarse el pago</span>
+      <span>ðŸ“‹ ParticipaciÃ³n visible o anÃ³nima, segÃºn elijas</span>
     </div>
   </div>
 </div>
 
 <div class="modal-overlay" id="opinionModal">
   <div class="modal">
-    <button class="modal-close" id="opinionModalClose">✕</button>
-    <div class="modal-title">💬 Opinión o expectativa</div>
+    <button class="modal-close" id="opinionModalClose">âœ•</button>
+    <div class="modal-title">ðŸ’¬ OpiniÃ³n o expectativa</div>
     <p class="modal-sub">Mensaje compartido por una persona que ya participa del sorteo.</p>
     <div class="modal-assurance">
       <strong id="opinionAuthor">Participante</strong>
@@ -2228,7 +2429,7 @@
 </div>
 
 <!-- TOAST -->
-<div class="toast" id="toast">✅ ¡Ya sos parte del sorteo! Te contactaremos por WhatsApp.</div>
+<div class="toast" id="toast">âœ… Â¡Ya sos parte del sorteo! Te contactaremos por WhatsApp.</div>
 <div class="live-feed" id="liveFeed">
   <div class="live-feed-card">
     <div class="live-feed-kicker">Actividad en vivo</div>
@@ -2237,7 +2438,7 @@
   </div>
 </div>
 <a class="whatsapp-float" href="https://wa.me/543518757751?text=Hola%2C%20quiero%20hacer%20una%20consulta%20sobre%20el%20sorteo." target="_blank" rel="noopener noreferrer">
-  <span style="font-size:1.35rem">💬</span>
+  <span style="font-size:1.35rem">ðŸ’¬</span>
   <span><small>Consultas</small>WhatsApp</span>
 </a>
 
@@ -2250,8 +2451,8 @@ const MAX_FALLBACK_CHANCES = 5000;
 const FUNCTIONS_BASE_URL = `${SUPABASE_URL}/functions/v1`;
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const DEFAULT_SHARE_IMAGE = new URL('./assets/share/share-sorteo.png', window.location.href).toString();
-const DEFAULT_SHARE_TITLE = 'Gran Sorteo - Moto, TV y efectivo';
-const DEFAULT_SHARE_DESCRIPTION = 'Participá de este sorteo. Quedan pocos lugares y puede hacerse antes al agotar chances.';
+const DEFAULT_SHARE_TITLE = 'Gran Sorteo - Fiat Uno 2014 Impecable';
+const DEFAULT_SHARE_DESCRIPTION = 'Participa de este sorteo por un Fiat Uno 2014 impecable. Quedan pocos lugares y puede hacerse antes al agotar chances.';
 const DRAW_TARGET_ISO = '2026-07-26T20:00:00-03:00';
 
 let activeCampaign = null;
@@ -2268,22 +2469,22 @@ const fallbackProofMessages = [
   {
     name: 'Mariana',
     city: 'Cordoba',
-    message: 'Me dio confianza ver que las participaciones aparecen con fecha y cantidad de chances. Eso hace que el sorteo se sienta más claro y serio.'
+    message: 'Me dio confianza ver que las participaciones aparecen con fecha y cantidad de chances. Eso hace que el sorteo se sienta mÃ¡s claro y serio.'
   },
   {
     name: 'Leandro',
     city: 'Rosario',
-    message: 'Me gusta que expliquen que mientras más chances comprás, más veces participás en la selección aleatoria. Se entiende rápido y genera seguridad.'
+    message: 'Me gusta que expliquen que mientras mÃ¡s chances comprÃ¡s, mÃ¡s veces participÃ¡s en la selecciÃ³n aleatoria. Se entiende rÃ¡pido y genera seguridad.'
   },
   {
     name: 'Camila',
     city: 'Buenos Aires',
-    message: 'Saber que la entrega se coordina directamente con el ganador y que existe opción de equivalente en dinero me transmite mucha más tranquilidad.'
+    message: 'Saber que la entrega se coordina directamente con el ganador del Fiat Uno 2014 me transmite mucha mas tranquilidad.'
   },
   {
     name: 'Franco',
     city: 'Mendoza',
-    message: 'La opción de aparecer anónimo pero seguir participando con registro visible me parece una muy buena forma de combinar privacidad con transparencia.'
+    message: 'La opciÃ³n de aparecer anÃ³nimo pero seguir participando con registro visible me parece una muy buena forma de combinar privacidad con transparencia.'
   }
 ];
 let latestOrderStatus = null;
@@ -2349,8 +2550,8 @@ function setMetaContent(selector, content) {
 }
 
 function updateShareMetadata({ title, description, image, url }) {
-  const nextTitle = title || DEFAULT_SHARE_TITLE;
-  const nextDescription = description || DEFAULT_SHARE_DESCRIPTION;
+  const nextTitle = cleanMojibakeText(title || DEFAULT_SHARE_TITLE);
+  const nextDescription = cleanMojibakeText(description || DEFAULT_SHARE_DESCRIPTION);
   const nextImage = image || DEFAULT_SHARE_IMAGE;
   const nextUrl = url || window.location.href;
 
@@ -2373,14 +2574,60 @@ function updateShareMetadata({ title, description, image, url }) {
 }
 
 function buildReferralShareCopy(label, shareUrl) {
-  return `${label} te invita a participar de este sorteo. Quedan pocos lugares y puede hacerse antes al agotar chances. Sumate ahora: ${shareUrl}`;
+  return cleanMojibakeText(`${label} te invita a participar de este sorteo. Quedan pocos lugares y puede hacerse antes al agotar chances. Sumate ahora: ${shareUrl}`);
 }
 
 function showToast(msg){
   const t = document.getElementById('toast');
-  t.textContent = msg;
+  t.textContent = cleanMojibakeText(msg);
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 4500);
+}
+
+function cleanMojibakeText(value) {
+  if (value == null) return value;
+  let text = String(value);
+  const replacements = [
+    ['Ã¡', 'á'], ['Ã©', 'é'], ['Ã­', 'í'], ['Ã³', 'ó'], ['Ãº', 'ú'],
+    ['Ã', 'Á'], ['Ã‰', 'É'], ['Ã', 'Í'], ['Ã“', 'Ó'], ['Ãš', 'Ú'],
+    ['Ã±', 'ñ'], ['Ã‘', 'Ñ'], ['Ã¼', 'ü'],
+    ['Â¡', '¡'], ['Â¿', '¿'], ['Â·', '·'], ['Â', ''], ['â€”', '-'], ['â€œ', '"'], ['â€', '"'],
+    ['â€™', "'"], ['â€¢', '•'], ['âœ•', '×'], ['âœ“', '✓'], ['âœ…', '✓'],
+    ['âš¡', '⚡'], ['â­', '★'], ['â“', '?'], ['â–¼', '▼'],
+    ['ðŸ”¥', '🔥'], ['ðŸ’¬', '💬'], ['ðŸ’Ž', '💎'], ['ðŸ‘¥', '👥'], ['ðŸŽ¥', '🎥'],
+    ['ðŸŽ¯', '🎯'], ['ðŸ’³', '💳'], ['ðŸ“‹', '📋'], ['ðŸŽ°', '🎰'], ['ðŸŽ²', '🎲'],
+    ['ðŸŽ‰', '🎉'], ['ðŸ¦', '🏦'], ['ðŸš—', '🚗'], ['ðŸ‡¦ðŸ‡·', '🇦🇷'], ['ðŸ”’', '🔒'], ['ðŸ†', '🏆'], ['ðŸ’µ', '💵'],
+    ['mÃ¡s', 'más'], ['MÃ¡s', 'Más'], ['selecciÃ³n', 'selección'], ['participaciÃ³n', 'participación'],
+    ['participaciones activas', 'participaciones activas'], ['registrÃ³', 'registró'], ['publica', 'publica']
+  ];
+  replacements.forEach(([from, to]) => {
+    text = text.split(from).join(to);
+  });
+  return text;
+}
+
+function repairDocumentText(root = document) {
+  const scope = root instanceof Element ? root : document;
+  const textRoot = root.body || root;
+  if (textRoot) {
+    const walker = document.createTreeWalker(textRoot, NodeFilter.SHOW_TEXT);
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach((node) => {
+      node.nodeValue = cleanMojibakeText(node.nodeValue);
+    });
+  }
+  scope.querySelectorAll?.('[placeholder],[title],[aria-label]').forEach((el) => {
+    ['placeholder', 'title', 'aria-label'].forEach((attr) => {
+      if (el.hasAttribute(attr)) {
+        el.setAttribute(attr, cleanMojibakeText(el.getAttribute(attr)));
+      }
+    });
+  });
+  document.querySelectorAll('meta[content]').forEach((meta) => {
+    meta.setAttribute('content', cleanMojibakeText(meta.getAttribute('content')));
+  });
+  document.title = cleanMojibakeText(document.title);
 }
 
 function updatePhotoPreview(file) {
@@ -2395,7 +2642,7 @@ function updatePhotoPreview(file) {
   }
   const objectUrl = URL.createObjectURL(file);
   image.src = objectUrl;
-  copy.textContent = `${file.name} listo para acompañar tu participacion.`;
+  copy.textContent = `${file.name} listo para acompaÃ±ar tu participacion.`;
   preview.classList.add('show');
 }
 
@@ -2443,7 +2690,7 @@ async function copyShareLink() {
 async function shareWhatsappLink() {
   const value = document.getElementById('shareLinkInput').value;
   if (!value) return;
-  const text = `Te comparto mi enlace del sorteo. Si compras desde acá me regalás 2 chances extra: ${value}`;
+  const text = `Te comparto mi enlace del sorteo. Si compras desde acÃ¡ me regalÃ¡s 2 chances extra: ${value}`;
   if (navigator.share) {
     try {
       await navigator.share({ text, url: value });
@@ -2481,7 +2728,7 @@ function buildDrawEntryPoolBase() {
       pool.push({
         participantIndex,
         chanceNumber,
-        chanceLabel: `${participant.displayName || participant.name} · chance ${chanceNumber}`
+        chanceLabel: `${participant.displayName || participant.name} Â· chance ${chanceNumber}`
       });
     }
   });
@@ -2957,12 +3204,13 @@ function renderPackages(){
       <span class="pkg-price">$${totalPrice.toLocaleString('es-AR')}</span>
       <span class="pkg-price-unit">$${perChance} por chance</span>
       <span class="pkg-saving">${savingsLabel}</span>
-      <span class="pkg-price-unit">${chances >= 3 ? 'Con 3 o más chances se habilita tu link único y cada referido aprobado te suma 2 chances extra' : '&nbsp;'}</span>
+      <span class="pkg-price-unit">${chances >= 3 ? 'Con 3 o mas chances se habilita tu link unico y cada referido aprobado te suma 2 chances extra' : '&nbsp;'}</span>
       <button class="pkg-btn" onclick="openModal('${pkg.id}')">Quiero ${chances >= 1000 ? (chances/1000)+'K' : chances} chance${chances > 1 ? 's' : ''}</button>
     `;
     grid.appendChild(div);
   });
 
+  repairDocumentText(grid);
   observeReveal();
 }
 
@@ -2995,7 +3243,7 @@ function renderParticipants(filter=''){
       <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${p.city || '-'}</span></td>
       <td data-col="entries"><span class="chances-badge">x${purchasedChances.toLocaleString('es-AR')}</span></td>
       <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
-      <td data-col="message" class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(participantLocation(p))}"><span class="message-trigger-icon">💬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
+      <td data-col="message" class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(participantLocation(p))}"><span class="message-trigger-icon">ðŸ’¬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
     `;
     body.appendChild(row);
 
@@ -3010,7 +3258,7 @@ function renderParticipants(filter=''){
           <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${p.city || '-'}</span></td>
           <td data-col="entries"><span class="chances-badge">x${chanceNumber}</span></td>
           <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
-          <td data-col="message" class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(participantLocation(p))}"><span class="message-trigger-icon">💬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
+          <td data-col="message" class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(participantLocation(p))}"><span class="message-trigger-icon">ðŸ’¬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
         `;
         body.appendChild(detailRow);
       });
@@ -3090,7 +3338,7 @@ function setCountdown(targetIso){
     if (diff <= 0) {
       clearInterval(countdownInterval);
       countdownBar.classList.remove('hidden-until-thirty');
-      document.getElementById('countdownNote').textContent = 'Se acerca el cierre final. Aprovechá antes de que se agoten las chances.';
+      document.getElementById('countdownNote').textContent = 'Se acerca el cierre final. AprovechÃ¡ antes de que se agoten las chances.';
       return;
     }
     const d = Math.floor(diff / 864e5);
@@ -3200,7 +3448,7 @@ document.getElementById('opinionModal').onclick = e => { if (e.target === docume
 
 function openOpinionModal({ message, author, city }) {
   document.getElementById('opinionAuthor').textContent = author;
-  document.getElementById('opinionMeta').textContent = `${city} · Mensaje compartido desde el formulario del sorteo.`;
+  document.getElementById('opinionMeta').textContent = `${city} Â· Mensaje compartido desde el formulario del sorteo.`;
   document.getElementById('opinionModalCopy').textContent = message;
   document.getElementById('opinionModal').classList.add('open');
 }
@@ -3245,8 +3493,8 @@ async function submitOrder(){
   const city = document.getElementById('f-city').value.trim() || '';
   const opinionMessage = document.getElementById('f-message').value.trim();
   const wantsAnonymous = document.getElementById('f-anonymous').checked;
-  if (!selectedPkg) return showToast('Elegí un paquete.');
-  if (!name || !phone) return alert('Completá nombre y WhatsApp');
+  if (!selectedPkg) return showToast('ElegÃ­ un paquete.');
+  if (!name || !phone) return alert('CompletÃ¡ nombre y WhatsApp');
 
   const button = document.getElementById('modalConfirm');
   const originalText = button.textContent;
@@ -3371,7 +3619,7 @@ async function loadParticipants(){
       sourceIndex: index,
       name: fullName,
       displayName,
-    detailLabel: row.is_anonymous ? (row.display_name || 'Anónimo') : row.full_name,
+    detailLabel: row.is_anonymous ? (row.display_name || 'AnÃ³nimo') : row.full_name,
       isAnonymous: Boolean(row.is_anonymous),
       publicCode: row.public_code || '',
       photoUrl: row.photo_url || '',
@@ -3430,7 +3678,7 @@ function renderParticipants(filter=''){
       <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.city || '-')}</span></td>
       <td data-col="entries"><span class="chances-badge">x${purchasedChances.toLocaleString('es-AR')}</span></td>
       <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.date)}</td>
-      <td data-col="message" class="message-cell"><button type="button" class="message-trigger${participant.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(participant.opinionMessage || '')}" data-author="${encodeURIComponent(participant.displayName || participant.name)}" data-city="${encodeURIComponent(participantLocation(participant))}"><span class="message-trigger-icon">💬</span><span>${participant.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
+      <td data-col="message" class="message-cell"><button type="button" class="message-trigger${participant.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(participant.opinionMessage || '')}" data-author="${encodeURIComponent(participant.displayName || participant.name)}" data-city="${encodeURIComponent(participantLocation(participant))}"><span class="message-trigger-icon">ðŸ’¬</span><span>${participant.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
     `;
     fragment.appendChild(row);
 
@@ -3444,7 +3692,7 @@ function renderParticipants(filter=''){
           <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.city || '-')}</span></td>
           <td data-col="entries"><span class="chances-badge">x${chanceNumber}</span></td>
           <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.date)}</td>
-          <td data-col="message" class="message-cell"><button type="button" class="message-trigger${participant.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(participant.opinionMessage || '')}" data-author="${encodeURIComponent(participant.displayName || participant.name)}" data-city="${encodeURIComponent(participantLocation(participant))}"><span class="message-trigger-icon">💬</span><span>${participant.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
+          <td data-col="message" class="message-cell"><button type="button" class="message-trigger${participant.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(participant.opinionMessage || '')}" data-author="${encodeURIComponent(participant.displayName || participant.name)}" data-city="${encodeURIComponent(participantLocation(participant))}"><span class="message-trigger-icon">ðŸ’¬</span><span>${participant.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
         `;
         fragment.appendChild(detailRow);
       });
@@ -3452,6 +3700,7 @@ function renderParticipants(filter=''){
   });
 
   body.appendChild(fragment);
+  repairDocumentText(body);
   syncParticipantTableFocus(drawShowcaseState.activeParticipantIndex, drawShowcaseState.activeSpotlight);
 
   body.querySelectorAll('.message-trigger:not(.empty)').forEach((button) => {
@@ -3497,7 +3746,7 @@ async function loadParticipants(){
       sourceIndex: index,
       name: fullName,
       displayName,
-      detailLabel: row.is_anonymous ? (displayName || 'AnÃ³nimo') : fullName,
+      detailLabel: row.is_anonymous ? (displayName || 'AnÃƒÂ³nimo') : fullName,
       isAnonymous: Boolean(row.is_anonymous),
       publicCode: row.public_code || '',
       photoUrl: row.photo_url || '',
@@ -3525,8 +3774,8 @@ async function handleReturnedPayment() {
   if (paymentState === 'failure') {
     showPaymentCard({
       kicker: 'Pago pendiente',
-      title: 'El pago no se aprobó',
-      copy: 'Podés intentarlo de nuevo con otro medio o volver a elegir tu pack.'
+      title: 'El pago no se aprobÃ³',
+      copy: 'PodÃ©s intentarlo de nuevo con otro medio o volver a elegir tu pack.'
     });
     showToast('El pago no fue aprobado.');
     clearPaymentQueryState();
@@ -3541,17 +3790,17 @@ async function handleReturnedPayment() {
   }
 
   if (!statusData) {
-    showToast('No pudimos verificar tu pago todavía.');
+    showToast('No pudimos verificar tu pago todavÃ­a.');
     return;
   }
 
   if (statusData.status !== 'paid') {
     showPaymentCard({
-      kicker: 'Pago en revisión',
+      kicker: 'Pago en revisiÃ³n',
       title: 'Estamos confirmando tu compra',
-      copy: 'Cuando el pago se acredite, tu nombre aparecerá en la lista automáticamente.'
+      copy: 'Cuando el pago se acredite, tu nombre aparecerÃ¡ en la lista automÃ¡ticamente.'
     });
-    showToast('Tu pago quedó en revisión.');
+    showToast('Tu pago quedÃ³ en revisiÃ³n.');
     clearPaymentQueryState();
     return;
   }
@@ -3575,11 +3824,11 @@ async function handleReturnedPayment() {
     kicker: 'Pago aprobado',
     title: `${participantLabel} ya participa del sorteo`,
     copy: shareUrl
-      ? `Tus chances ya están activas, tu compra quedó registrada y también se habilitó tu enlace único. Cada compra aprobada desde ese enlace te suma 2 chances extra.`
-      : `Tus chances ya están activas, tu compra quedó registrada y ya aparecés en la lista pública de participantes.`,
+      ? `Tus chances ya estÃ¡n activas, tu compra quedÃ³ registrada y tambiÃ©n se habilitÃ³ tu enlace Ãºnico. Cada compra aprobada desde ese enlace te suma 2 chances extra.`
+      : `Tus chances ya estÃ¡n activas, tu compra quedÃ³ registrada y ya aparecÃ©s en la lista pÃºblica de participantes.`,
     shareUrl
   });
-  showToast(shareUrl ? 'Pago aprobado. Ya podés compartir tu enlace único.' : 'Pago aprobado. Ya aparecés en la lista.');
+  showToast(shareUrl ? 'Pago aprobado. Ya podÃ©s compartir tu enlace Ãºnico.' : 'Pago aprobado. Ya aparecÃ©s en la lista.');
   document.getElementById('participantes').scrollIntoView({ behavior: 'smooth' });
   clearPaymentQueryState();
 }
@@ -3612,6 +3861,7 @@ function observeReveal(){
 
 async function bootLanding(){
   try {
+    repairDocumentText();
     updateShareMetadata({
       title: DEFAULT_SHARE_TITLE,
       description: DEFAULT_SHARE_DESCRIPTION,
@@ -3625,6 +3875,7 @@ async function bootLanding(){
     await loadDemoResults();
     renderPackages();
     renderParticipants();
+    repairDocumentText();
     startDrawShowcase();
     observeReveal();
     scheduleLiveFeed();
@@ -3643,3 +3894,4 @@ bootLanding();
 </script>
 </body>
 </html>
+
