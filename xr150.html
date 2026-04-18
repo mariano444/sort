@@ -1745,6 +1745,175 @@
     line-height: 1.65;
     background: rgba(255,255,255,0.02);
   }
+  .community-showcase {
+    margin-top: 1.5rem;
+    padding: 1.1rem;
+    border-radius: 1.2rem;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(145deg, rgba(28,28,42,0.92), rgba(17,17,26,0.96));
+    box-shadow: 0 20px 42px rgba(0,0,0,0.2);
+  }
+  .community-showcase-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .community-showcase-kicker {
+    display: block;
+    color: rgba(240,237,232,0.72);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 0.45rem;
+  }
+  .community-showcase-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(1.7rem, 4vw, 2.55rem);
+    line-height: 0.95;
+    color: var(--text);
+  }
+  .community-showcase-title span {
+    color: var(--gold);
+  }
+  .community-rotator {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .community-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.8rem;
+  }
+  .community-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 1rem;
+    padding: 0.95rem;
+    text-align: left;
+    transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    cursor: pointer;
+  }
+  .community-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(245,200,66,0.45);
+  }
+  .community-card.is-active {
+    border-color: rgba(245,200,66,0.65);
+    background: rgba(245,200,66,0.08);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.18);
+  }
+  .community-card-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.8rem;
+  }
+  .community-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: var(--gold);
+  }
+  .community-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .community-card-name {
+    display: block;
+    color: var(--text);
+    font-weight: 800;
+    font-size: 0.92rem;
+    line-height: 1.2;
+  }
+  .community-card-meta {
+    display: block;
+    color: var(--text2);
+    font-size: 0.76rem;
+    line-height: 1.45;
+  }
+  .community-card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .community-card-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.28rem 0.58rem;
+    background: rgba(255,255,255,0.06);
+    color: var(--text2);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .community-feature {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.9rem;
+    border-radius: 1rem;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.2));
+    border: 1px solid rgba(255,255,255,0.09);
+  }
+  .community-feature-head {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .community-feature-copy strong {
+    display: block;
+    color: var(--text);
+    font-size: 1rem;
+  }
+  .community-feature-copy span {
+    color: var(--text2);
+    font-size: 0.84rem;
+    line-height: 1.5;
+  }
+  .community-feature-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .community-message {
+    border-radius: 0.95rem;
+    padding: 0.95rem 1rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed rgba(255,255,255,0.12);
+  }
+  .community-message.hidden {
+    display: none;
+  }
+  .community-message-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: var(--gold);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .community-message-copy {
+    color: var(--text);
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
 
   /* ---- FAQ ---- */
   .faq-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.75rem; }
@@ -2165,6 +2334,9 @@
     .course-syllabus-grid { grid-template-columns: 1fr; }
     .prizes-row { grid-template-columns: 1fr; }
     .packages-grid { grid-template-columns: 1fr 1fr; }
+    .community-showcase-head { flex-direction: column; align-items: stretch; }
+    .community-rotator { grid-template-columns: 1fr; }
+    .community-track { grid-template-columns: 1fr; }
     .draw-showcase { padding: 1rem; }
     .draw-showcase-panel { grid-template-columns: 1fr; }
     .draw-showcase-copy { padding: 0.2rem 0 0; }
@@ -2267,7 +2439,7 @@
         <span class="prize-eyebrow">Premio</span>
         <span class="prize-name">HONDA XR150L + $100.000</span>
         <span class="prize-detail">Premio principal + premio extra en efectivo.</span>
-        <span class="prize-specs">Participás por la XR150L publicada en esta página y además por $100.000.</span>
+        <span class="prize-specs">Participás por la XR150L publicada en esta página y además por $100.000. La mecánica es igual a la campaña actual, pero con este nuevo premio.</span>
       </div>
     </div>
   </div>
@@ -2541,6 +2713,24 @@
         <input class="share-link-input" id="shareLinkInput" type="text" readonly>
         <button class="share-link-btn secondary" id="copyShareBtn" type="button">Copiar enlace</button>
         <button class="share-link-btn primary" id="shareWhatsappBtn" type="button">Compartir</button>
+      </div>
+    </div>
+
+    <div class="community-showcase reveal" id="communityShowcase">
+      <div class="community-showcase-head">
+        <div>
+          <span class="community-showcase-kicker">Comunidad</span>
+          <span class="live-badge"><span class="live-dot"></span> EN VIVO</span>
+          <h3 class="community-showcase-title">Personas <span>participando</span></h3>
+        </div>
+      </div>
+      <div class="community-rotator">
+        <div class="community-track" id="communityTrack"></div>
+        <div class="community-feature" id="communityFeature"></div>
+      </div>
+      <div class="community-message hidden" id="communityMessageBox">
+        <span class="community-message-label">Mensaje compartido</span>
+        <div class="community-message-copy" id="communityMessageCopy"></div>
       </div>
     </div>
 
@@ -2904,7 +3094,7 @@
     <div class="live-feed-sub" id="liveFeedSub">Ahora mismo</div>
   </div>
 </div>
-<a class="whatsapp-float" href="https://wa.me/543518757751?text=Hola%2C%20quiero%20hacer%20una%20consulta%20sobre%20el%20sorteo%20de%20la%20moto." target="_blank" rel="noopener noreferrer">
+<a class="whatsapp-float" href="https://wa.me/543518757751?text=Hola%2C%20quiero%20hacer%20una%20consulta%20sobre%20el%20sorteo." target="_blank" rel="noopener noreferrer">
   <span style="font-size:1.35rem">ðŸ’¬</span>
   <span><small>Consultas</small>WhatsApp</span>
 </a>
@@ -2927,6 +3117,7 @@ const DRAW_TARGET_ISO = '2026-05-15T20:00:00-03:00';
 let activeCampaign = null;
 let packages = [];
 let participants = [];
+let communityParticipants = [];
 let demoResults = [];
 let selectedPkg = null;
 let selectedPhotoFile = null;
@@ -2934,6 +3125,8 @@ let selectedPaymentProvider = 'galiopay';
 let countdownInterval = null;
 let liveFeedTimeout = null;
 let drawAnimationTimeout = null;
+let communityRotationInterval = null;
+let activeCommunityIndex = 0;
 const fallbackProofMessages = [
   {
     name: 'Mariana',
@@ -3860,6 +4053,159 @@ function renderProofMessages() {
   observeReveal();
 }
 
+function renderCommunityAvatar(participant) {
+  const label = participant.displayName || participant.name || 'Participante';
+  if (participant.photoUrl) {
+    return `<div class="community-avatar"><img src="${escapeHtml(participant.photoUrl)}" alt="${escapeHtml(label)}"></div>`;
+  }
+  return `<div class="community-avatar">${escapeHtml(initials(label))}</div>`;
+}
+
+function stopCommunityRotation() {
+  if (communityRotationInterval) {
+    clearInterval(communityRotationInterval);
+    communityRotationInterval = null;
+  }
+}
+
+function updateCommunityFeature(participant) {
+  const feature = document.getElementById('communityFeature');
+  const messageBox = document.getElementById('communityMessageBox');
+  const messageCopy = document.getElementById('communityMessageCopy');
+  if (!feature || !messageBox || !messageCopy) return;
+  if (!participant) {
+    feature.innerHTML = '<div class="proof-empty">Todavía no hay suficientes participantes visibles para armar esta rotación.</div>';
+    messageBox.classList.add('hidden');
+    messageCopy.textContent = '';
+    return;
+  }
+
+  feature.innerHTML = `
+    <div class="community-feature-head">
+      ${renderCommunityAvatar(participant)}
+      <div class="community-feature-copy">
+        <strong>${escapeHtml(participant.displayName || participant.name)}</strong>
+        <span>${escapeHtml(participantLocation(participant))} · ${escapeHtml(participant.campaignTitle || 'Sorteo activo')}</span>
+      </div>
+    </div>
+    <div class="community-feature-pills">
+      <span class="community-card-badge">x${Number(participant.currentChances || 0).toLocaleString('es-AR')} chances</span>
+      <span class="community-card-badge">${escapeHtml(participant.date || 'Hoy')}</span>
+      <span class="community-card-badge">${participant.isAnonymous ? 'Perfil anónimo' : 'Perfil público'}</span>
+    </div>
+  `;
+
+  if (participant.opinionMessage) {
+    messageCopy.textContent = `"${participant.opinionMessage}"`;
+    messageBox.classList.remove('hidden');
+  } else {
+    messageCopy.textContent = '';
+    messageBox.classList.add('hidden');
+  }
+}
+
+function renderCommunityShowcase() {
+  const track = document.getElementById('communityTrack');
+  if (!track) return;
+
+  if (!communityParticipants.length) {
+    track.innerHTML = '<div class="proof-empty">Cuando haya participantes visibles en campañas activas, esta rotación se completa sola.</div>';
+    updateCommunityFeature(null);
+    stopCommunityRotation();
+    return;
+  }
+
+  const total = communityParticipants.length;
+  const normalizedIndex = ((activeCommunityIndex % total) + total) % total;
+  activeCommunityIndex = normalizedIndex;
+  const visible = Array.from({ length: Math.min(6, total) }, (_, offset) => communityParticipants[(normalizedIndex + offset) % total]);
+
+  track.innerHTML = visible.map((participant, idx) => {
+    const participantIndex = (normalizedIndex + idx) % total;
+    return `
+      <button type="button" class="community-card${idx === 0 ? ' is-active' : ''}" data-community-index="${participantIndex}">
+        <div class="community-card-head">
+          ${renderCommunityAvatar(participant)}
+          <div>
+            <span class="community-card-name">${escapeHtml(participant.displayName || participant.name)}</span>
+            <span class="community-card-meta">${escapeHtml(participantLocation(participant))}</span>
+          </div>
+        </div>
+        <div class="community-card-badges">
+          <span class="community-card-badge">${escapeHtml(participant.campaignTitle || 'Sorteo')}</span>
+          <span class="community-card-badge">x${Number(participant.currentChances || 0).toLocaleString('es-AR')}</span>
+        </div>
+      </button>
+    `;
+  }).join('');
+
+  track.querySelectorAll('[data-community-index]').forEach((button) => {
+    button.addEventListener('click', () => {
+      activeCommunityIndex = Number(button.dataset.communityIndex || 0);
+      renderCommunityShowcase();
+      startCommunityRotation();
+    });
+  });
+
+  updateCommunityFeature(communityParticipants[normalizedIndex]);
+  observeReveal();
+}
+
+function startCommunityRotation() {
+  stopCommunityRotation();
+  if (communityParticipants.length <= 1) return;
+  communityRotationInterval = setInterval(() => {
+    activeCommunityIndex = (activeCommunityIndex + 1) % communityParticipants.length;
+    renderCommunityShowcase();
+  }, 4800);
+}
+
+async function loadCommunityParticipants() {
+  const { data: campaignsData, error: campaignsError } = await supabaseClient
+    .from('campaigns')
+    .select('slug,title,status')
+    .eq('status', 'active')
+    .order('created_at', { ascending: false })
+    .limit(8);
+
+  if (campaignsError) throw campaignsError;
+
+  const campaigns = (campaignsData || []).filter((campaign) => campaign?.slug);
+  if (!campaigns.length) {
+    communityParticipants = [];
+    renderCommunityShowcase();
+    stopCommunityRotation();
+    return;
+  }
+
+  const results = await Promise.allSettled(
+    campaigns.map(async (campaign) => {
+      const { data, error } = await supabaseClient.rpc('list_public_participants', {
+        p_campaign_slug: campaign.slug
+      });
+      if (error) throw error;
+      return (data || []).map((row, index) => buildParticipantViewModel(row, index, {
+        campaignSlug: campaign.slug,
+        campaignTitle: campaign.title || campaign.slug
+      }));
+    })
+  );
+
+  communityParticipants = results
+    .filter((result) => result.status === 'fulfilled')
+    .flatMap((result) => result.value)
+    .sort((a, b) => b.joinedAt - a.joinedAt)
+    .filter((participant, index, list) => {
+      const key = `${participant.campaignSlug}|${participant.publicCode || participant.name}|${participant.date}`;
+      return index === list.findIndex((item) => `${item.campaignSlug}|${item.publicCode || item.name}|${item.date}` === key);
+    })
+    .slice(0, 24);
+
+  activeCommunityIndex = 0;
+  renderCommunityShowcase();
+  startCommunityRotation();
+}
+
 function setCountdown(targetIso){
   if (countdownInterval) clearInterval(countdownInterval);
   const target = new Date(DRAW_TARGET_ISO);
@@ -4005,6 +4351,33 @@ function participantLocation(participant) {
   const province = participant.province || '';
   const city = participant.city || '';
   return province || city || 'Argentina';
+}
+
+function buildParticipantViewModel(row, index = 0, extra = {}) {
+  const location = normalizeParticipantLocation(row);
+  const displayName = row.display_name || row.full_name || 'Participante';
+  const fullName = row.full_name || displayName;
+  const joinedAt = row.joined_at ? new Date(row.joined_at) : new Date();
+  return {
+    sourceIndex: index,
+    name: fullName,
+    displayName,
+    detailLabel: row.is_anonymous ? (displayName || 'Anónimo') : fullName,
+    isAnonymous: Boolean(row.is_anonymous),
+    publicCode: row.public_code || '',
+    photoUrl: row.photo_url || '',
+    province: location.province,
+    city: location.city,
+    purchasedChances: Number(row.purchased_entries || row.total_entries || 0),
+    chances: Number(row.total_entries || 0),
+    currentChances: Math.max(Number(row.purchased_entries || 0), Number(row.total_entries || 0)),
+    opinionMessage: String(row.opinion_message || '').trim(),
+    searchIndex: [displayName, fullName, location.province, location.city, row.public_code || '', extra.campaignTitle || ''].join(' ').toLowerCase(),
+    joinedAt,
+    date: joinedAt.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+    campaignSlug: extra.campaignSlug || '',
+    campaignTitle: extra.campaignTitle || ''
+  };
 }
 
 function normalizeParticipantLocation(row) {
@@ -4292,8 +4665,21 @@ async function loadParticipants(){
       date: new Date(row.joined_at).toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' })
     };
   });
+  participants = (data || []).map((row, index) => buildParticipantViewModel(row, index, {
+    campaignSlug: CAMPAIGN_SLUG,
+    campaignTitle: activeCampaign?.title || DEFAULT_SHARE_TITLE
+  }));
   refreshDrawEntryPool();
   renderProofMessages();
+  try {
+    await loadCommunityParticipants();
+  } catch (communityError) {
+    console.error('No se pudo cargar la rotacion global de participantes.', communityError);
+    communityParticipants = [...participants];
+    activeCommunityIndex = 0;
+    renderCommunityShowcase();
+    startCommunityRotation();
+  }
   startDrawShowcase();
 }
 
