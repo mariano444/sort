@@ -1386,7 +1386,7 @@
   .search-input:focus { border-color: var(--gold); }
   .search-input::placeholder { color: var(--text2); }
 
-  table { width: 100%; min-width: 100%; border-collapse: collapse; table-layout: auto; }
+  table { width: 100%; min-width: 980px; border-collapse: collapse; table-layout: auto; }
   th {
     background: var(--dark3);
     font-size: 0.7rem; font-weight: 700;
@@ -2232,7 +2232,7 @@
 
   <h1 class="hero-title">GRAN<br>SORTEO</h1>
   <p class="hero-subtitle">Un gran premio. Un Fiat Uno 2014 impecable.</p>
-  <p class="hero-lead">Comprás tus chances, tu pago queda registrado y cuando se acredita aparecés en la lista pública del sorteo. Además, <strong>acceso a un curso práctico</strong> para comprar tu auto usado en Argentina con más seguridad.</p>
+  <p class="hero-lead">Comprás tus chances, tu pago queda registrado y cuando se acredita aparecés en la lista pública del sorteo. Además, <strong>si comprás 3 o más chances te regalamos acceso a un curso práctico</strong> para comprar tu auto usado en Argentina con más seguridad.</p>
 
   <div class="hero-assurance reveal">
     <div class="hero-assurance-card">
@@ -2245,7 +2245,7 @@
     </div>
     <div class="hero-assurance-card">
       <span class="hero-assurance-label">Beneficio extra</span>
-      <div class="hero-assurance-copy">Con 3 o más chances desbloqueás gratis el curso guía para evitar errores al comprar un usado.</div>
+      <div class="hero-assurance-copy">Desbloqueás el curso guía para evitar errores al comprar un usado.</div>
     </div>
     <div class="hero-assurance-card">
       <span class="hero-assurance-label">Entrega</span>
@@ -2268,8 +2268,8 @@
       <div class="prize-summary">
         <span class="prize-eyebrow">Premio</span>
         <span class="prize-name">HERMOSO FIAT UNO 2014</span>
-        <span class="prize-detail">Entrega coordinada con el ganador.</span>
-        <!--span class="prize-specs">Se participa por un premio: el auto publicado en esta pagina, con todas sus fotos visibles para que el premio quede claro desde el primer vistazo.</span-->
+        <span class="prize-detail">Impecable. Entrega coordinada con el ganador.</span>
+        <span class="prize-specs">Se participa por un premio: el auto publicado en esta pagina, con todas sus fotos visibles para que el premio quede claro desde el primer vistazo.</span>
       </div>
     </div>
   </div>
@@ -2341,7 +2341,7 @@
     <span class="ticker-item">Mas chances = mas posibilidades</span>
     <span class="ticker-item">Sorteo 100% transparente</span>
     <span class="ticker-item">Participas desde toda Argentina</span>
-    <span class="ticker-item">Con 3 o mas chances te llevas un curso</span>
+    <span class="ticker-item">Con 3 o mas chances te llevas un curso gratis</span>
     <span class="ticker-item">Fiat Uno 2014 impecable</span>
     <span class="ticker-item">Premio unico publicado con 6 fotos reales</span>
     <span class="ticker-item">1 ganador seleccionado al azar</span>
@@ -2504,16 +2504,20 @@
       <div style="overflow-x:auto" id="participantsTableScroller">
         <table>
           <colgroup>
-            <col style="width:40%">
-            <col style="width:20%">
-            <col style="width:16%">
-            <col style="width:24%">
+            <col style="width:34%">
+            <col style="width:15%">
+            <col style="width:15%">
+            <col style="width:12%">
+            <col style="width:12%">
+            <col style="width:12%">
           </colgroup>
           <thead>
             <tr>
               <th data-col="participant-head">Participante</th>
               <th>Provincia</th>
+              <th>Ciudad</th>
               <th>Chances</th>
+              <th>Fecha</th>
               <th>Mensaje</th>
             </tr>
           </thead>
@@ -3770,7 +3774,9 @@ function renderParticipants(filter=''){
     row.innerHTML = `
       <td data-col="participant"><div class="td-name-cell">${avatarHtml}<div class="td-name-copy"><div class="td-name">${p.displayName || p.name}</div></div></div></td>
       <td data-col="province"><span style="font-size:0.8rem;color:var(--text2)">${p.province || '-'}</span></td>
+      <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${p.city || '-'}</span></td>
       <td data-col="entries"><span class="chances-badge">x${purchasedChances.toLocaleString('es-AR')}</span></td>
+      <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
       <td data-col="message" class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(participantLocation(p))}"><span class="message-trigger-icon">ðŸ’¬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
     `;
     body.appendChild(row);
@@ -3783,7 +3789,9 @@ function renderParticipants(filter=''){
         detailRow.innerHTML = `
           <td data-col="participant"><div class="td-name-cell">${detailAvatarHtml}<div class="td-name-copy"><div class="td-name">${p.detailLabel || p.displayName || p.name}</div></div></div></td>
           <td data-col="province"><span style="font-size:0.8rem;color:var(--text2)">${p.province || '-'}</span></td>
+          <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${p.city || '-'}</span></td>
           <td data-col="entries"><span class="chances-badge">x${chanceNumber}</span></td>
+          <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${p.date}</td>
           <td data-col="message" class="message-cell"><button type="button" class="message-trigger${p.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(p.opinionMessage || '')}" data-author="${encodeURIComponent(p.displayName || p.name)}" data-city="${encodeURIComponent(participantLocation(p))}"><span class="message-trigger-icon">ðŸ’¬</span><span>${p.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
         `;
         body.appendChild(detailRow);
@@ -3818,7 +3826,7 @@ function renderParticipants(filter=''){
   });
 
   if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="4" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
+    body.innerHTML = '<tr><td colspan="6" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
   }
 
   updateStats();
@@ -4182,7 +4190,7 @@ function renderParticipants(filter=''){
     : participants;
 
   if (!filtered.length) {
-    body.innerHTML = '<tr><td colspan="4" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
+    body.innerHTML = '<tr><td colspan="6" style="padding:1rem;color:var(--text2)">Todavia no hay compras aprobadas para mostrar.</td></tr>';
     updateStats();
     return;
   }
@@ -4201,7 +4209,9 @@ function renderParticipants(filter=''){
     row.innerHTML = `
       <td data-col="participant"><div class="participant-cell">${avatarHtml}<span class="participant-label">${escapeHtml(participant.displayName || participant.name)}</span></div></td>
       <td data-col="province"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.province || '-')}</span></td>
+      <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.city || '-')}</span></td>
       <td data-col="entries"><span class="chances-badge">x${purchasedChances.toLocaleString('es-AR')}</span></td>
+      <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.date)}</td>
       <td data-col="message" class="message-cell"><button type="button" class="message-trigger${participant.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(participant.opinionMessage || '')}" data-author="${encodeURIComponent(participant.displayName || participant.name)}" data-city="${encodeURIComponent(participantLocation(participant))}"><span class="message-trigger-icon">ðŸ’¬</span><span>${participant.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
     `;
     fragment.appendChild(row);
@@ -4213,7 +4223,9 @@ function renderParticipants(filter=''){
         detailRow.innerHTML = `
           <td data-col="participant"><div class="participant-cell">${avatarHtml}<span class="participant-label">${escapeHtml(participant.detailLabel || participant.displayName || participant.name)}</span></div></td>
           <td data-col="province"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.province || '-')}</span></td>
+          <td data-col="city"><span style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.city || '-')}</span></td>
           <td data-col="entries"><span class="chances-badge">x${chanceNumber}</span></td>
+          <td data-col="date" style="font-size:0.8rem;color:var(--text2)">${escapeHtml(participant.date)}</td>
           <td data-col="message" class="message-cell"><button type="button" class="message-trigger${participant.opinionMessage ? '' : ' empty'}" data-opinion="${encodeURIComponent(participant.opinionMessage || '')}" data-author="${encodeURIComponent(participant.displayName || participant.name)}" data-city="${encodeURIComponent(participantLocation(participant))}"><span class="message-trigger-icon">ðŸ’¬</span><span>${participant.opinionMessage ? 'Ver mensaje' : 'Sin mensaje'}</span></button></td>
         `;
         fragment.appendChild(detailRow);
