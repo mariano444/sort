@@ -2253,6 +2253,11 @@
     border: 1px solid rgba(255,255,255,0.08);
     background: #050507;
     min-height: 220px;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
   body.has-official-winner .demo-history-card,
   body.has-official-winner .draw-rail-card:not(.spotlight) {
@@ -2505,23 +2510,7 @@
     .share-link-btn { width: 100%; }
   }
 </style>
-  <!-- Meta Pixel Code -->
-<script>
-  !function(f,b,e,v,n,t,s)
-  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-  n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];
-  s.parentNode.insertBefore(t,s)}(window, document,'script',
-  'https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init', '675114246370648');
-  fbq('track', 'PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=675114246370648&ev=PageView&noscript=1"
-/></noscript>
-<!-- End Meta Pixel Code -->
+ 
 </head>
 <body>
 <section class="course-hook-section">
@@ -2589,7 +2578,7 @@
       <span id="winnerModalMeta"></span>
     </div>
     <div class="winner-modal-grid">
-      <video class="winner-modal-video" id="winnerModalVideo" controls playsinline preload="metadata"></video>
+      <video class="winner-modal-video" id="winnerModalVideo" controls playsinline preload="metadata" controlslist="nodownload" disablepictureinpicture oncontextmenu="return false;"></video>
       <div class="winner-claim-status" id="winnerDeliveryStatus"></div>
       <div class="winner-claim-summary show" id="winnerClaimSummary">
         <strong id="winnerClaimSummaryTitle"></strong>
@@ -2606,20 +2595,20 @@
 
 <script>
 const FIXED_RESULT = {
-  display_name: 'German Acosta',
-  full_name: 'German Acosta',
+  display_name: 'Daniel Saldiviar',
+  full_name: 'Daniel Saldiviar',
   participant_public_code: 'Sin código público',
-  saved_at: '2026-05-31T09:23:00-03:00',
-  claim_submitted_at: '2026-05-31T12:10:00-03:00',
-  delivery_confirmed_at: '2026-06-01T13:15:00-03:00',
+  saved_at: '2026-06-15T17:30:00-03:00',
+  claim_submitted_at: '2026-06-15T18:00:00-03:00',
+  delivery_confirmed_at: '2026-06-15T19:30:00-03:00',
   delivery_status: 'delivered',
   delivery_status_label: 'Premio Verificado',
   delivery_received_message: 'Premio recibido por el ganador.',
-  delivery_received_item: 'Premio',
-  claim_experience: 'Nunca pensé que iba a ganar y estoy muy feliz les agradezco mucho esta oportunidad única para mí era imposible comprarme uno.',
-  claim_feeling: 'Se comunicaron conmigo para la entrega todo muy bueno y feliz',
-  public_announcement: 'El sorteo se adelantó al agotarse todas las chances, tal como se había explicado previamente.',
-  video_data_url: './assets/media/sorteo-oficial-3.webm'
+  delivery_received_item: 'Premio en dinero',
+  claim_experience: 'Estoy muy agradecido, participé sin pensar que iba a ganar y hoy se comunicaron, es algo increíble y se los agradezco muchísimo, todavía no lo puedo creer, nunca había ganado nada.',
+  claim_feeling: 'Se comunicaron y me ofrecieron el premio o dinero y me resultó mejor el dinero para poder terminar de construir mi casa que llevo años tratando de terminar, estoy muy feliz y agradecido.',
+  public_announcement: 'El sorteo se realizó de forma automática e imparcial.',
+  video_data_url: './oficial.mp4'
 };
 
 function formatDateTime(value) {
@@ -2642,8 +2631,8 @@ function renderWinnerModal(result) {
   document.getElementById('winnerClaimSummaryDate').textContent = `Fecha de entrega: ${formatDateTime(result.delivery_confirmed_at)}`;
   document.getElementById('winnerClaimSummaryExperience').textContent = `Experiencia: ${result.claim_experience}`;
   document.getElementById('winnerClaimSummaryFeeling').textContent = `Al enterarse: ${result.claim_feeling}`;
-  document.getElementById('winnerClaimSummaryReceived').textContent = 'Recibió: Premio entregado';
-  document.getElementById('winnerClaimSummaryReceivedQuote').textContent = `"${result.delivery_received_item}"`;
+  document.getElementById('winnerClaimSummaryReceived').textContent = `Recibió: ${result.delivery_received_item}`;
+  document.getElementById('winnerClaimSummaryReceivedQuote').textContent = `"El dinero equivalente al premio"`;
   document.getElementById('winnerModalClaimStatus').textContent = result.delivery_received_message;
 
   const video = document.getElementById('winnerModalVideo');
@@ -2652,6 +2641,25 @@ function renderWinnerModal(result) {
 }
 
 renderWinnerModal(FIXED_RESULT);
+
+// Prevent right-click on the whole page
+document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+  return false;
+});
+
+// Prevent common download/inspect keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+  // Ctrl+S, Ctrl+U, Ctrl+Shift+I, Ctrl+Shift+J, F12
+  if (
+    (e.ctrlKey && (e.key === 's' || e.key === 'u' || e.key === 'S' || e.key === 'U')) ||
+    (e.ctrlKey && e.shiftKey && (e.key === 'i' || e.key === 'j' || e.key === 'I' || e.key === 'J')) ||
+    (e.key === 'F12')
+  ) {
+    e.preventDefault();
+    return false;
+  }
+});
 </script>
 </body>
 </html>
